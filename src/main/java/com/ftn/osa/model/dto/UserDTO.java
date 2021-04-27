@@ -19,11 +19,10 @@ public class UserDTO {
     @NotBlank
     private String password;
 
-    private Role role;
 
     public UserDTO(User createdUser) {
       //  this.id = createdUser.getId();
         this.username = createdUser.getUsername();
-        this.role = createdUser.getRole();
+        this.password = createdUser.getPassword();
     }
 }
