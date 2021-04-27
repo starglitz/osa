@@ -3,11 +3,22 @@ package com.ftn.osa.model.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Data
-@NoArgsConstructor
 @Entity
-public class Admin extends User{
+@NoArgsConstructor
+public class Admin {
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @MapsId
+    private User user;
+
+    @Id
+    private Long id;
+
+//    public Admin() {
+//        this.id = user.getId();
+//    }
 }

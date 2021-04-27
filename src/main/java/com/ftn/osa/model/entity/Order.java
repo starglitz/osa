@@ -36,7 +36,7 @@ public class Order {
     private boolean archived;
 
     @ManyToOne
-    @JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
+    @JoinColumn(name="user_id", referencedColumnName="user_id", nullable=false)
     private Customer customer;
 
     @OneToMany(cascade={ALL}, fetch=EAGER, mappedBy="order")

@@ -31,7 +31,7 @@ public class Discount {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="seller_id", referencedColumnName="id", nullable=false)
+    @JoinColumn(name="user_id", referencedColumnName="user_id", nullable=false)
     private Seller seller;
 
 

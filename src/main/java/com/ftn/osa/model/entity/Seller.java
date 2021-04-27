@@ -3,16 +3,14 @@ package com.ftn.osa.model.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
 @Entity
-@Table(name="seller")
-public class Seller extends User{
+@NoArgsConstructor
+@Table(name = "seller")
+public class Seller{
 
     @Column(nullable = false)
     private Date since;
@@ -24,6 +22,17 @@ public class Seller extends User{
     private String address;
 
     @Column(nullable = false)
-    private String name;
+    private String seller_name;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @MapsId
+    private User user;
+
+    @Id
+    private Long id;
+
+//    public Seller() {
+//        this.id = user.getId();
+//    }
 }
