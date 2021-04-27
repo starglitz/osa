@@ -22,7 +22,7 @@ public class Seller{
     private String address;
 
     @Column(nullable = false)
-    private String seller_name;
+    private String sellerName;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

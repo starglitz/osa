@@ -1,5 +1,7 @@
 package com.ftn.osa.rest;
 
+import com.ftn.osa.model.dto.CustomerDTO;
+import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,5 +19,11 @@ public interface UserApi {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDTO userDto);
+
+    @PostMapping("/registerCustomer")
+    public ResponseEntity<CustomerDTO> create(@RequestBody @Validated CustomerDTO newUser);
+
+    @PostMapping("/registerSeller")
+    public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO newUser);
 
 }

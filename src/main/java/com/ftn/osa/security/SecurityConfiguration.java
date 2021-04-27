@@ -70,8 +70,9 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
 //                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/users/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/registerCustomer").permitAll()
+                .antMatchers(HttpMethod.POST, "/registerSeller").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);

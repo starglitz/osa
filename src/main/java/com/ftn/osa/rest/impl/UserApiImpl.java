@@ -1,6 +1,10 @@
 package com.ftn.osa.rest.impl;
 
+import com.ftn.osa.model.dto.CustomerDTO;
+import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.UserDTO;
+import com.ftn.osa.model.entity.Customer;
+import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.rest.UserApi;
 import com.ftn.osa.security.TokenUtils;
@@ -70,5 +74,35 @@ public class UserApiImpl implements UserApi {
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+
+    @PostMapping("/registerCustomer")
+    public ResponseEntity<CustomerDTO> create(@RequestBody @Validated CustomerDTO newUser){
+
+        Customer createdCustomer = userService.createCustomer(newUser);
+        //User createdUser = userService.createUser(newUser);
+
+        if(createdCustomer == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        CustomerDTO customerDTO = new CustomerDTO(createdCustomer);
+        //UserDTO userDTO = new UserDTO(createdUser);
+
+        return new ResponseEntity<>(customerDTO, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO newUser) {
+        Seller createdSeller = userService.createSeller(newUser);
+        //User createdUser = userService.createUser(newUser);
+
+        if(createdSeller == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        SellerDTO sellerDTO = new SellerDTO(createdSeller);
+        //UserDTO userDTO = new UserDTO(createdUser);
+
+        return new ResponseEntity<>(sellerDTO, HttpStatus.CREATED);
     }
 }
