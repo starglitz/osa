@@ -207,35 +207,6 @@ const RegisterForm = () => {
         }
     }
 
-   // const registerCustomer = () => {
-   //      let password = document.getElementById('password').value;
-   //      let confirm = document.getElementById('confirm').value;
-   //      let name = document.getElementById('name').value;
-   //      let surname = document.getElementById('surname').value;
-   //      let username = document.getElementById('username').value;
-   //      let address = document.getElementById('address').value;
-   //
-   //      console.log("wwwtf")
-   //      if (validateCustomer(username, password, confirm,name,surname,address)) {
-   //
-   //
-   //          // let customer = {"username": username, "password": password,
-   //          //     "name":name, "surname":surname,"address":address}
-   //          //
-   //          // try {
-   //          //     CustomersService.addCustomer(customer);
-   //          //     setShowAlert({ success: true, message: "Successfully registered" });
-   //          // } catch (error) {
-   //          //     console.error(`Greška prilikom dodavanja novog zadataka: ${error}`);
-   //          //     setShowAlert({
-   //          //         success: false,
-   //          //         message: "Error ocurred while registering",
-   //          //     });
-   //          //}
-   //
-   //      }
-   //  }
-
     return (
         <>
 

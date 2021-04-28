@@ -4,8 +4,13 @@ import NavigationBar from "../components/NavigationBar";
 import {Nav} from "react-bootstrap";
 import React from 'react';
 import Sellers from "../components/Sellers";
+import {AuthenticationService} from "../services/AuthenticationService";
 
 const Home = () => {
+
+    const logout = () => {
+        AuthenticationService.logout();
+    }
 
 return (
     <>
@@ -14,6 +19,9 @@ return (
         <Nav.Link href="#deets">More deets</Nav.Link>
         <Nav.Link eventKey={2} href="#memes">
             Dank memes
+        </Nav.Link>
+        <Nav.Link eventKey={3} onClick={logout}>
+            Log out
         </Nav.Link>
     </Nav>
     </NavigationBar>

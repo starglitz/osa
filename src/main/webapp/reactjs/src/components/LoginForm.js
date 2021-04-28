@@ -3,14 +3,15 @@ import {Paper, withStyles, Grid, TextField, Button, FormControlLabel, Checkbox, 
 import { Face, Fingerprint } from '@material-ui/icons'
 import {useHistory} from "react-router-dom";
 import {AuthenticationService} from "../services/AuthenticationService";
+import {TokenService} from "../services/TokenService";
 
 
 
 const LoginForm = (props) => {
-
+ TokenService.removeToken();
 
     const DEFAULT_LOGIN = {
-        email: '',
+        username: '',
         password: ''
     };
 
@@ -41,7 +42,6 @@ const LoginForm = (props) => {
     const classes = useStyles();
 
     const login = async () => {
-        // await AuthenticationService.login(loginData);
         console.log(loginData)
         if(! await AuthenticationService.login(loginData)) {
             setError("Wrong username or password. Try again")
@@ -101,9 +101,6 @@ const LoginForm = (props) => {
             <div style={{margin: '0 auto', display: 'flex',
                 justifyContent: 'center', position:'relative'}}>
 
-
-                {/*{props != null &&*/}
-                {/*<h2>{error}</h2>*/}
 
                     <form className={classes.root}>
                         <TextField value={loginData.username} onChange={(event) =>

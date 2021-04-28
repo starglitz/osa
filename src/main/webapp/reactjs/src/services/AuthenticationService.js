@@ -9,6 +9,7 @@ export const AuthenticationService = {
 
 async function login(userCredentials) {
     try {
+        console.log(userCredentials)
         const response = await SprintsAxiosClient.post(
             "http://localhost:8080/login",
             userCredentials

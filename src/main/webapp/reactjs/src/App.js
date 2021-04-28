@@ -6,10 +6,12 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {PrivateRoute} from "./services/PrivateRoute";
 import Sellers from "./components/Sellers";
 import RegisterForm from "./components/RegisterForm";
+import {TokenService} from "./services/TokenService";
 
 function App() {
   return (
     <div className="App">
+
       <Router>
         <Switch>
           {/*<Route path="/register" exact component={RegisterLayout}/>*/}
