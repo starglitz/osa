@@ -38,4 +38,10 @@ public class ArticleApiImpl implements ArticleApi {
     public ResponseEntity<Article> update(Long id,Article article) {
         return new ResponseEntity(articleService.update(article), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity delete(Long id) {
+        articleService.delete(id);
+        return new ResponseEntity("Successfuly deleted", HttpStatus.OK);
+    }
 }

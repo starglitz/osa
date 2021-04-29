@@ -1,6 +1,7 @@
 package com.ftn.osa.rest;
 
 import com.ftn.osa.model.entity.Article;
+import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,4 +34,9 @@ public interface ArticleApi {
     @PutMapping(value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Article> update(@PathVariable("id") Long id,@RequestBody Article article);
+
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
+    @DeleteMapping(value = "/{id}")
+    ResponseEntity delete(@PathVariable("id") Long id);
+
 }

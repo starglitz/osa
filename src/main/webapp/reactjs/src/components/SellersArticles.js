@@ -24,6 +24,17 @@ const SellersArticles = () => {
         }
     }
 
+    async function deleteArticle(id) {
+        try {
+            await ArticlesService.deleteArticle(id);
+
+            // Za novu vrednost liste zadataka uzima se prethodna lista, filtrirana tako da ne sadrži obrisani zatak
+            setArticles((articles) => articles.filter((article) => article.id !== id));
+        } catch (error) {
+            console.error(`Greška prilikom brisanja zadataka ${id}: ${error}`);
+        }
+    }
+
     return (
         <>
             <div className="flex-container">
@@ -31,7 +42,7 @@ const SellersArticles = () => {
                 <div className="flex-child">
                     <ArticleCard
                         key={a.id} id={a.id} path={a.path} name={a.name}
-                        description={a.description} price={a.price}/>
+                        description={a.description} price={a.price} deleteArticle={deleteArticle}/>
                 </div>
             )}
             </div>

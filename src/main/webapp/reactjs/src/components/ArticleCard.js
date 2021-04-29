@@ -9,6 +9,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import React from "react";
 import {useHistory} from "react-router-dom";
+import {ArticlesService} from "../services/ArticlesService";
 
 
 const useStyles = makeStyles({
@@ -31,6 +32,7 @@ const ArticleCard = (props) => {
     const goToEditPage = () => {
         history.push("/updateArticle/" + props.id);
     };
+
 
     return (
         <Card className={classes.root} >
@@ -69,6 +71,7 @@ const ArticleCard = (props) => {
                 <Button
                     variant="contained"
                     color="default"
+                    onClick={() => props.deleteArticle(props.id)}
                     className={classes.button} style={{margin:'0 auto', marginBottom:'10px', position:"absolute",left:'20px'}}>
                     DELETE
                 </Button>
