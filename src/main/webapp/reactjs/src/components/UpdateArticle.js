@@ -102,6 +102,8 @@ const UpdateArticle = () => {
                     />
                 </Form.Group>
 
+                <img src={article.path} style={{width:'250px', height:'200px'}}/> <br/> <br/>
+
                 <Button  variant="contained" color="secondary" onClick={() => editArticle()}>
                     Edit
                 </Button>
