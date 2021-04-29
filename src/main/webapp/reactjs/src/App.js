@@ -7,6 +7,8 @@ import {PrivateRoute} from "./services/PrivateRoute";
 import Sellers from "./components/Sellers";
 import RegisterForm from "./components/RegisterForm";
 import {TokenService} from "./services/TokenService";
+import SellersArticles from "./components/SellersArticles";
+import UpdateArticle from "./components/UpdateArticle";
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
           <Route path="/" exact component={LoginForm}/>
           {/*<Route path="/home" exact component={Home}/>*/}
             <Route path="/register" exact component={RegisterForm}/>
+          <Route path="/test" exact component={SellersArticles}/>
 
             <PrivateRoute
                 exact
@@ -25,6 +28,13 @@ function App() {
                 component={Home}
                 roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
             />
+
+          <PrivateRoute
+              exact
+              path="/updateArticle/:id"
+              component={UpdateArticle}
+              roles={["ROLE_ADMIN", "ROLE_SELLER"]}
+          />
 
         </Switch>
       </Router>

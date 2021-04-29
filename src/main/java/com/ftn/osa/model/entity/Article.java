@@ -35,62 +35,7 @@ public class Article {
     @ManyToMany(mappedBy = "articles")
     private Set<Discount> discounts = new HashSet<>();
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
-//
-//    public String getPrice() {
-//        return price;
-//    }
-//
-//    public void setPrice(String price) {
-//        this.price = price;
-//    }
-//
-//    public String getPath() {
-//        return path;
-//    }
-//
-//    public void setPath(String path) {
-//        this.path = path;
-//    }
-//
-//    public Set<Discount> getDiscounts() {
-//        return discounts;
-//    }
-//
-//    public void setDiscounts(Set<Discount> discounts) {
-//        this.discounts = discounts;
-//    }
-//
-//    public Article() {
-//    }
-//
-//    public Article(String name, String description, String price, String path, Set<Discount> discounts) {
-//        this.name = name;
-//        this.description = description;
-//        this.price = price;
-//        this.path = path;
-//        this.discounts = discounts;
-//    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Seller seller;
 }

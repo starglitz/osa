@@ -1,17 +1,36 @@
 package com.ftn.osa.rest;
 
+import com.ftn.osa.model.entity.Article;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
+@RequestMapping("/articles")
 public interface ArticleApi {
 
-    @GetMapping(value = "/allArticles",
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
+    @GetMapping(value = "/all",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getAllArticles();
 
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getArticle(@PathVariable("id") Long id);
+
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping(value = "/seller/me",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getArticlesByCurrentSeller(Authentication authentication);
+
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<Article> update(@PathVariable("id") Long id,@RequestBody Article article);
 }
