@@ -39,4 +39,9 @@ public interface ArticleApi {
     @DeleteMapping(value = "/{id}")
     ResponseEntity delete(@PathVariable("id") Long id);
 
+    @PreAuthorize("hasRole('SELLER')")
+    @PostMapping(
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<Article> create(@RequestBody Article article, Authentication authentication);
+
 }

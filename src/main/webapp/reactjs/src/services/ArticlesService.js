@@ -4,7 +4,8 @@ export const ArticlesService = {
     getArticlesByCurrentSeller,
     editArticle,
     getArticle,
-    deleteArticle
+    deleteArticle,
+    addArticle
 };
 
 async function getArticlesByCurrentSeller () {
@@ -21,4 +22,8 @@ async function getArticle(id) {
 
 async function deleteArticle(id) {
     return await SprintsAxiosClient.delete(`http://localhost:8080/articles/${id}`);
+}
+
+async function addArticle(article) {
+    return await SprintsAxiosClient.post("http://localhost:8080/articles", article);
 }

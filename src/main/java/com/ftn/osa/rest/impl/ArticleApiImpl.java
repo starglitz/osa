@@ -44,4 +44,9 @@ public class ArticleApiImpl implements ArticleApi {
         articleService.delete(id);
         return new ResponseEntity("Successfuly deleted", HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Article> create(Article article, Authentication authentication) {
+        return new ResponseEntity(articleService.create(article, authentication), HttpStatus.OK);
+    }
 }

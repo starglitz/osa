@@ -9,6 +9,7 @@ import RegisterForm from "./components/RegisterForm";
 import {TokenService} from "./services/TokenService";
 import SellersArticles from "./components/SellersArticles";
 import UpdateArticle from "./components/UpdateArticle";
+import CreateArticle from "./components/CreateArticle";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
           <Route path="/" exact component={LoginForm}/>
           {/*<Route path="/home" exact component={Home}/>*/}
             <Route path="/register" exact component={RegisterForm}/>
-          <Route path="/test" exact component={SellersArticles}/>
+          <Route path="/test" exact component={CreateArticle}/>
 
             <PrivateRoute
                 exact

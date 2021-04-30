@@ -19,4 +19,6 @@ public interface ArticleService {
 
     public void delete(Long id);
 
+    public Article create(Article article, Authentication authentication);
+
 }
