@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Paper, withStyles, Grid, TextField, Button, FormControlLabel, Checkbox, makeStyles} from '@material-ui/core';
-import { Face, Fingerprint } from '@material-ui/icons'
-import {useHistory} from "react-router-dom";
+import {TextField, Button, makeStyles} from '@material-ui/core';
 import {AuthenticationService} from "../services/AuthenticationService";
 import {TokenService} from "../services/TokenService";
 
@@ -31,7 +29,6 @@ const LoginForm = (props) => {
 
     const [loginData, setLoginData] = useState(DEFAULT_LOGIN);
     const [error, setError] = useState('');
-    const history = useHistory();
     const handleChange = (event, prop) => {
         setLoginData({
             ...loginData,
@@ -52,42 +49,6 @@ const LoginForm = (props) => {
     }, [error]);
 
 
-
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-
-        const data = {"username":loginData.username, "password":loginData.password};
-
-        fetch('http://localhost:8080/login', {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-            .then(response =>{
-                if(response.status!==200){
-                    throw new Error(response.status)
-                }
-                else {
-                    history.push('/')
-                }}  )
-            .then(data => {
-                console.log('Success:', JSON.stringify(data));
-            })
-            .catch((error) => {
-                setError('Invalid username/password')
-                console.error('Error:', console.warn(error));
-            });
-
-
-    }
-    if(props != null) {
-        let errortxt = <h3>{props.error}</h3>;
-    }
-    else {
-        let errortxt=<br/>
-    }
 
     const openRegister = () => {
         window.location.assign("/register");

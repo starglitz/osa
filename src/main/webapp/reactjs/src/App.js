@@ -1,13 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
 import LoginForm from "./components/LoginForm";
 import Home from "../src/pages/Home"
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {PrivateRoute} from "./services/PrivateRoute";
-import Sellers from "./components/Sellers";
 import RegisterForm from "./components/RegisterForm";
-import {TokenService} from "./services/TokenService";
-import SellersArticles from "./components/SellersArticles";
 import UpdateArticle from "./components/UpdateArticle";
 import CreateArticle from "./components/CreateArticle";
 

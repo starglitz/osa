@@ -1,5 +1,5 @@
-import {useHistory, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
+import {useState} from "react";
 import {ArticlesService} from "../services/ArticlesService";
 import {Form} from "react-bootstrap";
 import Button from "@material-ui/core/Button";
@@ -31,11 +31,11 @@ const CreateArticle = () => {
             alert("Make sure to fill all fields!")
             ok = false;
         }
-        if(article.price < 1) {
+        else if(article.price < 1) {
             alert("Price has to be a positive number!")
             ok = false;
         }
-        if(isNaN(article.price)) {
+        else if(isNaN(article.price)) {
             alert("Price must be a number!")
             ok = false;
         }
@@ -43,19 +43,21 @@ const CreateArticle = () => {
     }
 
     async function addArticle() {
-        try {
-            await ArticlesService.addArticle(article);
+            try {
+                if(validate()) {
+                    await ArticlesService.addArticle(article);
 
-            // Resetovanje polja nakon što je zadatak dodat
-            setArticle({
-                name: "",
-                description: "",
-                price: "",
-                path: "",
-            });
-            history.push("/home")
-        } catch (error) {
-            console.error(`Greška prilikom dodavanja novog zadataka: ${error}`);
+                    // Resetovanje polja nakon što je zadatak dodat
+                    setArticle({
+                        name: "",
+                        description: "",
+                        price: "",
+                        path: "",
+                    });
+                    history.push("/home")
+                }
+            } catch (error) {
+                console.error(`Greška prilikom dodavanja novog zadataka: ${error}`);
         }
     }
 
@@ -93,7 +95,7 @@ const CreateArticle = () => {
                         />
                     </Form.Group>
 
-                    <img src={article.path} style={{width:'250px', height:'200px'}}/> <br/> <br/>
+                    <img alt="article" src={article.path} style={{width:'250px', height:'200px'}}/> <br/> <br/>
 
                     <Button  variant="contained" color="secondary" onClick={() => addArticle()}>
                         ADD

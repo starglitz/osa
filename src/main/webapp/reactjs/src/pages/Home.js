@@ -1,5 +1,3 @@
-
-import Navbar from 'react-bootstrap/Navbar'
 import NavigationBar from "../components/NavigationBar";
 import {Nav} from "react-bootstrap";
 import React from 'react';

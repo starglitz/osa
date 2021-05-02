@@ -1,7 +1,5 @@
 import {useEffect, useState} from "react";
-import {SellersService} from "../services/SellersService";
 import {ArticlesService} from "../services/ArticlesService";
-import SellerCard from "./SellerCard";
 import ArticleCard from "./ArticleCard";
 
 const SellersArticles = () => {

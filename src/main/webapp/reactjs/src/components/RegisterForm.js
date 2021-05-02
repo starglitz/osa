@@ -1,8 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {render} from "@testing-library/react";
+import React, {useState} from "react";
 import {Button} from "@material-ui/core";
 import {CustomersService} from "../services/CustomersService";
-import {ValidateRegister} from "../services/ValidateRegister";
 import {SellersService} from "../services/SellersService";
 
 
@@ -62,19 +60,15 @@ const RegisterForm = () => {
     }
 
 
-    // useEffect(() => {
-    // }, [reload]);
-
-
     const renderAuthButton = () => {
 
-        if(role == 'customer') {
+        if(role === 'customer') {
             return <>
             <br/><Button onClick={registerCustomer} className='register-btn' variant="contained" color="secondary">
                 Register as customer
             </Button> </>;
         }
-        else if(role == 'seller') {
+        else if(role === 'seller') {
             return (
                 <>
                     <label htmlFor="email" className="label-register">Email:</label>
