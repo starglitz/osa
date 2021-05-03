@@ -3,6 +3,7 @@ import {useState} from "react";
 import {ArticlesService} from "../services/ArticlesService";
 import {Form} from "react-bootstrap";
 import Button from "@material-ui/core/Button";
+import {ApiService} from "../services/ApiService";
 
 const CreateArticle = () => {
 
@@ -14,6 +15,8 @@ const CreateArticle = () => {
         price: "",
         path: "",
     });
+
+    const [selectedFile, setSelectedFile] = useState({});
 
     const history = useHistory();
 
@@ -42,31 +45,113 @@ const CreateArticle = () => {
         return ok
     }
 
+    function prepareUpload(event)
+    {
+        let files = event.target.files;
+        let fileName = files[0].name;
+        alert(fileName);
+    }
+
     async function addArticle() {
             try {
                 if(validate()) {
                     await ArticlesService.addArticle(article);
+
+
+                    let imageName = document.getElementById('img').addEventListener('change',prepareUpload,false);
+
+                    let path = '/images/' + imageName;
 
                     // Resetovanje polja nakon što je zadatak dodat
                     setArticle({
                         name: "",
                         description: "",
                         price: "",
-                        path: "",
+                        path: path,
                     });
                     history.push("/home")
                 }
             } catch (error) {
                 console.error(`Greška prilikom dodavanja novog zadataka: ${error}`);
         }
+
     }
+
+
+    // const onFileChangeHandler = (e) => {
+    //     e.preventDefault();
+    //     setSelectedFile(e.target.files[0])
+    //     console.log(e.target.files[0])
+    //     // this.setState({
+    //     //     selectedFile: e.target.files[0]
+    //     // });
+    //     const formData = new FormData();
+    //
+    //     formData.append('file', e.target.files[0]);
+    //     console.log(selectedFile)
+    //
+    //     fetch('http://localhost:8080/upload', {
+    //         method: 'post',
+    //         body: formData,
+    //         // headers: {
+    //         //     "Content-Type": "multipart/form-data",
+    //         // },
+    //
+    //     }).then(res => {
+    //         if(res.ok) {
+    //             console.log(res.data);
+    //             alert("File uploaded successfully.")
+    //         }
+    //     });
+    //
+    // };
+
+
+    // const onFileChangeHandler = (e) => {
+    //     e.preventDefault();
+    //     this.setState({
+    //         selectedFile: e.target.files[0]
+    //     });
+    //     const formData = new FormData();
+    //     formData.append('file', this.state.selectedFile);
+    //     fetch('http://localhost:8080/upload', {
+    //         method: 'post',
+    //         body: formData
+    //     }).then(res => {
+    //         if(res.ok) {
+    //             console.log(res.data);
+    //             alert("File uploaded successfully.")
+    //         }
+    //     });
+    // };
+
+
+
+    const onFileChangeHandler = (e) => {
+        e.preventDefault();
+        setSelectedFile(e.target.files[0])
+
+        const formData = new FormData();
+        formData.append('file', e.target.files[0]);
+        console.log(selectedFile)
+        console.log(e.target.files[0])
+        ApiService.upload(formData)
+            .then(res => {
+                console.log(res.data);
+                alert("File uploaded successfully.")
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    };
+
 
 
     return (
         <>
             <div className="edit-article-div">
                 <h1>Edit article</h1>
-                <Form>
+                <Form action="./upload?${_csrf.parameterName}=${_csrf.token}">
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
                         <Form.Control
@@ -95,7 +180,21 @@ const CreateArticle = () => {
                         />
                     </Form.Group>
 
-                    <img alt="article" src={article.path} style={{width:'250px', height:'200px'}}/> <br/> <br/>
+                    {/*<img alt="article" src={article.path} style={{width:'250px', height:'200px'}}/> <br/> <br/>*/}
+
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="form-group files color">
+                                    <label>Upload Your File </label>
+                                    <input id="img" type="file" className="form-control" name="file" onChange={onFileChangeHandler}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <br/>
 
                     <Button  variant="contained" color="secondary" onClick={() => addArticle()}>
                         ADD

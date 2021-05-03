@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +34,8 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
         authenticationManagerBuilder
                 .userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -54,11 +57,17 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
         return authenticationTokenFilter;
     }
 
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**").allowedMethods("*");
+//    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         //Naglasavamo browser-u da ne cache-ira podatke koje dobije u header-ima
         //detaljnije: https://www.baeldung.com/spring-security-cache-control-headers
         httpSecurity.headers().cacheControl().disable();
+       // httpSecurity.csrf().disable();
         //Neophodno da ne bi proveravali autentifikaciju kod Preflight zahteva
         httpSecurity.cors();
         //sledeca linija je neophodna iskljucivo zbog nacina na koji h2 konzola komunicira sa aplikacijom
@@ -68,11 +77,12 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/registerCustomer").permitAll()
                 .antMatchers(HttpMethod.POST, "/registerSeller").permitAll()
+                .antMatchers(HttpMethod.POST, "/upload").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);

@@ -4,6 +4,7 @@ import React from 'react';
 import Sellers from "../components/Sellers";
 import {AuthenticationService} from "../services/AuthenticationService";
 import SellersArticles from "../components/SellersArticles";
+import {useHistory} from "react-router-dom";
 
 const Home = () => {
 
@@ -13,6 +14,12 @@ const Home = () => {
 
 
     let navContent;
+
+    const history = useHistory()
+
+    const createNew = () => {
+        history.push("/test")
+    }
 
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {
         navContent = <>
@@ -26,6 +33,7 @@ const Home = () => {
         </>;
     }
 
+
     else if(AuthenticationService.getRole() === "ROLE_SELLER") {
         navContent = <>
                 <Nav.Link href="#deets">Seller option</Nav.Link>
@@ -35,11 +43,16 @@ const Home = () => {
                 <Nav.Link eventKey={3} onClick={logout}>
                     Log out
                 </Nav.Link>
+
+            <Nav.Link eventKey={3} onClick={createNew}>
+                Add new article
+            </Nav.Link>
         </>
     }
 
 
     let pageContent;
+
 
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {
         pageContent = <>
