@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Component
@@ -35,7 +36,7 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity<Article> update(Long id,Article article) {
+    public ResponseEntity<Article> update(Long id,@Valid Article article) {
         return new ResponseEntity(articleService.update(article), HttpStatus.OK);
     }
 
@@ -46,7 +47,7 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity<Article> create(Article article, Authentication authentication) {
+    public ResponseEntity<Article> create(@Valid Article article, Authentication authentication) {
         return new ResponseEntity(articleService.create(article, authentication), HttpStatus.OK);
     }
 }

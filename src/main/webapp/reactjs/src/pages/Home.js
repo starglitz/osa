@@ -18,7 +18,7 @@ const Home = () => {
     const history = useHistory()
 
     const createNew = () => {
-        history.push("/test")
+        history.push("/createArticle")
     }
 
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {

@@ -10,20 +10,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public interface UserApi {
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> create(@RequestBody @Validated UserDTO newUser);
+    public ResponseEntity<UserDTO> create(@RequestBody @Valid UserDTO newUser);
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDTO userDto);
 
     @PostMapping("/registerCustomer")
-    public ResponseEntity<CustomerDTO> create(@RequestBody @Validated CustomerDTO newUser);
+    public ResponseEntity<CustomerDTO> create(@RequestBody @Valid CustomerDTO newUser);
 
     @PostMapping("/registerSeller")
-    public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO newUser);
+    public ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser);
 
 }

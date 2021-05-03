@@ -17,7 +17,6 @@ function App() {
           <Route path="/" exact component={LoginForm}/>
           {/*<Route path="/home" exact component={Home}/>*/}
             <Route path="/register" exact component={RegisterForm}/>
-          <Route path="/test" exact component={CreateArticle}/>
 
             <PrivateRoute
                 exact
@@ -25,6 +24,13 @@ function App() {
                 component={Home}
                 roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
             />
+
+          <PrivateRoute
+              exact
+              path="/createArticle"
+              component={CreateArticle}
+              roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
+          />
 
           <PrivateRoute
               exact

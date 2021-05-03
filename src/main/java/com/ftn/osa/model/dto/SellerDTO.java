@@ -6,6 +6,7 @@ import com.ftn.osa.model.entity.Seller;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -30,6 +31,7 @@ public class SellerDTO {
     private String address;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank

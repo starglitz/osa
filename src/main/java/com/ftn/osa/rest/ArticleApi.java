@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
@@ -33,7 +34,7 @@ public interface ArticleApi {
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @PutMapping(value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Article> update(@PathVariable("id") Long id,@RequestBody Article article);
+    ResponseEntity<Article> update(@PathVariable("id") Long id,@Valid @RequestBody Article article);
 
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
@@ -42,6 +43,6 @@ public interface ArticleApi {
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Article> create(@RequestBody Article article, Authentication authentication);
+    ResponseEntity<Article> create(@Valid @RequestBody Article article, Authentication authentication);
 
 }
