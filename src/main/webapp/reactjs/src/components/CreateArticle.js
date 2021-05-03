@@ -16,7 +16,8 @@ const CreateArticle = () => {
         path: "",
     });
 
-    const [selectedFile, setSelectedFile] = useState({});
+    const [selectedFile, setSelectedFile] = useState(null);
+
 
     const history = useHistory();
 
@@ -55,19 +56,23 @@ const CreateArticle = () => {
     async function addArticle() {
             try {
                 if(validate()) {
+                    const selected = document.getElementById('img').files[0];
+                    article.path =  '/images/' + selected.name;
                     await ArticlesService.addArticle(article);
 
 
                     let imageName = document.getElementById('img').addEventListener('change',prepareUpload,false);
 
-                    let path = '/images/' + imageName;
+
+                    let path = '/images/' + selected.name;
+                    console.log(path);
 
                     // Resetovanje polja nakon što je zadatak dodat
                     setArticle({
                         name: "",
                         description: "",
                         price: "",
-                        path: path,
+                        path: "",
                     });
                     history.push("/home")
                 }
@@ -78,72 +83,46 @@ const CreateArticle = () => {
     }
 
 
-    // const onFileChangeHandler = (e) => {
-    //     e.preventDefault();
-    //     setSelectedFile(e.target.files[0])
-    //     console.log(e.target.files[0])
-    //     // this.setState({
-    //     //     selectedFile: e.target.files[0]
-    //     // });
-    //     const formData = new FormData();
-    //
-    //     formData.append('file', e.target.files[0]);
-    //     console.log(selectedFile)
-    //
-    //     fetch('http://localhost:8080/upload', {
-    //         method: 'post',
-    //         body: formData,
-    //         // headers: {
-    //         //     "Content-Type": "multipart/form-data",
-    //         // },
-    //
-    //     }).then(res => {
-    //         if(res.ok) {
-    //             console.log(res.data);
-    //             alert("File uploaded successfully.")
-    //         }
-    //     });
-    //
-    // };
-
-
-    // const onFileChangeHandler = (e) => {
-    //     e.preventDefault();
-    //     this.setState({
-    //         selectedFile: e.target.files[0]
-    //     });
-    //     const formData = new FormData();
-    //     formData.append('file', this.state.selectedFile);
-    //     fetch('http://localhost:8080/upload', {
-    //         method: 'post',
-    //         body: formData
-    //     }).then(res => {
-    //         if(res.ok) {
-    //             console.log(res.data);
-    //             alert("File uploaded successfully.")
-    //         }
-    //     });
-    // };
-
-
 
     const onFileChangeHandler = (e) => {
         e.preventDefault();
-        setSelectedFile(e.target.files[0])
-
+       // setSelectedFile(e.target.files[0])
+        const selected = document.getElementById('img').files[0];
         const formData = new FormData();
-        formData.append('file', e.target.files[0]);
-        console.log(selectedFile)
-        console.log(e.target.files[0])
-        ApiService.upload(formData)
-            .then(res => {
+        console.log(selectedFile);
+        formData.append('file', selected);
+        fetch('http://localhost:8080/upload', {
+            method: 'post',
+            body: formData
+        }).then(res => {
+            if(res.ok) {
                 console.log(res.data);
                 alert("File uploaded successfully.")
-            })
-            .catch(error => {
-                console.log(error)
-            })
+            }
+        });
     };
+
+
+
+    // const onFileChangeHandler = (e) => {
+    //     e.preventDefault();
+    //     setSelectedFile(e.target.files[0])
+    //
+    //     const formData = new FormData();
+    //     const selected = document.getElementById('img').files[0];
+    //     formData.append('file', selected);
+    //     console.log(selected)
+    //     //console.log(selectedFile)
+    //    // console.log(e.target.files[0])
+    //     ApiService.upload(formData)
+    //         .then(res => {
+    //             console.log(res.data);
+    //             alert("File uploaded successfully.")
+    //         })
+    //         .catch(error => {
+    //             console.log(error)
+    //         })
+    // };
 
 
 
@@ -187,7 +166,8 @@ const CreateArticle = () => {
                             <div className="col-md-6">
                                 <div className="form-group files color">
                                     <label>Upload Your File </label>
-                                    <input id="img" type="file" className="form-control" name="file" onChange={onFileChangeHandler}/>
+                                    {/*<input id="img" type="file" className="form-control"  value={selectedFile} name="file" onChange={onFileChangeHandler}/>*/}
+                                    <input id="img" type="file" className="form-control"  name="file" onChange={onFileChangeHandler}/>
                                 </div>
                             </div>
                         </div>

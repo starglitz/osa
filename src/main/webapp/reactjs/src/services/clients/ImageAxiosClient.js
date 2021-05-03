@@ -20,7 +20,7 @@ ImageAxiosClient.interceptors.request.use(function success(config) {
             return false;
         }
         config.headers["Authorization"] = "Bearer " + token;
-        config.headers["content-type"] = 'multipart/form-data'
+        // config.headers["content-type"] = 'multipart/form-data'
     }
     return config;
 });

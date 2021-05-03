@@ -18,28 +18,16 @@ public class FileController {
 
     //private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
-    //@PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
-        //logger.info(String.format("File name '%s' uploaded successfully.", file.getOriginalFilename()));
+    public ResponseEntity uploadFile(@RequestParam MultipartFile file) throws IOException {
 
-        String fileName = multipartFile.getOriginalFilename();
+        String fileName = file.getOriginalFilename();
         int startIndex = fileName.replaceAll("\\\\", "/").lastIndexOf("/");
-        //fileName = fileName.substring(startIndex + 1);
-        //book.setPicturePath(fileName);
-        //System.out.println(book);
-
-        //Book save = bookService.save(book);
         String uploadDir = "src/main/webapp/reactjs/public/images";
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
 
 
         return ResponseEntity.ok().build();
     }
-    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
-    @GetMapping(value = "/testtest",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getAllArticles() {
-        return new ResponseEntity("ovo moze", HttpStatus.OK);
-    }
+
 }

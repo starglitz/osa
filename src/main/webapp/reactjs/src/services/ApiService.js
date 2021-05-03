@@ -13,5 +13,5 @@ export const ApiService =
 
 
     async function upload(data) {
-        return await ImageAxiosClient.post("http://localhost:8080/upload", data)
+        return await SprintsAxiosClient.post("http://localhost:8080/upload", data)
     }
