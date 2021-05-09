@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import img from '../assets/food3.png';
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
@@ -20,8 +21,20 @@ const useStyles = makeStyles({
     },
 });
 
+
 const SellerCard = (props) => {
     const classes = useStyles();
+
+    const history = useHistory()
+
+    const showArticles = () => {
+        //history.push("/sellersArticles/" + props.id)
+        history.push({
+            pathname: '/sellersArticles',
+            search: '?id=' + props.id,
+            state: { detail: props.id}
+        });
+    }
 
     return (
         <Card className={classes.root} >
@@ -52,6 +65,7 @@ const SellerCard = (props) => {
             </CardActionArea>
             <CardActions>
                 <Button
+                    onClick={showArticles}
                     variant="contained"
                     color="default"
                     className={classes.button} style={{margin:'0 auto', marginBottom:'10px'}}>

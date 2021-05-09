@@ -19,4 +19,5 @@ public interface UserService {
 
     Seller createSeller(SellerDTO sellerDTO);
 
+
 }

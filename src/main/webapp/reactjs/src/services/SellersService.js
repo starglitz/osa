@@ -9,7 +9,7 @@ export const SellersService = {
 };
 
 async function getSellers() {
-    return await SprintsAxiosClient.get("http://localhost:8080/sellers/all");
+    return await SprintsAxiosClient.get("http://localhost:8080/sellers");
 }
 
 async function getSeller(id) {

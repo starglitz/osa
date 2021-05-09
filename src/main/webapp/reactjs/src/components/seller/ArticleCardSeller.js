@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 });
 
 
-const ArticleCard = (props) => {
+const ArticleCardSeller = (props) => {
     const classes = useStyles();
 
     const history = useHistory();
@@ -79,4 +79,4 @@ const ArticleCard = (props) => {
     );
 }
 
-export default ArticleCard;
+export default ArticleCardSeller;

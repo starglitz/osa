@@ -17,7 +17,7 @@ import java.security.Principal;
 public interface ArticleApi {
 
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
-    @GetMapping(value = "/all",
+    @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getAllArticles();
 
@@ -30,6 +30,11 @@ public interface ArticleApi {
     @GetMapping(value = "/seller/me",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getArticlesByCurrentSeller(Authentication authentication);
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping(value = "/seller/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getArticlesBySeller(@PathVariable("id") Long id);
 
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @PutMapping(value = "/{id}",

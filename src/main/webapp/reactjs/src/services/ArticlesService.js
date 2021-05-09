@@ -5,11 +5,16 @@ export const ArticlesService = {
     editArticle,
     getArticle,
     deleteArticle,
-    addArticle
+    addArticle,
+    getArticlesBySellerId
 };
 
 async function getArticlesByCurrentSeller () {
     return await SprintsAxiosClient.get('http://localhost:8080/articles/seller/me');
+}
+
+async function getArticlesBySellerId(id) {
+    return await SprintsAxiosClient.get(`http://localhost:8080/articles/seller/${id}`);
 }
 
 async function editArticle(id, article) {

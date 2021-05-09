@@ -36,6 +36,11 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
+    public ResponseEntity getArticlesBySeller(Long id) {
+        return new ResponseEntity(articleService.findAllBySellerId(id), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Article> update(Long id,@Valid Article article) {
         return new ResponseEntity(articleService.update(article), HttpStatus.OK);
     }

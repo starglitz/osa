@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public interface SellerApi {
 
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
-    @GetMapping(value = "/all",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getAllSellers();
 
 }

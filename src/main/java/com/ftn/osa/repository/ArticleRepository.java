@@ -17,4 +17,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             nativeQuery = true)
     List<Article> getArticlesByCurrentSellerUsername(String username);
 
+
+    @Query(value = "SELECT * FROM article  WHERE user_id = ?1",
+            nativeQuery = true)
+    List<Article> getArticlesBySellerId(Long id);
+
 }

@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -40,7 +37,7 @@ public class Order {
     private Customer customer;
 
     @OneToMany(cascade={ALL}, fetch=EAGER, mappedBy="order")
-    private Set<OrderItem> items = new HashSet<OrderItem>();
+    private List<OrderItem> items = new ArrayList<>();
 
 
 }

@@ -6,6 +6,7 @@ import {PrivateRoute} from "./services/PrivateRoute";
 import RegisterForm from "./components/RegisterForm";
 import UpdateArticle from "./components/UpdateArticle";
 import CreateArticle from "./components/CreateArticle";
+import SellersArticlesCustomer from "./components/customer/SellersArticlesCustomer";
 
 function App() {
   return (
@@ -37,6 +38,13 @@ function App() {
               path="/updateArticle/:id"
               component={UpdateArticle}
               roles={["ROLE_ADMIN", "ROLE_SELLER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/sellersArticles"
+              component={SellersArticlesCustomer}
+              roles={["ROLE_ADMIN", "ROLE_CUSTOMER"]}
           />
 
         </Switch>

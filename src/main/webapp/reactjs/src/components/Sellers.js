@@ -28,7 +28,7 @@ const Sellers = () => {
             {sellers.map((s) =>
                 <div className="flex-child">
                 <SellerCard
-                    key={s.id} sellerName={s.sellerName} name={s.name}
+                    key={s.id} id={s.id} sellerName={s.sellerName} name={s.name}
                     address={s.address} email={s.email}/>
                 </div>
             )}

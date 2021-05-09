@@ -13,6 +13,8 @@ public interface ArticleService {
 
     public List<Article> findAllByCurrentSeller(Authentication authentication);
 
+    public List<Article> findAllBySellerId(Long id);
+
     public Article getArticle(Long id);
 
     public Article update(Article article);

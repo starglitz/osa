@@ -45,6 +45,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public List<Article> findAllBySellerId(Long id) {
+        return articleRepository.getArticlesBySellerId(id);
+    }
+
+    @Override
     @JsonIgnore
     public Article getArticle(Long id) {
         return articleRepository.findById(id).get();

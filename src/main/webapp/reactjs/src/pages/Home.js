@@ -3,7 +3,7 @@ import {Nav} from "react-bootstrap";
 import React from 'react';
 import Sellers from "../components/Sellers";
 import {AuthenticationService} from "../services/AuthenticationService";
-import SellersArticles from "../components/SellersArticles";
+import SellersArticles from "../components/seller/SellersArticles";
 import {useHistory} from "react-router-dom";
 
 const Home = () => {
@@ -24,9 +24,9 @@ const Home = () => {
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {
         navContent = <>
                 <Nav.Link href="#deets">Customer option</Nav.Link>
-                <Nav.Link eventKey={2} href="#memes">
-                    Dank memes
-                </Nav.Link>
+                {/*<Nav.Link eventKey={2} href="#memes">*/}
+                {/*    Dank memes*/}
+                {/*</Nav.Link>*/}
                 <Nav.Link eventKey={3} onClick={logout}>
                     Log out
                 </Nav.Link>
@@ -37,9 +37,9 @@ const Home = () => {
     else if(AuthenticationService.getRole() === "ROLE_SELLER") {
         navContent = <>
                 <Nav.Link href="#deets">Seller option</Nav.Link>
-                <Nav.Link eventKey={2} href="#memes">
-                    Dank memes
-                </Nav.Link>
+                {/*<Nav.Link eventKey={2} href="#memes">*/}
+                {/*    Dank memes*/}
+                {/*</Nav.Link>*/}
                 <Nav.Link eventKey={3} onClick={logout}>
                     Log out
                 </Nav.Link>

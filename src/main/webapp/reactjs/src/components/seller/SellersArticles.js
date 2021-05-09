@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {ArticlesService} from "../services/ArticlesService";
-import ArticleCard from "./ArticleCard";
+import {ArticlesService} from "../../services/ArticlesService";
+import ArticleCardSeller from "./ArticleCardSeller";
 
 const SellersArticles = () => {
 
@@ -13,13 +13,26 @@ const SellersArticles = () => {
 
 
     async function fetchArticles() {
-        try {
-            const response = await ArticlesService.getArticlesByCurrentSeller();
-            setArticles(response.data);
-            console.log(response.data);
-        } catch (error) {
-            console.error(`Error loading sellers articles !: ${error}`);
-        }
+
+
+
+            try {
+                const response = await ArticlesService.getArticlesByCurrentSeller();
+                setArticles(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error(`Error loading sellers articles !: ${error}`);
+            }
+
+        // else{
+        //     try {
+        //         const response = await ArticlesService.getArticlesBySellerId(props.id);
+        //         setArticles(response.data);
+        //         console.log(response.data);
+        //     } catch (error) {
+        //         console.error(`Error loading sellers articles !: ${error}`);
+        //     }
+        // }
     }
 
     async function deleteArticle(id) {
@@ -38,7 +51,7 @@ const SellersArticles = () => {
             <div className="flex-container">
             {articles.map((a) =>
                 <div className="flex-child">
-                    <ArticleCard
+                    <ArticleCardSeller
                         key={a.id} id={a.id} path={a.path} name={a.name}
                         description={a.description} price={a.price} deleteArticle={deleteArticle}/>
                 </div>
