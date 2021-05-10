@@ -49,13 +49,15 @@ public class Article {
     @JoinColumn(name = "user_id")
     private Seller seller;
 
-    public Article(ArticleDTO article) {
-        this.id = article.getId();
-        this.description = article.getDescription();
-        this.name = article.getName();
-        this.path = article.getPath();
-        this.price = article.getPrice();
-        this.seller = article.getSeller();
-        this.discounts = article.getDiscounts();
+    public Article(Long id, @NotBlank String name, @NotBlank String description,
+                   @NotNull @Positive String price, @NotBlank String path,
+                   Set<Discount> discounts, Seller seller) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.path = path;
+        this.discounts = discounts;
+        this.seller = seller;
     }
 }
