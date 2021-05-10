@@ -23,4 +23,6 @@ public interface ArticleService {
 
     public Article create(Article article, Authentication authentication);
 
+    public Article findById(Long id);
+
 }

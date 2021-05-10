@@ -57,12 +57,15 @@ const SellersArticlesCustomer = (props) => {
 
         let item_ids = []
 
-        orderItems.forEach(item => item_ids.push(item.id));
+        orderItems.forEach(item => item_ids.push({"amount":item.amount,
+            "article":{"id":item.article.id}}));
+        console.log(item_ids)
+        console.log(orderItems)
 
         let order = {"archived":false, "anonymous":false, "comment":"",
-        "items":orderItems}
+        "items":item_ids}
 
-        console.log(order)
+        //console.log(order)
         //JSON.stringify({ items: orderItems });
         OrderService.addOrder(order);
     }

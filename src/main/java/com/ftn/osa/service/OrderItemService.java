@@ -8,4 +8,6 @@ public interface OrderItemService {
 
     OrderItem save(OrderItem item);
 
+    OrderItem find(Long id);
+
 }

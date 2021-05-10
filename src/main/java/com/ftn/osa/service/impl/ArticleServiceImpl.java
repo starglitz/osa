@@ -87,5 +87,10 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.save(article);
     }
 
+    @Override
+    public Article findById(Long id) {
+        return articleRepository.findById(id).get();
+    }
+
 
 }
