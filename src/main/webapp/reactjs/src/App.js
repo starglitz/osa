@@ -7,6 +7,7 @@ import RegisterForm from "./components/RegisterForm";
 import UpdateArticle from "./components/UpdateArticle";
 import CreateArticle from "./components/CreateArticle";
 import SellersArticlesCustomer from "./components/customer/SellersArticlesCustomer";
+import FinishOrder from "./components/customer/FinishOrder";
 
 function App() {
   return (
@@ -25,6 +26,13 @@ function App() {
                 component={Home}
                 roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
             />
+
+          <PrivateRoute
+              exact
+              path="/finish"
+              component={FinishOrder}
+              roles={["ROLE_CUSTOMER"]}
+          />
 
           <PrivateRoute
               exact

@@ -58,6 +58,7 @@ const ArticleCardCustomer = (props) => {
 
         let orderItem = {"amount":amount, "article":article};
 
+        props.totalF(orderItem);
         props.addToCart(orderItem);
 
         setShow(false)

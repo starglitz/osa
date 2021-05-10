@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {ArticlesService} from "../../services/ArticlesService";
 import ArticleCardSeller from "../seller/ArticleCardSeller";
 import ArticleCardCustomer from "./ArticleCardCustomer";
-import {useLocation, useParams} from "react-router-dom";
-import {Nav} from "react-bootstrap";
+import {useHistory, useLocation, useParams} from "react-router-dom";
+import {Modal, Nav} from "react-bootstrap";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import NavigationBar from "../NavigationBar";
 import Button from "@material-ui/core/Button";
 import {OrderService} from "../../services/OrderService";
 import {forEach} from "react-bootstrap/ElementChildren";
+import FinishOrder from "./FinishOrder";
 
 const SellersArticlesCustomer = (props) => {
 
@@ -19,19 +20,40 @@ const SellersArticlesCustomer = (props) => {
 
     const location = useLocation();
 
+    const history = useHistory();
+
     const [orderItems,setOrderItems] = useState([]);
+
+     const [total, setTotal] = useState(0);
+
+     const [random, setRandom] = useState(0);
+
+    // let totalPrice = 0;
+
+
+
+   // const [total = 0,setTotal] = useState()
+
+
+   //let total = useRef(0);
 
     useEffect(() => {
         fetchArticles();
         //console.log(location.state.detail)
         console.log("order items,use effect: " + orderItems)
+        console.log("total atm: " + total)
     }, [orderItems]);
 
     const logout = () => {
         AuthenticationService.logout();
     }
 
+    const updateTotal = () => setTotal((state) => !state);
 
+    const setTotalF = (orderItem) => {
+        let price = 0;
+        orderItems.forEach(item => price += item.article.price * item.amount);
+        setTotal(total + price)};
 
     async function addToCart(orderItem) {
 
@@ -45,6 +67,25 @@ const SellersArticlesCustomer = (props) => {
             //JSON.stringify(orderItem)
             setOrderItems(orderItems => [...orderItems, orderItem]);
 
+
+            // let price = 0;
+            // orderItems.forEach(item => price += item.article.price * item.amount);
+
+
+
+
+
+            //totalPrice = total + price;
+
+            // let totalNow = setTotal((state) => {
+            //      // "React is awesome!"
+            //
+            //     return state;
+            // })
+            //
+            // setTotal(totalNow);
+
+            //total.current = total.current + price;
             console.log("order items now:" + orderItems);
 
         } catch (error) {
@@ -52,8 +93,19 @@ const SellersArticlesCustomer = (props) => {
         }
 
     }
+    //
+    // setTotal((state) => {
+    //     console.log(state); // "React is awesome!"
+    //
+    //     return state;
+    // })
 
     const buy = () => {
+
+        let price = 0;
+        orderItems.forEach(item => price += item.article.price * item.amount);
+        setTotal(total + price)
+        //totalPrice = total + price;
 
         let item_ids = []
 
@@ -63,13 +115,25 @@ const SellersArticlesCustomer = (props) => {
         console.log(orderItems)
 
         let order = {"archived":false, "anonymous":false, "comment":"",
-        "items":item_ids}
+        "items":orderItems}
+
+
+        history.push({
+            pathname: '/finish',
+            state: JSON.stringify(order) // your data array of objects
+        })
 
         //console.log(order)
         //JSON.stringify({ items: orderItems });
         OrderService.addOrder(order);
+        //handleClose()
+        //history.push("/home")
     }
 
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
 
 
@@ -84,17 +148,18 @@ const SellersArticlesCustomer = (props) => {
 
     }
 
+    let modal = <></>
 
-    // async function deleteArticle(id) {
-    //     try {
-    //         await ArticlesService.deleteArticle(id);
-    //
-    //         // Za novu vrednost liste zadataka uzima se prethodna lista, filtrirana tako da ne sadrži obrisani zatak
-    //         setArticles((articles) => articles.filter((article) => article.id !== id));
-    //     } catch (error) {
-    //         console.error(`Greška prilikom brisanja zadataka ${id}: ${error}`);
-    //     }
-    // }
+    const renderModal = () => {
+        setRandom(random+1);
+        modal = <FinishOrder buy={buy} show={true} hideModal={hideModal} total={total}/>
+    }
+
+    const hideModal = () => {
+        setRandom(random+1);
+        modal = <></>
+    }
+
 
     return (
         <>
@@ -113,17 +178,35 @@ const SellersArticlesCustomer = (props) => {
 
             <h1>Available articles:</h1>
 
-            <Button onClick={buy}> Buy selected articles </Button>
+            <Button onClick={buy}> Finish your order </Button>
 
             <div className="flex-container">
                 {articles.map((a) =>
                     <div className="flex-child">
                         <ArticleCardCustomer
                             key={a.id} id={a.id} path={a.path} name={a.name}
-                            description={a.description} price={a.price} addToCart={addToCart}/>
+                            description={a.description} price={a.price} addToCart={addToCart} totalF={setTotalF}/>
                     </div>
                 )}
             </div>
+
+            {/*{modal}*/}
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Finish your order</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Total price: {total}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="contained" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="contained" onClick={buy}>
+                        Buy
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </>
     )
 
