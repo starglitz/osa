@@ -10,15 +10,17 @@ import {AuthenticationService} from "../../services/AuthenticationService";
 const UsersTable = () => {
 
     const [users, setUsers] = useState([]);
+    const [random, setRandom] = useState([]);
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [users]);
 
     async function fetchUsers() {
         try {
             const response = await UserService.getUsers();
-            setUsers(response.data);
+            let usersfetch = response.data.filter(user => user.blocked === false)
+            setUsers(usersfetch);
             console.log(response.data);
         } catch (error) {
             console.error(`Error loading all users !: ${error}`);
