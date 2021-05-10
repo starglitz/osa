@@ -29,6 +29,15 @@ const UsersTable = () => {
         AuthenticationService.logout();
     }
 
+    async function block(user, id) {
+        try {
+            console.log(user)
+            user.blocked = true;
+            await UserService.update(id, user);
+        } catch (error) {
+            console.error(`Error ocurred: ${error}`);
+        }
+    }
 
     return(
         <>
@@ -67,7 +76,7 @@ const UsersTable = () => {
                         <td>{user.surname}</td>
                         <td>{user.username}</td>
                         <td>{user.role}</td>
-                        <td><Button variant="contained">Block user</Button></td>
+                        <td><Button variant="contained" onClick={() => block(user, user.id)}>Block user</Button></td>
                     </tr>
 
                 )}

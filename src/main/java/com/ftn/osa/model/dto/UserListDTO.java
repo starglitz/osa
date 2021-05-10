@@ -6,12 +6,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 public class UserListDTO {
 
-    @NotBlank
+    @NotNull
     private Long id;
 
     @NotBlank
@@ -23,12 +24,8 @@ public class UserListDTO {
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String password;
 
-    @NotBlank
     private boolean blocked;
 
-    @NotBlank
     private Role role;
 }
