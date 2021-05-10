@@ -1,5 +1,6 @@
 package com.ftn.osa.rest;
 
+import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
 import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
@@ -39,7 +40,7 @@ public interface ArticleApi {
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @PutMapping(value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Article> update(@PathVariable("id") Long id,@Valid @RequestBody Article article);
+    ResponseEntity<Article> update(@PathVariable("id") Long id,@Valid @RequestBody ArticleDTO articleDTO);
 
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
@@ -48,6 +49,6 @@ public interface ArticleApi {
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Article> create(@Valid @RequestBody Article article, Authentication authentication);
+    ResponseEntity<Article> create(@Valid @RequestBody ArticleDTO articleDTO, Authentication authentication);
 
 }

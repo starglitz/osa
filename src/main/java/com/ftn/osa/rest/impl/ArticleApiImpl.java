@@ -1,5 +1,6 @@
 package com.ftn.osa.rest.impl;
 
+import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.rest.ArticleApi;
 import com.ftn.osa.service.ArticleService;
@@ -41,7 +42,8 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity<Article> update(Long id,@Valid Article article) {
+    public ResponseEntity<Article> update(Long id,@Valid ArticleDTO articleDTO) {
+        Article article = new Article(articleDTO);
         return new ResponseEntity(articleService.update(article), HttpStatus.OK);
     }
 
@@ -52,7 +54,8 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity<Article> create(@Valid Article article, Authentication authentication) {
+    public ResponseEntity<Article> create(@Valid ArticleDTO articleDTO, Authentication authentication) {
+        Article article = new Article(articleDTO);
         return new ResponseEntity(articleService.create(article, authentication), HttpStatus.OK);
     }
 }

@@ -1,55 +1,44 @@
-package com.ftn.osa.model.entity;
+package com.ftn.osa.model.dto;
 
-import com.ftn.osa.model.dto.ArticleDTO;
+import com.ftn.osa.model.entity.Article;
+import com.ftn.osa.model.entity.Customer;
+import com.ftn.osa.model.entity.Discount;
+import com.ftn.osa.model.entity.Seller;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "article")
-public class Article {
+public class ArticleDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="article_id", unique=true, nullable=false)
     private Long id;
 
     @NotBlank
-    @Column(nullable = false)
     private String name;
 
     @NotBlank
-    @Column(nullable = false)
     private String description;
 
     @NotNull
     @Positive
-    @Column(nullable = false)
     private String price;
 
-    @Column(nullable = false)
     @NotBlank
     private String path;
 
-    @ManyToMany(mappedBy = "articles")
     private Set<Discount> discounts = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private Seller seller;
 
-    public Article(ArticleDTO article) {
+
+    public ArticleDTO(Article article) {
         this.id = article.getId();
         this.description = article.getDescription();
         this.name = article.getName();

@@ -78,6 +78,7 @@ const CreateArticle = () => {
                 }
             } catch (error) {
                 console.error(`Greška prilikom dodavanja novog zadataka: ${error}`);
+                alert("Make sure to fill all fields! Check if you've uploaded an image.")
         }
 
     }
