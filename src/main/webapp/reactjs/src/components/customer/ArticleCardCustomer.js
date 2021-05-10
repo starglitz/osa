@@ -52,17 +52,25 @@ const ArticleCardCustomer = (props) => {
 
     const handleAdd = () => {
         let amount = document.getElementById("articleAmount").value;
+        console.log(amount)
+        if(amount < 1) {
+            console.log("is anything happening")
+            alert("amount has to be a positive number!")
+        }
+        else {
 
-        let article = {"id":props.id, "path":props.path, "name":props.name,
-                        "description":props.description, "price":props.price};
+            let article = {
+                "id": props.id, "path": props.path, "name": props.name,
+                "description": props.description, "price": props.price
+            };
 
-        let orderItem = {"amount":amount, "article":article};
+            let orderItem = {"amount": amount, "article": article};
 
-        props.totalF(orderItem);
-        props.addToCart(orderItem);
+            props.totalF(orderItem);
+            props.addToCart(orderItem);
 
-        setShow(false)
-
+            setShow(false)
+        }
     }
 
 
@@ -117,7 +125,7 @@ const ArticleCardCustomer = (props) => {
             <Modal.Header closeButton>
                 <Modal.Title>Pick amount</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Select amount of this article: <input id="articleAmount" type="number"/></Modal.Body>
+            <Modal.Body>Select amount of this article: <input id="articleAmount" type="number" defaultValue="1" min="1"/></Modal.Body>
             <Modal.Footer>
                 <Button variant="contained" onClick={handleClose}>
                     Close

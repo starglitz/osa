@@ -100,7 +100,43 @@ const SellersArticlesCustomer = (props) => {
     //     return state;
     // })
 
+
+
+
     const buy = () => {
+
+
+        let items = orderItems;
+        let valuesAlreadySeen = []
+
+        // for (let i = 0; i < items.length; i++) {
+        //     let value = items[i]
+        //     if (valuesAlreadySeen.indexOf(value) !== -1) {
+        //         return true
+        //     }
+        //     valuesAlreadySeen.push(value)
+        // }
+        // console.log("oof")
+        // console.log("values alrdry seen: " +valuesAlreadySeen)
+
+
+        if(orderItems.length != 1 || orderItems.length != 0) {
+            console.log("oof")
+
+            for (let i = 0; i < items.length - 1; i++) {
+                if (items[i].article.id === items[i+1].article.id) {
+                    let latter = items[i+1]
+                    let first = items[i]
+                    first.amount = +first.amount + +latter.amount;
+                    items.splice(i+1, 1);
+                }
+            }
+
+            setOrderItems(items)
+
+        }
+
+
 
         let price = 0;
         orderItems.forEach(item => price += item.article.price * item.amount);
@@ -108,6 +144,11 @@ const SellersArticlesCustomer = (props) => {
         //totalPrice = total + price;
 
         let item_ids = []
+
+
+
+
+
 
         orderItems.forEach(item => item_ids.push({"amount":item.amount,
             "article":{"id":item.article.id}}));
@@ -190,22 +231,7 @@ const SellersArticlesCustomer = (props) => {
                 )}
             </div>
 
-            {/*{modal}*/}
 
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Finish your order</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Total price: {total}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="contained" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="contained" onClick={buy}>
-                        Buy
-                    </Button>
-                </Modal.Footer>
-            </Modal>
 
         </>
     )

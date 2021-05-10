@@ -22,6 +22,9 @@ const FinishOrder = () => {
     const countTotal = () => {
         let price = 0;
         order.items.forEach(item => price += item.article.price * item.amount);
+
+
+
         setTotal(price)
         console.log("price here: " + price)
         console.log("total use eff: " + total)
@@ -37,6 +40,21 @@ const FinishOrder = () => {
         console.log(location.state.total)
     }, [total]);
 
+
+    const checkForDuplicates = () => {
+        let items = order.items;
+
+        // if(items.length != 1 || items.length != 0) {
+        //     for (let i = 1; i < items.length; i++) {
+        //         if (items[i].article.id === items[i-1].article.id) {
+        //             let latter = items[i]
+        //             let first = items[i-1]
+        //             first.amount = first.amount + latter.amount;
+        //             items.splice(i, 1);
+        //         }
+        //     }
+        // }
+    }
 
     const buy = () => {
 
