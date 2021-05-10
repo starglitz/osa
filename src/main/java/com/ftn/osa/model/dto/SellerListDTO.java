@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SellerListDTO {
 
-//    key={s.id} seller_name={s.seller_name} owner={s.name}
-//    address={s.address} email={s.email}
 
     private Long id;
 

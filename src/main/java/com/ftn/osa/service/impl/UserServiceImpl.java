@@ -3,6 +3,7 @@ package com.ftn.osa.service.impl;
 import com.ftn.osa.model.dto.CustomerDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.UserDTO;
+import com.ftn.osa.model.dto.UserListDTO;
 import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Role;
 import com.ftn.osa.model.entity.Seller;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -130,5 +132,21 @@ public class UserServiceImpl implements UserService {
         newSeller.setSince(new Date());
         newSeller = sellerRepository.save(newSeller);
         return newSeller;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAllNoAdmin();
+    }
+
+    @Override
+    public User update(UserListDTO userDTO) {
+        User user = userRepository.findById(userDTO.getId()).get();
+        user.setUsername(userDTO.getUsername());
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setBlocked(userDTO.isBlocked());
+
+        return userRepository.save(user);
     }
 }

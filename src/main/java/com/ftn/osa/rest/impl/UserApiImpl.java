@@ -3,6 +3,7 @@ package com.ftn.osa.rest.impl;
 import com.ftn.osa.model.dto.CustomerDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.UserDTO;
+import com.ftn.osa.model.dto.UserListDTO;
 import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
 
 @Component
 public class UserApiImpl implements UserApi {
@@ -104,5 +107,15 @@ public class UserApiImpl implements UserApi {
         //UserDTO userDTO = new UserDTO(createdUser);
 
         return new ResponseEntity<>(sellerDTO, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity getAll() {
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity update(Long id, @Valid UserListDTO userDTO) {
+        return new ResponseEntity<>(userService.update(userDTO), HttpStatus.OK);
     }
 }

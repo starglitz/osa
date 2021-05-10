@@ -8,6 +8,7 @@ import UpdateArticle from "./components/UpdateArticle";
 import CreateArticle from "./components/CreateArticle";
 import SellersArticlesCustomer from "./components/customer/SellersArticlesCustomer";
 import FinishOrder from "./components/customer/FinishOrder";
+import UsersTable from "./components/admin/UsersTable";
 
 function App() {
   return (
@@ -32,6 +33,13 @@ function App() {
               path="/finish"
               component={FinishOrder}
               roles={["ROLE_CUSTOMER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/users"
+              component={UsersTable}
+              roles={["ROLE_ADMIN"]}
           />
 
           <PrivateRoute

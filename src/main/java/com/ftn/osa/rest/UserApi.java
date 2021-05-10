@@ -1,14 +1,13 @@
 package com.ftn.osa.rest;
 
-import com.ftn.osa.model.dto.CustomerDTO;
-import com.ftn.osa.model.dto.SellerDTO;
-import com.ftn.osa.model.dto.UserDTO;
+import com.ftn.osa.model.dto.*;
+import com.ftn.osa.model.entity.Article;
+import com.ftn.osa.model.entity.User;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,5 +26,14 @@ public interface UserApi {
 
     @PostMapping("/registerSeller")
     public ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(value="/users", produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getAll();
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/users/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody UserListDTO userDTO);
 
 }
