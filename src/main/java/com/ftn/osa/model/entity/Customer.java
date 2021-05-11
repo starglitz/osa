@@ -22,8 +22,9 @@ public class Customer {
     @Id
     private Long id;
 
-//    public Customer() {
-//        this.id = user.getId();
-//    }
-
+    public Customer(String address, User user, Long id) {
+        this.address = address;
+        this.user = user;
+        this.id = id;
+    }
 }

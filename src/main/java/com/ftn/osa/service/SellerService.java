@@ -14,4 +14,6 @@ public interface SellerService {
     List<SellerListDTO> getAllSellerListDTO();
 
     SellerDTO getLoggedIn(Authentication authentication);
+
+    Seller update(Seller seller);
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "user")
 public class User {
@@ -33,4 +34,14 @@ public class User {
 //    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User(Long id, String name, String surname, String username, String password, boolean enabled, Role role) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.role = role;
+    }
 }

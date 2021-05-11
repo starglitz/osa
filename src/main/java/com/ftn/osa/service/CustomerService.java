@@ -12,4 +12,6 @@ public interface CustomerService{
     Customer findById(Long id);
 
     CustomerDTO getLoggedIn(Authentication authentication);
+
+    Customer update(Customer customer);
 }

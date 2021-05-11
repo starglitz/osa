@@ -1,13 +1,15 @@
 package com.ftn.osa.rest;
 
+import com.ftn.osa.model.dto.CustomerDTO;
+import com.ftn.osa.model.dto.SellerDTO;
+import com.ftn.osa.model.entity.Article;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
@@ -18,4 +20,9 @@ public interface CustomerApi {
     @GetMapping(value = "/profile",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getLoggedIn(Authentication authentication);
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<Article> update(@PathVariable("id") Long id, @Valid @RequestBody CustomerDTO customerDTO);
 }

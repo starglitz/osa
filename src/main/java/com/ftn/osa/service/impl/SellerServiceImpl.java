@@ -3,7 +3,9 @@ package com.ftn.osa.service.impl;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Seller;
+import com.ftn.osa.model.entity.User;
 import com.ftn.osa.repository.SellerRepository;
+import com.ftn.osa.repository.UserRepository;
 import com.ftn.osa.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,8 @@ public class SellerServiceImpl implements SellerService {
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<SellerListDTO> getAllSellerListDTO() {
@@ -38,8 +42,32 @@ public class SellerServiceImpl implements SellerService {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
-        Seller seller = sellerRepository.findFirstByUsername(username).get();
+        Seller seller = sellerRepository.findByUsername(username).get();
         SellerDTO sellerDTO = new SellerDTO(seller);
         return sellerDTO;
+    }
+
+    @Override
+    public Seller update(Seller seller) {
+
+        User userJpa = userRepository.findById(seller.getId()).get();
+
+        userJpa.setName(seller.getUser().getName());
+        userJpa.setSurname(seller.getUser().getSurname());
+        userJpa.setUsername(seller.getUser().getUsername());
+        userJpa.setPassword(seller.getUser().getPassword());
+
+        userRepository.save(userJpa);
+
+        Seller sellerJpa = sellerRepository.findById(seller.getId()).get();
+
+        sellerJpa.setUser(userJpa);
+        sellerJpa.setSellerName(seller.getSellerName());
+        sellerJpa.setEmail(seller.getEmail());
+        sellerJpa.setAddress(seller.getAddress());
+        sellerJpa.setSince(seller.getSince());
+
+
+        return sellerRepository.save(sellerJpa);
     }
 }
