@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-//    Optional<User> findFirstByUsername(String username);
+    Optional<Seller> findFirstByUsername(String username);
 }

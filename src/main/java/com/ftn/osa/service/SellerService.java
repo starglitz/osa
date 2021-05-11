@@ -1,6 +1,9 @@
 package com.ftn.osa.service;
 
+import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.SellerListDTO;
+import com.ftn.osa.model.entity.Seller;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,4 +13,5 @@ public interface SellerService {
 
     List<SellerListDTO> getAllSellerListDTO();
 
+    SellerDTO getLoggedIn(Authentication authentication);
 }

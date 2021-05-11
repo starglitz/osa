@@ -11,15 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/sellers")
-public interface SellerApi {
+@RequestMapping("/customers")
+public interface CustomerApi {
 
-    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getAllSellers();
-
-
-    @PreAuthorize("hasRole('SELLER')")
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping(value = "/profile",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getLoggedIn(Authentication authentication);
