@@ -9,6 +9,7 @@ import CreateArticle from "./components/CreateArticle";
 import SellersArticlesCustomer from "./components/customer/SellersArticlesCustomer";
 import FinishOrder from "./components/customer/FinishOrder";
 import UsersTable from "./components/admin/UsersTable";
+import UpdateProfile from "./components/UpdateProfile";
 
 function App() {
   return (
@@ -46,6 +47,13 @@ function App() {
               exact
               path="/createArticle"
               component={CreateArticle}
+              roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/profile"
+              component={UpdateProfile}
               roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
           />
 

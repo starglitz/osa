@@ -122,7 +122,7 @@ const SellersArticlesCustomer = (props) => {
 
 
     const [show, setShow] = useState(false);
- 
+
 
 
 

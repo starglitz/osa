@@ -21,6 +21,10 @@ const Home = () => {
         history.push("/createArticle")
     }
 
+    const profile = () => {
+        history.push("/profile")
+    }
+
     const listOfUsers = () => {
         history.push("/users")
     }
@@ -96,6 +100,9 @@ return (
     <>
     <NavigationBar>
     <Nav>
+        <Nav.Link eventKey={3} onClick={profile}>
+           Profile
+        </Nav.Link>
         {navContent}
     </Nav>
     </NavigationBar>

@@ -5,7 +5,7 @@ export const SellersService = {
     getSeller,
     addSeller,
     editSeller,
-    deleteSeller,
+    getMe,
 };
 
 async function getSellers() {
@@ -28,3 +28,6 @@ async function addSeller(seller) {
     return await SprintsAxiosClient.post("http://localhost:8080/registerSeller", seller);
 }
 
+async function getMe() {
+    return await SprintsAxiosClient.get("http://localhost:8080/sellers/profile");
+}

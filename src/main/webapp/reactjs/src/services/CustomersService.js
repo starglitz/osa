@@ -6,6 +6,7 @@ export const CustomersService = {
     addCustomer,
     editCustomer,
     deleteCustomer,
+    getMe
 };
 
 async function getCustomers() {
@@ -26,4 +27,8 @@ async function deleteCustomer(id) {
 
 async function addCustomer(customer) {
     return await SprintsAxiosClient.post("http://localhost:8080/registerCustomer", customer);
+}
+
+async function getMe() {
+    return await SprintsAxiosClient.get("http://localhost:8080/customers/profile");
 }
