@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         newUser.setName(customerDTO.getName());
         newUser.setSurname(customerDTO.getSurname());
-        newUser.setBlocked(false);
+        newUser.setEnabled(true);
         newUser.setRole(Role.CUSTOMER);
 
         newUser = userRepository.save(newUser);
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(sellerDTO.getPassword()));
         newUser.setName(sellerDTO.getName());
         newUser.setSurname(sellerDTO.getSurname());
-        newUser.setBlocked(false);
+        newUser.setEnabled(true);
         newUser.setRole(Role.SELLER);
 
         newUser = userRepository.save(newUser);
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDTO.getUsername());
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
-        user.setBlocked(userDTO.isBlocked());
+        user.setEnabled(userDTO.isEnabled());
 
         return userRepository.save(user);
     }

@@ -34,7 +34,7 @@ const UsersTable = () => {
     async function block(user, id) {
         try {
             console.log(user)
-            user.blocked = true;
+            user.enabled = false;
             await UserService.update(id, user);
         } catch (error) {
             console.error(`Error ocurred: ${error}`);
@@ -70,7 +70,7 @@ const UsersTable = () => {
                 </thead>
                 <tbody>
 
-                {users.filter(user => user.blocked === false).map((user) =>
+                {users.filter(user => user.enabled === true).map((user) =>
 
                     <tr>
                         <td>{user.id}</td>

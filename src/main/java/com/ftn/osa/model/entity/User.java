@@ -28,7 +28,7 @@ public class User {
     private String password;
 
 //    @Column(nullable = false)
-    private boolean blocked;
+    private boolean enabled;
 
 //    @Column(nullable = false)
     @Enumerated(EnumType.STRING)

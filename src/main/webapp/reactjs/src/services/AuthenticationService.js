@@ -8,24 +8,43 @@ export const AuthenticationService = {
 };
 
 async function login(userCredentials) {
-    try {
+
         console.log(userCredentials)
+        let status = "200";
         const response = await SprintsAxiosClient.post(
             "http://localhost:8080/login",
             userCredentials
-        );
-        const decoded_token = TokenService.decodeToken(response.data);
-        if (decoded_token) {
-            TokenService.setToken(response.data);
-            window.location.assign("/home");
-            return true;
-        } else {
-            console.error("Invalid token");
+        ).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.status);
+                if(error.response.status == '404') {
+                    status = '404'
+                    return '404'
+                }
+                else if(error.response.status == '403') {
+                    status = '403'
+                    return '403'
+                }
+            }
+        });
+
+
+        if(status != '403' && status != '404') {
+
+            const decoded_token = TokenService.decodeToken(response.data);
+            if (decoded_token) {
+                TokenService.setToken(response.data);
+                //window.location.assign("/home");
+                return '200'
+            } else {
+                //console.error("Invalid token");
+                //return '403'
+            }
         }
-    } catch (error) {
-        console.error(error);
-    }
-    return false;
+        return status;
+
+
+
 }
 
 function logout() {

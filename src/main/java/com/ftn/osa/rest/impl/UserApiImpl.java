@@ -71,11 +71,20 @@ public class UserApiImpl implements UserApi {
                 new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
+
+            User user = userService.findByUsername(userDto.getUsername());
+            if(!user.isEnabled()) {
+                return ResponseEntity.status(404).build();
+            }
+
             return ResponseEntity.ok(tokenUtils.generateToken(userDetails));
         } catch (UsernameNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).build();
         }
     }
 

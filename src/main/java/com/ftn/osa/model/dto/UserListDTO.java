@@ -25,7 +25,7 @@ public class UserListDTO {
     private String username;
 
 
-    private boolean blocked;
+    private boolean enabled;
 
     private Role role;
 }
