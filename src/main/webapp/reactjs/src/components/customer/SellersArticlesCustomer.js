@@ -58,34 +58,32 @@ const SellersArticlesCustomer = (props) => {
     async function addToCart(orderItem) {
 
         try {
-            // const response = await ArticlesService.getArticle(id);
-            // //setArticles(response.data);
-            // let selectedArticle = response.data;
-            // let orderItem = {article: selectedArticle, amount: amount}
+
             console.log("order item: " + JSON.stringify(orderItem))
 
-            //JSON.stringify(orderItem)
-            setOrderItems(orderItems => [...orderItems, orderItem]);
+             let item_ids = []
 
+            orderItems.forEach(item => item_ids.push(item.article.id));
 
-            // let price = 0;
-            // orderItems.forEach(item => price += item.article.price * item.amount);
+            if(item_ids.includes(orderItem.article.id)) {
+                let itemsModified = orderItems
 
+                for (let i = 0; i < orderItems.length - 1; i++) {
+                    if (orderItems[i].article.id === orderItem.article.id) {
+                        let itemMod = orderItems[i];
+                        itemMod.amount = +itemMod.amount + +orderItem.amount;
+                        itemsModified.splice(i, 1);
+                        itemsModified.push(itemMod);
+                    }
+                }
+                setOrderItems(itemsModified)
+                console.log(itemsModified)
+                }
 
+        else {
+                setOrderItems(orderItems => [...orderItems, orderItem]);
+            }
 
-
-
-            //totalPrice = total + price;
-
-            // let totalNow = setTotal((state) => {
-            //      // "React is awesome!"
-            //
-            //     return state;
-            // })
-            //
-            // setTotal(totalNow);
-
-            //total.current = total.current + price;
             console.log("order items now:" + orderItems);
 
         } catch (error) {
@@ -93,62 +91,15 @@ const SellersArticlesCustomer = (props) => {
         }
 
     }
-    //
-    // setTotal((state) => {
-    //     console.log(state); // "React is awesome!"
-    //
-    //     return state;
-    // })
-
-
 
 
     const buy = () => {
 
-
-        let items = orderItems;
-        let valuesAlreadySeen = []
-
-        // for (let i = 0; i < items.length; i++) {
-        //     let value = items[i]
-        //     if (valuesAlreadySeen.indexOf(value) !== -1) {
-        //         return true
-        //     }
-        //     valuesAlreadySeen.push(value)
-        // }
-        // console.log("oof")
-        // console.log("values alrdry seen: " +valuesAlreadySeen)
-
-
-        if(orderItems.length != 1 || orderItems.length != 0) {
-            console.log("oof")
-
-            for (let i = 0; i < items.length - 1; i++) {
-                if (items[i].article.id === items[i+1].article.id) {
-                    let latter = items[i+1]
-                    let first = items[i]
-                    first.amount = +first.amount + +latter.amount;
-                    items.splice(i+1, 1);
-                }
-            }
-
-            setOrderItems(items)
-
-        }
-
-
-
         let price = 0;
         orderItems.forEach(item => price += item.article.price * item.amount);
         setTotal(total + price)
-        //totalPrice = total + price;
 
         let item_ids = []
-
-
-
-
-
 
         orderItems.forEach(item => item_ids.push({"amount":item.amount,
             "article":{"id":item.article.id}}));
@@ -161,20 +112,17 @@ const SellersArticlesCustomer = (props) => {
 
         history.push({
             pathname: '/finish',
-            state: JSON.stringify(order) // your data array of objects
+            state: JSON.stringify(order)
         })
 
-        //console.log(order)
-        //JSON.stringify({ items: orderItems });
-        OrderService.addOrder(order);
-        //handleClose()
-        //history.push("/home")
+
+        console.log("am i here twice?")
+
     }
 
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+ 
 
 
 
