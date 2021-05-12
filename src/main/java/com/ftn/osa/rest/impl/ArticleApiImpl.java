@@ -8,6 +8,7 @@ import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.rest.ArticleApi;
 import com.ftn.osa.service.ArticleService;
 import com.ftn.osa.service.SellerService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,10 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity delete(Long id) {
+        Article article = articleService.getArticle(id);
+        if(article == null) {
+            return new ResponseEntity("No article with chosen id", HttpStatus.NOT_FOUND);
+        }
         articleService.delete(id);
         return new ResponseEntity("Successfuly deleted", HttpStatus.OK);
     }
