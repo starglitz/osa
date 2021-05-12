@@ -112,6 +112,16 @@ const UpdateProfile = () => {
         return ok
     }
 
+
+    const passChange = () => {
+        console.log("userrr")
+        console.log(user)
+        history.push({
+            pathname: '/changePassword',
+            state: user
+        })
+    }
+
     let navContent;
 
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {
@@ -197,6 +207,8 @@ const UpdateProfile = () => {
 
                 <br/> <br/>
                 <Button variant="contained" onClick={edit}>Edit</Button>
+
+                <Button style={{marginLeft:"30px"}} onClick={passChange} variant="contained" color="primary">Change password</Button>
 
                        {/*<div className="passwordChange">*/}
 

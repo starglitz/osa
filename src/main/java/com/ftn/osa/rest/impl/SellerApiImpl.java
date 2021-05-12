@@ -41,7 +41,12 @@ public class SellerApiImpl implements SellerApi {
         Seller seller = new Seller(sellerDTO.getSince(), sellerDTO.getEmail(),
                 sellerDTO.getAddress(), sellerDTO.getSellerName(), user, sellerDTO.getId());
 
+        if(sellerService.update(seller, sellerDTO.getPasswordValidate())) {
+            return new ResponseEntity("updated", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity("bad data", HttpStatus.BAD_REQUEST);
+        }
 
-        return new ResponseEntity(sellerService.update(seller), HttpStatus.OK);
     }
 }

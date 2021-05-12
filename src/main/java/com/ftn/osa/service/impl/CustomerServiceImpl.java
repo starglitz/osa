@@ -11,6 +11,7 @@ import com.ftn.osa.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Customer findById(Long id) {
@@ -44,8 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
         userJpa.setName(customer.getUser().getName());
         userJpa.setSurname(customer.getUser().getSurname());
         userJpa.setUsername(customer.getUser().getUsername());
-        userJpa.setPassword(customer.getUser().getPassword());
-
+        userJpa.setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
         userRepository.save(userJpa);
 
         Customer customerJpa = customerRepository.findById(customer.getId()).get();

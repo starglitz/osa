@@ -15,5 +15,6 @@ public interface SellerService {
 
     SellerDTO getLoggedIn(Authentication authentication);
 
-    Seller update(Seller seller);
+    boolean update(Seller seller, String validatePassword);
+
 }

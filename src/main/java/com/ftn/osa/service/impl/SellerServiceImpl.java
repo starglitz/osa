@@ -10,6 +10,7 @@ import com.ftn.osa.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +24,11 @@ public class SellerServiceImpl implements SellerService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
 
     @Override
     public List<SellerListDTO> getAllSellerListDTO() {
@@ -48,15 +54,31 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller update(Seller seller) {
+    public boolean update(Seller seller, String validatePassword) {
 
+        boolean ok = true;
         User userJpa = userRepository.findById(seller.getId()).get();
 
         userJpa.setName(seller.getUser().getName());
         userJpa.setSurname(seller.getUser().getSurname());
         userJpa.setUsername(seller.getUser().getUsername());
-        userJpa.setPassword(seller.getUser().getPassword());
 
+        if(passwordEncoder.matches(seller.getUser().getPassword(),
+                userJpa.getPassword()) ||
+                passwordEncoder.matches(passwordEncoder.encode(seller.getUser().getPassword()),
+                        userJpa.getPassword())) {
+            userJpa.setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
+        }
+
+        if(passwordEncoder.matches(validatePassword,
+                userJpa.getPassword())) {
+            userJpa.setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
+        }
+
+
+        else {
+            ok = false;
+        }
         userRepository.save(userJpa);
 
         Seller sellerJpa = sellerRepository.findById(seller.getId()).get();
@@ -68,6 +90,6 @@ public class SellerServiceImpl implements SellerService {
         sellerJpa.setSince(seller.getSince());
 
 
-        return sellerRepository.save(sellerJpa);
+        return ok;
     }
 }

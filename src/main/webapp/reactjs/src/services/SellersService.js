@@ -17,7 +17,18 @@ async function getSeller(id) {
 }
 
 async function editSeller(id, seller) {
-    return await SprintsAxiosClient.put(`http://localhost:8080/sellers/${id}`, seller);
+    let status = '200';
+    await SprintsAxiosClient.put(`http://localhost:8080/sellers/${id}`, seller)
+        .catch(function (error) {
+        if (error.response) {
+            console.log(error.response.status);
+            if(error.response.status == '400') {
+                status = '400'
+                return '400'
+            }
+        }
+    });
+    return status;
 }
 
 async function deleteSeller(id) {
