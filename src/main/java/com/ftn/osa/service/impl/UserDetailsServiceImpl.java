@@ -4,6 +4,7 @@ import com.ftn.osa.model.entity.User;
 import com.ftn.osa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +40,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
         if(user == null){
             throw new UsernameNotFoundException("There is no user with username " + username);
-        }else{
+        }
+        else if(user.isEnabled() == false) {
+            throw new DisabledException("This user is disabled");
+        }else {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             String role = "ROLE_" + user.getRole().toString();
             grantedAuthorities.add(new SimpleGrantedAuthority(role));

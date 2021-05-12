@@ -45,10 +45,10 @@ const LoginForm = (props) => {
         // }
         const status = await AuthenticationService.login(loginData)
         if(status === '403') {
-            setError("Wrong username or password. Try again")
+            setError("You are blocked from using this site!")
         }
         else if(status === '404') {
-            setError("You are blocked from using this site")
+            setError("Wrong username or password. Try again")
         }
         else if(status === '200') {
             window.location.assign("/home");
