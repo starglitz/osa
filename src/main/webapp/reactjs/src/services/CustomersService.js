@@ -18,7 +18,18 @@ async function getCustomer(id) {
 }
 
 async function editCustomer(id, customer) {
-    return await SprintsAxiosClient.put(`http://localhost:8080/customers/${id}`, customer);
+    let status = '200';
+    await SprintsAxiosClient.put(`http://localhost:8080/customers/${id}`, customer)
+        .catch(function (error) {
+            if (error.response) {
+                console.log(error.response.status);
+                if(error.response.status == '400') {
+                    status = '400'
+                    return '400'
+                }
+            }
+        });
+    return status;
 }
 
 async function deleteCustomer(id) {

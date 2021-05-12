@@ -20,6 +20,8 @@ public class CustomerDTO {
     @NotBlank
     private String password;
 
+    private String passwordValidate = "";
+
     @NotBlank
     private String name;
 

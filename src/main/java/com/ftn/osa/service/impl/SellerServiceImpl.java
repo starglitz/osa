@@ -63,12 +63,12 @@ public class SellerServiceImpl implements SellerService {
         userJpa.setSurname(seller.getUser().getSurname());
         userJpa.setUsername(seller.getUser().getUsername());
 
-        if(passwordEncoder.matches(seller.getUser().getPassword(),
-                userJpa.getPassword()) ||
-                passwordEncoder.matches(passwordEncoder.encode(seller.getUser().getPassword()),
-                        userJpa.getPassword())) {
-            userJpa.setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
-        }
+//        if(passwordEncoder.matches(seller.getUser().getPassword(),
+//                userJpa.getPassword()) ||
+//                passwordEncoder.matches(passwordEncoder.encode(seller.getUser().getPassword()),
+//                        userJpa.getPassword())) {
+//            userJpa.setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
+//        }
 
         if(passwordEncoder.matches(validatePassword,
                 userJpa.getPassword())) {
@@ -89,6 +89,7 @@ public class SellerServiceImpl implements SellerService {
         sellerJpa.setAddress(seller.getAddress());
         sellerJpa.setSince(seller.getSince());
 
+        sellerRepository.save(sellerJpa);
 
         return ok;
     }

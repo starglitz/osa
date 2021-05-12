@@ -42,18 +42,29 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer update(Customer customer) {
+    public boolean update(Customer customer, String validatePassword) {
+        boolean ok = true;
         User userJpa = userRepository.findById(customer.getId()).get();
 
         userJpa.setName(customer.getUser().getName());
         userJpa.setSurname(customer.getUser().getSurname());
         userJpa.setUsername(customer.getUser().getUsername());
-        userJpa.setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
+
+        if(passwordEncoder.matches(validatePassword,
+                userJpa.getPassword())) {
+            userJpa.setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
+        }
+
+        else {
+            ok = false;
+        }
+
         userRepository.save(userJpa);
 
         Customer customerJpa = customerRepository.findById(customer.getId()).get();
         customerJpa.setAddress(customer.getAddress());
 
-        return customerRepository.save(customerJpa);
+        customerRepository.save(customerJpa);
+        return ok;
     }
 }

@@ -30,6 +30,12 @@ public class CustomerApiImpl implements CustomerApi {
 
         Customer customer = new Customer(customerDTO.getAddress(), user, user.getId());
 
-        return new ResponseEntity(customerService.update(customer), HttpStatus.OK);
+        if(customerService.update(customer, customerDTO.getPasswordValidate())) {
+            return new ResponseEntity("updated", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity("bad data", HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
