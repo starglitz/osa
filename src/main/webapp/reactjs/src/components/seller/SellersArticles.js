@@ -13,9 +13,6 @@ const SellersArticles = () => {
 
 
     async function fetchArticles() {
-
-
-
             try {
                 const response = await ArticlesService.getArticlesByCurrentSeller();
                 setArticles(response.data);
@@ -23,16 +20,6 @@ const SellersArticles = () => {
             } catch (error) {
                 console.error(`Error loading sellers articles !: ${error}`);
             }
-
-        // else{
-        //     try {
-        //         const response = await ArticlesService.getArticlesBySellerId(props.id);
-        //         setArticles(response.data);
-        //         console.log(response.data);
-        //     } catch (error) {
-        //         console.error(`Error loading sellers articles !: ${error}`);
-        //     }
-        // }
     }
 
     async function deleteArticle(id) {

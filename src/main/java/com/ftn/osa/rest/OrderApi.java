@@ -23,7 +23,7 @@ public interface OrderApi {
     ResponseEntity<Order> add(@RequestBody OrderDTO order, Authentication authentication);
 
     @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping(value = "/customer/{id}",
+    @GetMapping(value = "/customer/me",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getOrdersByUser(Authentication authentication);
 

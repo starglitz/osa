@@ -8,6 +8,7 @@ import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 @Data
 @NoArgsConstructor
@@ -36,7 +37,7 @@ public class Order {
     @JoinColumn(name="user_id", referencedColumnName="user_id", nullable=false)
     private Customer customer;
 
-    @OneToMany(cascade={ALL}, fetch=EAGER, mappedBy="order")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="order")
     private List<OrderItem> items = new ArrayList<>();
 
 

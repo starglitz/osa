@@ -2,6 +2,7 @@ package com.ftn.osa.model.dto;
 
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
+import com.ftn.osa.model.entity.OrderItem;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +16,11 @@ public class OrderItemDTO {
 
     private int amount;
 
-    private Order order;
-
     private Article article;
+
+    public OrderItemDTO(OrderItem item) {
+        this.id = item.getId();
+        this.amount = item.getAmount();
+        this.article = item.getArticle();
+    }
 }

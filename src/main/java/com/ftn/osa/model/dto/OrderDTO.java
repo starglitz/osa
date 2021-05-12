@@ -32,7 +32,7 @@ public class OrderDTO {
 
     private Customer customer;
 
-    private List<OrderItem> items = new ArrayList<>();
+    private List<OrderItemDTO> items = new ArrayList<>();
 
     //private List<Long> items = new ArrayList<>();
 
@@ -45,6 +45,12 @@ public class OrderDTO {
         this.anonymous = order.isAnonymous();
         this.archived = order.isArchived();
         this.customer = order.getCustomer();
-        this.items = order.getItems();
+        List<OrderItemDTO> itemDTOS = new ArrayList<>();
+
+        for(OrderItem item : order.getItems()) {
+            OrderItemDTO itemDTO = new OrderItemDTO(item);
+            itemDTOS.add(itemDTO);
+        }
+        this.items = itemDTOS;
     }
 }

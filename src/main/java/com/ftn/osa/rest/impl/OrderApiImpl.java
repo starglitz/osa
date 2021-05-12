@@ -1,6 +1,7 @@
 package com.ftn.osa.rest.impl;
 
 import com.ftn.osa.model.dto.OrderDTO;
+import com.ftn.osa.model.dto.OrderItemDTO;
 import com.ftn.osa.model.entity.*;
 import com.ftn.osa.rest.OrderApi;
 import com.ftn.osa.service.*;
@@ -58,7 +59,7 @@ public class OrderApiImpl implements OrderApi {
 
         List<OrderItem> itemsJpa = new ArrayList<>();
 
-        for(OrderItem item : orderDto.getItems()) {
+        for(OrderItemDTO item : orderDto.getItems()) {
 
             Article article = articleService.getArticle(item.getArticle().getId());
             OrderItem itemFull = new OrderItem();

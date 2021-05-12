@@ -11,6 +11,7 @@ import FinishOrder from "./components/customer/FinishOrder";
 import UsersTable from "./components/admin/UsersTable";
 import UpdateProfile from "./components/UpdateProfile";
 import ChangePassword from "./components/ChangePassword";
+import NotDeliveredOrders from "./components/customer/NotDeliveredOrders";
 
 function App() {
   return (
@@ -77,6 +78,13 @@ function App() {
               path="/changePassword"
               component={ChangePassword}
               roles={["ROLE_SELLER", "ROLE_CUSTOMER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/notDeliveredOrders"
+              component={NotDeliveredOrders}
+              roles={["ROLE_CUSTOMER"]}
           />
 
         </Switch>
