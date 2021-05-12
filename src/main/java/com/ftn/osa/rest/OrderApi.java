@@ -1,5 +1,6 @@
 package com.ftn.osa.rest;
 
+import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
@@ -20,4 +21,14 @@ public interface OrderApi {
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Order> add(@RequestBody OrderDTO order, Authentication authentication);
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping(value = "/customer/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getOrdersByUser(Authentication authentication);
+
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<OrderDTO> update(@PathVariable("id") Long id,@Valid @RequestBody OrderDTO orderDTO);
 }

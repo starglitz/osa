@@ -39,7 +39,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> findAllByCurrentSeller(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         return articleRepository.getArticlesByCurrentSellerUsername(username);
     }

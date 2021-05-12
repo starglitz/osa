@@ -1,6 +1,7 @@
 package com.ftn.osa.model.dto;
 
 import com.ftn.osa.model.entity.Customer;
+import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.OrderItem;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,18 +36,15 @@ public class OrderDTO {
 
     //private List<Long> items = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "OrderDTO{" +
-                "id=" + id +
-                ", time=" + time +
-                ", delivered=" + delivered +
-                ", rating=" + rating +
-                ", comment='" + comment + '\'' +
-                ", anonymous=" + anonymous +
-                ", archived=" + archived +
-                ", customer=" + customer +
-                ", items=" + items +
-                '}';
+    public OrderDTO(Order order) {
+        this.id = order.getId();
+        this.time = order.getTime();
+        this.delivered = order.isDelivered();
+        this.rating = order.getRating();
+        this.comment = order.getComment();
+        this.anonymous = order.isAnonymous();
+        this.archived = order.isArchived();
+        this.customer = order.getCustomer();
+        this.items = order.getItems();
     }
 }

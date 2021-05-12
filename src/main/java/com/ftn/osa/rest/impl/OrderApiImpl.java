@@ -44,22 +44,17 @@ public class OrderApiImpl implements OrderApi {
     public ResponseEntity<Order> add(OrderDTO orderDto, Authentication authentication) {
         System.out.println(orderDto);
 
-
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         User user = userService.findByUsername(username);
         Customer customer = customerService.findById(user.getId());
-
 
         Order order = new Order();
         order.setDelivered(false);
         order.setTime(new Date());
         order.setCustomer(customer);
 
-
         Order orderJpa = orderService.save(order);
-
 
         List<OrderItem> itemsJpa = new ArrayList<>();
 
@@ -77,15 +72,19 @@ public class OrderApiImpl implements OrderApi {
             System.out.println(itemJpa);
         }
 
-
         orderService.save(order);
-
-
-
-
         System.out.println(order);
 
-
         return new ResponseEntity("test", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getOrdersByUser(Authentication authentication) {
+        return new ResponseEntity(orderService.findByUser(authentication),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<OrderDTO> update(Long id, @Valid OrderDTO orderDTO) {
+        return new ResponseEntity(orderService.update(orderDTO), HttpStatus.OK);
     }
 }
