@@ -1,29 +1,28 @@
 import React, {useEffect, useState} from "react";
-import {ArticlesService} from "../../services/ArticlesService";
 import {OrderService} from "../../services/OrderService";
+import {AuthenticationService} from "../../services/AuthenticationService";
 import NavigationBar from "../NavigationBar";
 import {Nav} from "react-bootstrap";
 import Button from "@material-ui/core/Button";
-import {AuthenticationService} from "../../services/AuthenticationService";
-import {setRef} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 
-const NotDeliveredOrders = () => {
+const DeliveredOrders = () => {
 
     const [orders, setOrders] = useState([]);
-    const [refresh, setRefresh] = useState(0);
 
     const history = useHistory();
-    
+
+
     useEffect(() => {
         fetchOrders();
-    }, [refresh]);
+    }, []);
 
 
     async function fetchOrders() {
         try {
             const response = await OrderService.getOrdersByCurrentCustomer();
-            setOrders(response.data.filter((order) => order.delivered === false));
+            setOrders(response.data.filter((order) => order.delivered === true
+                && (order.comment == null || order.comment == "")));
             console.log(response.data);
         } catch (error) {
             console.error(`Error loading my orders !: ${error}`);
@@ -35,25 +34,16 @@ const NotDeliveredOrders = () => {
         AuthenticationService.logout();
     }
 
-
-    async function delivered(order){
-        console.log(order)
-        order.delivered = true;
-        console.log(order)
-        try {
-            await OrderService.editOrder(order.id, order);
-            setRefresh(refresh+1);
-        } catch (error) {
-            console.error(`Error ocurred while updating the order: ${error}`);
-        }
-    }
-
     const notDeliveredOrders = () => {
         history.push("/notDeliveredOrders")
     }
 
     const deliveredOrders = () => {
         history.push("/deliveredOrders")
+    }
+
+    const comment = (order) => {
+        console.log(order);
     }
 
     return(
@@ -79,12 +69,13 @@ const NotDeliveredOrders = () => {
                     <td>Order ID</td>
                     <td>Time</td>
                     <td>Order items</td>
-                    <td>Check orders that have been delivered</td>
+                    <td>Comment</td>
                 </tr>
                 </thead>
                 <tbody>
 
-                {orders.filter(order => order.delivered === false).map((order) =>
+                {orders.filter(order => order.delivered === true
+                    && (order.comment == null || order.comment == "")).map((order) =>
 
                     <tr>
                         <td>{order.id}</td>
@@ -92,7 +83,7 @@ const NotDeliveredOrders = () => {
                         <td>
                             {order.items.map((item) => <p>{item.article.name} x{item.amount} </p> )}
                         </td>
-                        <td><Button variant="contained" onClick={() => delivered(order)}>Check as delivered</Button></td>
+                        <td><Button variant="contained" onClick={() => comment(order)}>Leave a comment</Button></td>
                     </tr>
 
                 )}
@@ -103,4 +94,4 @@ const NotDeliveredOrders = () => {
     )
 }
 
-export default NotDeliveredOrders
+export default DeliveredOrders;

@@ -12,6 +12,7 @@ import UsersTable from "./components/admin/UsersTable";
 import UpdateProfile from "./components/UpdateProfile";
 import ChangePassword from "./components/ChangePassword";
 import NotDeliveredOrders from "./components/customer/NotDeliveredOrders";
+import DeliveredOrders from "./components/customer/DeliveredOrders";
 
 function App() {
   return (
@@ -84,6 +85,13 @@ function App() {
               exact
               path="/notDeliveredOrders"
               component={NotDeliveredOrders}
+              roles={["ROLE_CUSTOMER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/deliveredOrders"
+              component={DeliveredOrders}
               roles={["ROLE_CUSTOMER"]}
           />
 

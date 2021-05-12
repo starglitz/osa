@@ -43,6 +43,11 @@ const UpdateProfile = () => {
         AuthenticationService.logout();
     }
 
+    const notDeliveredOrders = () => {
+        history.push("/notDeliveredOrders")
+    }
+
+
     async function fetchSeller() {
         try {
             const response = await SellersService.getMe();
@@ -126,7 +131,7 @@ const UpdateProfile = () => {
 
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {
         navContent = <>
-            <Nav.Link href="#deets">Customer option</Nav.Link>
+            <Nav.Link onClick={notDeliveredOrders}>My orders</Nav.Link>
             {/*<Nav.Link eventKey={2} href="#memes">*/}
             {/*    Dank memes*/}
             {/*</Nav.Link>*/}

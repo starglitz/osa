@@ -48,6 +48,11 @@ const SellersArticlesCustomer = (props) => {
         AuthenticationService.logout();
     }
 
+    const notDeliveredOrders = () => {
+        history.push("/notDeliveredOrders")
+    }
+
+
     const updateTotal = () => setTotal((state) => !state);
 
     const setTotalF = (orderItem) => {
@@ -148,13 +153,18 @@ const SellersArticlesCustomer = (props) => {
         setRandom(random+1);
         modal = <></>
     }
+    const deliveredOrders = () => {
+        history.push("/deliveredOrders")
+    }
+
 
 
     return (
         <>
             <NavigationBar>
                 <Nav>
-            <Nav.Link href="#deets">Customer option</Nav.Link>
+                    <Nav.Link onClick={notDeliveredOrders}>My orders</Nav.Link>
+                    <Nav.Link onClick={deliveredOrders}>Comment on order</Nav.Link>
             {/*<Nav.Link eventKey={2} href="#memes">*/}
             {/*    Dank memes*/}
             {/*</Nav.Link>*/}

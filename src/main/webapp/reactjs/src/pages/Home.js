@@ -29,9 +29,20 @@ const Home = () => {
         history.push("/users")
     }
 
+    const notDeliveredOrders = () => {
+        history.push("/notDeliveredOrders")
+    }
+
+
+    const deliveredOrders = () => {
+        history.push("/deliveredOrders")
+    }
+
+
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {
         navContent = <>
-                <Nav.Link href="#deets">Customer option</Nav.Link>
+                <Nav.Link onClick={notDeliveredOrders}>My orders</Nav.Link>
+                <Nav.Link onClick={deliveredOrders}>Comment on order</Nav.Link>
                 {/*<Nav.Link eventKey={2} href="#memes">*/}
                 {/*    Dank memes*/}
                 {/*</Nav.Link>*/}
