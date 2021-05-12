@@ -60,7 +60,7 @@ public class OrderApiImpl implements OrderApi {
 
         for(OrderItem item : orderDto.getItems()) {
 
-            Article article = articleService.findById(item.getArticle().getId());
+            Article article = articleService.getArticle(item.getArticle().getId());
             OrderItem itemFull = new OrderItem();
             itemFull.setArticle(article);
             itemFull.setAmount(item.getAmount());

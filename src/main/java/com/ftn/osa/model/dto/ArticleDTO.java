@@ -35,7 +35,7 @@ public class ArticleDTO {
 
     private Set<Discount> discounts = new HashSet<>();
 
-    private Seller seller;
+    private SellerListDTO seller;
 
 
     public ArticleDTO(Article article) {
@@ -44,7 +44,7 @@ public class ArticleDTO {
         this.name = article.getName();
         this.path = article.getPath();
         this.price = article.getPrice();
-        this.seller = article.getSeller();
+        this.seller = new SellerListDTO(article.getSeller());
         this.discounts = article.getDiscounts();
     }
 }

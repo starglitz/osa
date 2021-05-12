@@ -93,4 +93,9 @@ public class SellerServiceImpl implements SellerService {
 
         return ok;
     }
+
+    @Override
+    public Seller getById(Long id) {
+        return sellerRepository.findById(id).get();
+    }
 }

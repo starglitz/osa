@@ -17,4 +17,6 @@ public interface SellerService {
 
     boolean update(Seller seller, String validatePassword);
 
+    Seller getById(Long id);
+
 }

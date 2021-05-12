@@ -60,4 +60,15 @@ public class Article {
         this.discounts = discounts;
         this.seller = seller;
     }
+
+    public Article(Long id, @NotBlank String name, @NotBlank String description,
+                   @NotNull @Positive String price, @NotBlank String path,
+                   Set<Discount> discounts) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.path = path;
+        this.discounts = discounts;
+    }
 }

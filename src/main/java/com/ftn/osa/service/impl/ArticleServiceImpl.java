@@ -1,6 +1,7 @@
 package com.ftn.osa.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
@@ -14,7 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -32,26 +35,49 @@ public class ArticleServiceImpl implements ArticleService {
     private TokenUtils tokenUtils;
 
     @Override
-    public List<Article> findAll() {
-        return articleRepository.findAll();
+    public List<ArticleDTO> findAll() {
+
+        List<Article> articles = articleRepository.findAll();
+        List<ArticleDTO> articleDtos = new ArrayList<>();
+        for(Article article : articles) {
+            ArticleDTO articleDTO = new ArticleDTO(article);
+            articleDtos.add(articleDTO);
+        }
+
+        return articleDtos;
     }
 
     @Override
-    public List<Article> findAllByCurrentSeller(Authentication authentication) {
+    public List<ArticleDTO> findAllByCurrentSeller(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
-        return articleRepository.getArticlesByCurrentSellerUsername(username);
+
+        List<Article> articles = articleRepository.getArticlesByCurrentSellerUsername(username);
+        List<ArticleDTO> articleDtos = new ArrayList<>();
+        for(Article article : articles) {
+            ArticleDTO articleDTO = new ArticleDTO(article);
+            articleDtos.add(articleDTO);
+        }
+
+        return articleDtos;
     }
 
     @Override
-    public List<Article> findAllBySellerId(Long id) {
-        return articleRepository.getArticlesBySellerId(id);
+    public List<ArticleDTO> findAllBySellerId(Long id) {
+        List<Article> articles = articleRepository.getArticlesBySellerId(id);
+        List<ArticleDTO> articleDtos = new ArrayList<>();
+        for(Article article : articles) {
+            ArticleDTO articleDTO = new ArticleDTO(article);
+            articleDtos.add(articleDTO);
+        }
+
+        return articleDtos;
     }
 
     @Override
     @JsonIgnore
     public Article getArticle(Long id) {
-        return articleRepository.findById(id).get();
+        return articleRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -86,10 +112,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.save(article);
     }
 
-    @Override
-    public Article findById(Long id) {
-        return articleRepository.findById(id).get();
-    }
+
 
 
 }
