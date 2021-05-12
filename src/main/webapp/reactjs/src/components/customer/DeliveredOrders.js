@@ -43,7 +43,11 @@ const DeliveredOrders = () => {
     }
 
     const comment = (order) => {
-        console.log(order);
+         console.log(order)
+            history.push({
+                pathname: '/comment',
+                state: order
+            })
     }
 
     return(

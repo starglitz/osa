@@ -14,7 +14,7 @@ const NotDeliveredOrders = () => {
     const [refresh, setRefresh] = useState(0);
 
     const history = useHistory();
-    
+
     useEffect(() => {
         fetchOrders();
     }, [refresh]);

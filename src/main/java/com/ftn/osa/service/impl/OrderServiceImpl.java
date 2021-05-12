@@ -48,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderDTO.getId()).get();
         order.setDelivered(orderDTO.isDelivered());
         order.setComment(orderDTO.getComment());
+        order.setRating(orderDTO.getRating());
         order.setAnonymous(orderDTO.isAnonymous());
         order.setArchived(orderDTO.isArchived());
 

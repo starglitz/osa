@@ -13,6 +13,7 @@ import UpdateProfile from "./components/UpdateProfile";
 import ChangePassword from "./components/ChangePassword";
 import NotDeliveredOrders from "./components/customer/NotDeliveredOrders";
 import DeliveredOrders from "./components/customer/DeliveredOrders";
+import CommentOrder from "./components/customer/CommentOrder";
 
 function App() {
   return (
@@ -92,6 +93,13 @@ function App() {
               exact
               path="/deliveredOrders"
               component={DeliveredOrders}
+              roles={["ROLE_CUSTOMER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/comment"
+              component={CommentOrder}
               roles={["ROLE_CUSTOMER"]}
           />
 
