@@ -75,7 +75,7 @@ public class OrderApiImpl implements OrderApi {
         orderService.save(order);
         System.out.println(order);
 
-        return new ResponseEntity("test", HttpStatus.OK);
+        return new ResponseEntity("Successfully ordered", HttpStatus.OK);
     }
 
     @Override
