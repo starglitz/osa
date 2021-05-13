@@ -11,6 +11,7 @@ import {OrderService} from "../../services/OrderService";
 import {forEach} from "react-bootstrap/ElementChildren";
 import FinishOrder from "./FinishOrder";
 import {SellersService} from "../../services/SellersService";
+import Comments from "../Comments";
 
 const SellersArticlesCustomer = (props) => {
 
@@ -190,12 +191,14 @@ const SellersArticlesCustomer = (props) => {
                 </Nav>
             </NavigationBar>
 
+            <div style={{textAlign:"left", marginLeft:'40px'}}>
+                <br/>
             <h1>Seller: {seller.name}</h1>
             <h2>Average rating: {(Math.round(seller.rating * 100) / 100).toFixed(2)}</h2>
-
-            <h2>Available articles:</h2>
-
-            <Button onClick={buy}> Finish your order </Button>
+                <br/>
+            </div>
+            <Button size="large" variant="contained" color="secondary"
+                    style={{position:"absolute", right:'100px', top:'100px',padding:'15px'}} onClick={buy}> Finish your order </Button>
 
             <div className="flex-container">
                 {articles.map((a) =>
@@ -207,6 +210,7 @@ const SellersArticlesCustomer = (props) => {
                 )}
             </div>
 
+            <Comments seller_id={location.state.detail}></Comments>
 
 
         </>
