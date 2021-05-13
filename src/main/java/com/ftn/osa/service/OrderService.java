@@ -15,4 +15,10 @@ public interface OrderService {
     List<OrderDTO> findByUser(Authentication authentication);
 
     OrderDTO update(OrderDTO orderDTO);
+
+    List<OrderDTO> findBySellerId(Long id);
+
+    double findAverageSellerRating(Long id);
+
+   List<Integer> findPreviousRatings(Long sellerId);
 }

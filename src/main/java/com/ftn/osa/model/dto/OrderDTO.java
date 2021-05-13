@@ -30,7 +30,7 @@ public class OrderDTO {
 
     private boolean archived;
 
-    private Customer customer;
+    private CustomerListDTO customer;
 
     private List<OrderItemDTO> items = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class OrderDTO {
         this.comment = order.getComment();
         this.anonymous = order.isAnonymous();
         this.archived = order.isArchived();
-        this.customer = order.getCustomer();
+        this.customer = new CustomerListDTO(order.getCustomer());
         List<OrderItemDTO> itemDTOS = new ArrayList<>();
 
         for(OrderItem item : order.getItems()) {

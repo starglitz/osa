@@ -88,4 +88,12 @@ public class OrderApiImpl implements OrderApi {
     public ResponseEntity<OrderDTO> update(Long id, @Valid OrderDTO orderDTO) {
         return new ResponseEntity(orderService.update(orderDTO), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity getOrdersBySellerId(Long id) {
+        System.out.println("DOES THIS WOOOOORRRKKKKKKK!?!?!?!?!");
+        double rating = orderService.findAverageSellerRating(id);
+        System.out.println("SELLER RATING: " + rating);
+        return new ResponseEntity(orderService.findBySellerId(id), HttpStatus.OK);
+    }
 }

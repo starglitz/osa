@@ -31,4 +31,9 @@ public interface OrderApi {
     @PutMapping(value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<OrderDTO> update(@PathVariable("id") Long id,@Valid @RequestBody OrderDTO orderDTO);
+
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN','SELLER')")
+    @GetMapping(value = "/seller/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getOrdersBySellerId(@PathVariable("id") Long id);
 }

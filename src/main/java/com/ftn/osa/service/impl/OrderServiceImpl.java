@@ -27,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> findByUser(Authentication authentication) {
         System.out.println("before orders");
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
+        System.out.println(userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
 
         List<Order> orders = orderRepository.findByUserUsername(username);
@@ -40,6 +41,8 @@ public class OrderServiceImpl implements OrderService {
 
         return orderDtos;
     }
+
+
 
     @Override
     public OrderDTO update(OrderDTO orderDTO) {
@@ -55,6 +58,53 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
         return orderDTO;
     }
+
+    @Override
+    public List<OrderDTO> findBySellerId(Long id) {
+        List<Order> orders = orderRepository.findBySellerId(id);
+
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for(Order order : orders) {
+            OrderDTO orderDTO = new OrderDTO(order);
+            orderDTOS.add(orderDTO);
+        }
+
+        return orderDTOS;
+    }
+
+    @Override
+    public double findAverageSellerRating(Long sellerId) {
+        List<OrderDTO> sellersOrders = findBySellerId(sellerId);
+
+        List<Integer> ratings = new ArrayList<>();
+        for(OrderDTO order : sellersOrders) {
+            ratings.add(order.getRating());
+        }
+
+         return calculateAverage(ratings);
+    }
+
+    @Override
+    public List<Integer> findPreviousRatings(Long sellerId) {
+        List<OrderDTO> sellersOrders = findBySellerId(sellerId);
+
+        List<Integer> ratings = new ArrayList<>();
+        for(OrderDTO order : sellersOrders) {
+            ratings.add(order.getRating());
+        }
+
+        return ratings;
+    }
+
+    private double calculateAverage(List <Integer> ratings) {
+        return ratings.stream()
+                .mapToDouble(d -> d)
+                .average()
+                .orElse(0.0);
+    }
+
+
+
 
 
 }
