@@ -61,6 +61,9 @@ const SellerCard = (props) => {
                     <Typography variant="body2"  component="p">
                         address: {props.address}
                     </Typography>
+                    <Typography variant="body2"  component="p">
+                        average rating: {props.rating}
+                    </Typography>
                 </CardContent>
             </CardActionArea>
             <CardActions>

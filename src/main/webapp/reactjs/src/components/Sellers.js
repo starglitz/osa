@@ -29,7 +29,7 @@ const Sellers = () => {
                 <div className="flex-child">
                 <SellerCard
                     key={s.id} id={s.id} sellerName={s.sellerName} name={s.name}
-                    address={s.address} email={s.email}/>
+                    address={s.address} email={s.email} rating={(Math.round(s.rating * 100) / 100).toFixed(2)}/>
                 </div>
             )}
             </div>

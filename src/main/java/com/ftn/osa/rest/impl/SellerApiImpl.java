@@ -1,6 +1,8 @@
 package com.ftn.osa.rest.impl;
 
+import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.SellerDTO;
+import com.ftn.osa.model.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Role;
 import com.ftn.osa.model.entity.Seller;
@@ -25,6 +27,20 @@ public class SellerApiImpl implements SellerApi {
     @Override
     public ResponseEntity getAllSellers() {
             return new ResponseEntity(sellerService.getAllSellerListDTO(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getSeller(Long id) {
+        Seller seller = sellerService.getById(id);
+
+        if(seller != null) {
+
+            double rating = sellerService.findAverageSellerRating(id);
+            SellerListDTO dto = new SellerListDTO(seller);
+            dto.setRating(rating);
+            return new ResponseEntity(dto, HttpStatus.OK);
+        }
+        return new ResponseEntity("Seller not found", HttpStatus.NOT_FOUND);
     }
 
     @Override

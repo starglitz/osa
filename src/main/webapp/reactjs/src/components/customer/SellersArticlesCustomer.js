@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import {OrderService} from "../../services/OrderService";
 import {forEach} from "react-bootstrap/ElementChildren";
 import FinishOrder from "./FinishOrder";
+import {SellersService} from "../../services/SellersService";
 
 const SellersArticlesCustomer = (props) => {
 
@@ -23,6 +24,8 @@ const SellersArticlesCustomer = (props) => {
     const history = useHistory();
 
     const [orderItems,setOrderItems] = useState([]);
+
+    const [seller, setSeller] = useState({});
 
      const [total, setTotal] = useState(0);
 
@@ -39,6 +42,7 @@ const SellersArticlesCustomer = (props) => {
 
     useEffect(() => {
         fetchArticles();
+        fetchSeller()
         //console.log(location.state.detail)
         console.log("order items,use effect: " + orderItems)
         console.log("total atm: " + total)
@@ -142,6 +146,17 @@ const SellersArticlesCustomer = (props) => {
 
     }
 
+    async function fetchSeller() {
+        try {
+            const response = await SellersService.getSeller(location.state.detail)
+            setSeller(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error(`Error loading seller !: ${error}`);
+        }
+
+    }
+
     let modal = <></>
 
     const renderModal = () => {
@@ -175,7 +190,10 @@ const SellersArticlesCustomer = (props) => {
                 </Nav>
             </NavigationBar>
 
-            <h1>Available articles:</h1>
+            <h1>Seller: {seller.name}</h1>
+            <h2>Average rating: {(Math.round(seller.rating * 100) / 100).toFixed(2)}</h2>
+
+            <h2>Available articles:</h2>
 
             <Button onClick={buy}> Finish your order </Button>
 

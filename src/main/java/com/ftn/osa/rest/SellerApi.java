@@ -20,6 +20,10 @@ public interface SellerApi {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getAllSellers();
 
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getSeller(@PathVariable("id") Long id);
 
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping(value = "/profile",
