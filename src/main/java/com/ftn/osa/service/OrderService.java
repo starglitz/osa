@@ -19,9 +19,7 @@ public interface OrderService {
 
     List<OrderDTO> findBySellerId(Long id);
 
-//    double findAverageSellerRating(Long id);
-//
-//   List<Integer> findPreviousRatings(Long sellerId);
+    List<OrderDTO> findByCurrentSeller(Authentication authentication);
 
    boolean setDelivered(OrderDTO orderDTO);
 }

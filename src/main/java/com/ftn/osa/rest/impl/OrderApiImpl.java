@@ -31,9 +31,6 @@ public class OrderApiImpl implements OrderApi {
     @Autowired
     private OrderItemService orderItemService;
 
-    @PersistenceContext()
-    private EntityManager entityManager;
-
     @Autowired
     private UserService userService;
 
@@ -100,6 +97,11 @@ public class OrderApiImpl implements OrderApi {
         double rating = sellerService.findAverageSellerRating(id);
         System.out.println("SELLER RATING: " + rating);
         return new ResponseEntity(orderService.findBySellerId(id), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getOrdersByCurrentSeller(Authentication authentication) {
+        return new ResponseEntity(orderService.findByCurrentSeller(authentication), HttpStatus.OK);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-    @Query(value = "SELECT * FROM seller  WHERE user_id = (select user_id from user where username = ?1)",
+    @Query(value = "SELECT * FROM seller  WHERE user_id = (select id from user where username = ?1)",
             nativeQuery = true)
     Optional<Seller> findByUsername(String username);
 

@@ -1,7 +1,9 @@
 package com.ftn.osa.service.impl;
 
+import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.OrderUpdateDTO;
+import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.repository.OrderRepository;
@@ -22,6 +24,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private SellerRepository sellerRepository;
 
 
     @Override
@@ -62,17 +67,6 @@ public class OrderServiceImpl implements OrderService {
         order.setAnonymous(orderDTO.isAnonymous());
         order.setArchived(orderDTO.isArchived());
 
-//        Seller seller = sellerRepository.findByOrder(order.getId()).orElse(null);
-//        if(seller == null){
-//            ok = false;
-//        }
-//        else {
-//            List<Integer> previousRatings = findPreviousRatings(seller.getId());
-//            previousRatings.add(orderDTO.getRating());
-//
-//            double average = calculateAverage(previousRatings);
-//
-//        }
 
         orderRepository.save(order);
         return orderDTO;
@@ -105,39 +99,22 @@ public class OrderServiceImpl implements OrderService {
         return orderDTOS;
     }
 
-//    @Override
-//    public double findAverageSellerRating(Long sellerId) {
-//        List<OrderDTO> sellersOrders = findBySellerId(sellerId);
-//
-//        List<Integer> ratings = new ArrayList<>();
-//        for(OrderDTO order : sellersOrders) {
-//            ratings.add(order.getRating());
-//        }
-//
-//         return calculateAverage(ratings);
-//    }
-//
-//    @Override
-//    public List<Integer> findPreviousRatings(Long sellerId) {
-//        List<OrderDTO> sellersOrders = findBySellerId(sellerId);
-//
-//        List<Integer> ratings = new ArrayList<>();
-//        for(OrderDTO order : sellersOrders) {
-//            ratings.add(order.getRating());
-//        }
-//
-//        return ratings;
-//    }
-//
-//    private double calculateAverage(List <Integer> ratings) {
-//        return ratings.stream()
-//                .mapToDouble(d -> d)
-//                .average()
-//                .orElse(0.0);
-//    }
+    @Override
+    public List<OrderDTO> findByCurrentSeller(Authentication authentication) {
+        UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
+        String username = userPrincipal.getUsername();
+        System.out.println("USER USERNAME: " + username);
 
+        Seller seller = sellerRepository.findByUsername(username).get();
+        System.out.println("SELLER: " + seller);
+        List<Order> orders = orderRepository.findBySellerId(seller.getId());
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for(Order order : orders) {
+            OrderDTO orderDTO = new OrderDTO(order);
+            orderDTOS.add(orderDTO);
+        }
 
-
-
+        return orderDTOS;
+    }
 
 }

@@ -42,4 +42,9 @@ public interface OrderApi {
     @GetMapping(value = "/seller/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getOrdersBySellerId(@PathVariable("id") Long id);
+
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping(value = "/seller/me",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getOrdersByCurrentSeller(Authentication authentication);
 }
