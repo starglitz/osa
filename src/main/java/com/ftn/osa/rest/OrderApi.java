@@ -2,6 +2,7 @@ package com.ftn.osa.rest;
 
 import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.OrderDTO;
+import com.ftn.osa.model.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
 import org.springframework.http.MediaType;
@@ -30,7 +31,12 @@ public interface OrderApi {
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     @PutMapping(value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<OrderDTO> update(@PathVariable("id") Long id,@Valid @RequestBody OrderDTO orderDTO);
+    ResponseEntity<OrderDTO> update(@PathVariable("id") Long id, @Valid @RequestBody OrderUpdateDTO orderDTO);
+
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
+    @PutMapping(value = "/delivered/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<OrderDTO> setDelivered(@PathVariable("id") Long id,@Valid @RequestBody OrderDTO orderDTO);
 
     @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN','SELLER')")
     @GetMapping(value = "/seller/{id}",

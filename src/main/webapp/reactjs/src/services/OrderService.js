@@ -3,7 +3,8 @@ import SprintsAxiosClient from "./clients/SprintsAxiosClient";
 export const OrderService = {
     addOrder,
     getOrdersByCurrentCustomer,
-    editOrder
+    editOrder,
+    setDelivered
 };
 
 async function addOrder(order) {
@@ -16,4 +17,8 @@ async function getOrdersByCurrentCustomer() {
 
 async function editOrder(id, order) {
     return await SprintsAxiosClient.put(`http://localhost:8080/order/${id}`, order);
+}
+
+async function setDelivered(id, order) {
+    return await SprintsAxiosClient.put(`http://localhost:8080/order/delivered/${id}`, order);
 }

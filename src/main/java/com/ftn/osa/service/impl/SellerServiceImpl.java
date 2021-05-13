@@ -1,11 +1,13 @@
 package com.ftn.osa.service.impl;
 
+import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.repository.SellerRepository;
 import com.ftn.osa.repository.UserRepository;
+import com.ftn.osa.service.OrderService;
 import com.ftn.osa.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,9 @@ public class SellerServiceImpl implements SellerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private OrderService orderService;
+
 
 
     @Override
@@ -37,6 +42,9 @@ public class SellerServiceImpl implements SellerService {
         List<SellerListDTO> sellersForShow = new ArrayList<>();
         for(Seller seller : sellers) {
             SellerListDTO sellerForShow = new SellerListDTO(seller);
+
+            double rating = findAverageSellerRating(seller.getId());
+            sellerForShow.setRating(rating);
             sellersForShow.add(sellerForShow);
         }
 
@@ -97,5 +105,38 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Seller getById(Long id) {
         return sellerRepository.findById(id).get();
+    }
+
+
+    @Override
+    public double findAverageSellerRating(Long sellerId) {
+        List<OrderDTO> sellersOrders = orderService.findBySellerId(sellerId);
+
+        List<Integer> ratings = new ArrayList<>();
+        for(OrderDTO order : sellersOrders) {
+            ratings.add(order.getRating());
+        }
+
+        return calculateAverage(ratings);
+    }
+
+
+//    @Override
+//    public List<Integer> findPreviousRatings(Long sellerId) {
+//        List<OrderDTO> sellersOrders = findBySellerId(sellerId);
+//
+//        List<Integer> ratings = new ArrayList<>();
+//        for(OrderDTO order : sellersOrders) {
+//            ratings.add(order.getRating());
+//        }
+//
+//        return ratings;
+//    }
+
+    private double calculateAverage(List <Integer> ratings) {
+        return ratings.stream()
+                .mapToDouble(d -> d)
+                .average()
+                .orElse(0.0);
     }
 }

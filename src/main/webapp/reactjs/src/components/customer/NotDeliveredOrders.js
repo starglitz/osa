@@ -41,7 +41,7 @@ const NotDeliveredOrders = () => {
         order.delivered = true;
         console.log(order)
         try {
-            await OrderService.editOrder(order.id, order);
+            await OrderService.setDelivered(order.id, order);
             setRefresh(refresh+1);
         } catch (error) {
             console.error(`Error ocurred while updating the order: ${error}`);

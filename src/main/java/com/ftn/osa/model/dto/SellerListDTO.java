@@ -22,6 +22,8 @@ public class SellerListDTO {
 
     private String email;
 
+    private double rating;
+
     public SellerListDTO(Seller createdUser) {
         this.id = createdUser.getId();
         //this.username = createdUser.getUser().getUsername();

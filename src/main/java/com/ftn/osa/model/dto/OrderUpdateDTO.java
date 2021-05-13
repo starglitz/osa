@@ -1,30 +1,33 @@
 package com.ftn.osa.model.dto;
 
-import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.OrderItem;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.*;
+import javax.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
 @Data
 @NoArgsConstructor
-public class OrderDTO {
-
+public class OrderUpdateDTO {
 
     private Long id;
 
+    @NotNull
     private Date time;
 
     private boolean delivered;
 
+    @NotNull
+    @Min(1)
+    @Max(5)
     private int rating;
 
+    @NotBlank
+    @NotNull
     private String comment;
 
     private boolean anonymous;
@@ -37,7 +40,7 @@ public class OrderDTO {
 
     //private List<Long> items = new ArrayList<>();
 
-    public OrderDTO(Order order) {
+    public OrderUpdateDTO(Order order) {
         this.id = order.getId();
         this.time = order.getTime();
         this.delivered = order.isDelivered();

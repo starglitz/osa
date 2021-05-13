@@ -2,9 +2,11 @@ package com.ftn.osa.rest.impl;
 
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.OrderItemDTO;
+import com.ftn.osa.model.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.*;
 import com.ftn.osa.rest.OrderApi;
 import com.ftn.osa.service.*;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,9 @@ public class OrderApiImpl implements OrderApi {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SellerService sellerService;
 
     @Autowired
     private CustomerService customerService;
@@ -85,15 +90,25 @@ public class OrderApiImpl implements OrderApi {
     }
 
     @Override
-    public ResponseEntity<OrderDTO> update(Long id, @Valid OrderDTO orderDTO) {
+    public ResponseEntity update(Long id, @Valid OrderUpdateDTO orderDTO) {
         return new ResponseEntity(orderService.update(orderDTO), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getOrdersBySellerId(Long id) {
         System.out.println("DOES THIS WOOOOORRRKKKKKKK!?!?!?!?!");
-        double rating = orderService.findAverageSellerRating(id);
+        double rating = sellerService.findAverageSellerRating(id);
         System.out.println("SELLER RATING: " + rating);
         return new ResponseEntity(orderService.findBySellerId(id), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity setDelivered(Long id, @Valid OrderDTO orderDTO) {
+        boolean ok = orderService.setDelivered(orderDTO);
+        if(ok) {
+            return new ResponseEntity("Successfuly set to delivered", HttpStatus.OK);
+        }
+        return new ResponseEntity("Bad data sent", HttpStatus.BAD_REQUEST);
+
     }
 }
