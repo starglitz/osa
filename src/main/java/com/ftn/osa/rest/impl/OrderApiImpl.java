@@ -113,4 +113,13 @@ public class OrderApiImpl implements OrderApi {
         return new ResponseEntity("Bad data sent", HttpStatus.BAD_REQUEST);
 
     }
+
+    @Override
+    public ResponseEntity<OrderDTO> setArchived(Long id, @Valid OrderDTO orderDTO) {
+        boolean ok = orderService.setArchived(orderDTO);
+        if(ok) {
+            return new ResponseEntity("Successfuly archived", HttpStatus.OK);
+        }
+        return new ResponseEntity("Bad data sent", HttpStatus.BAD_REQUEST);
+    }
 }

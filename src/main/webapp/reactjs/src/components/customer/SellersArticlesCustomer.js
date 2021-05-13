@@ -11,7 +11,7 @@ import {OrderService} from "../../services/OrderService";
 import {forEach} from "react-bootstrap/ElementChildren";
 import FinishOrder from "./FinishOrder";
 import {SellersService} from "../../services/SellersService";
-import Comments from "../Comments";
+import Comments from "./Comments";
 
 const SellersArticlesCustomer = (props) => {
 

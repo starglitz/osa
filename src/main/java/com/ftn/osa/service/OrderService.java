@@ -22,4 +22,6 @@ public interface OrderService {
     List<OrderDTO> findByCurrentSeller(Authentication authentication);
 
    boolean setDelivered(OrderDTO orderDTO);
+
+    boolean setArchived(OrderDTO orderDTO);
 }

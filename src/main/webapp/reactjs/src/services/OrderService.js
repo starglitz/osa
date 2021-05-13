@@ -5,7 +5,9 @@ export const OrderService = {
     getOrdersByCurrentCustomer,
     editOrder,
     setDelivered,
-    getBySellerId
+    getBySellerId,
+    getOrdersByCurrentSeller,
+    setArchived
 };
 
 async function addOrder(order) {
@@ -16,12 +18,20 @@ async function getOrdersByCurrentCustomer() {
     return await SprintsAxiosClient.get('http://localhost:8080/order/customer/me');
 }
 
+async function getOrdersByCurrentSeller () {
+    return await SprintsAxiosClient.get('http://localhost:8080/order/seller/me');
+}
+
 async function editOrder(id, order) {
     return await SprintsAxiosClient.put(`http://localhost:8080/order/${id}`, order);
 }
 
 async function setDelivered(id, order) {
     return await SprintsAxiosClient.put(`http://localhost:8080/order/delivered/${id}`, order);
+}
+
+async function setArchived(id, order) {
+    return await SprintsAxiosClient.put(`http://localhost:8080/order/archived/${id}`, order);
 }
 
 async function getBySellerId(id) {

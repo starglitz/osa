@@ -38,6 +38,11 @@ public interface OrderApi {
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<OrderDTO> setDelivered(@PathVariable("id") Long id,@Valid @RequestBody OrderDTO orderDTO);
 
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
+    @PutMapping(value = "/archived/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<OrderDTO> setArchived(@PathVariable("id") Long id,@Valid @RequestBody OrderDTO orderDTO);
+
     @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN','SELLER')")
     @GetMapping(value = "/seller/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})

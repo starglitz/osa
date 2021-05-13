@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import {OrderService} from "../services/OrderService";
+import {OrderService} from "../../services/OrderService";
 import {useLocation} from "react-router-dom";
-import SellerCard from "./SellerCard";
+import SellerCard from "../SellerCard";
 
 
 const Comments = (props) => {
@@ -19,7 +19,8 @@ const Comments = (props) => {
         try {
             console.log("seller id: " + props.seller_id)
             const response = await OrderService.getBySellerId(props.seller_id);
-            setOrders(response.data.filter((order) => order.delivered == true && (order.comment != null)));
+            setOrders(response.data.filter((order) => order.delivered == true &&
+                (order.comment != null)  && order.archived == false));
             console.log(orders);
         } catch (error) {
             console.error(`Error loading my orders !: ${error}`);

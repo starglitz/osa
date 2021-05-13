@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {ArticlesService} from "../../services/ArticlesService";
 import ArticleCardSeller from "./ArticleCardSeller";
+import MyComments from "./MyComments";
 
 const SellersArticles = () => {
 
@@ -44,6 +45,8 @@ const SellersArticles = () => {
                 </div>
             )}
             </div>
+
+            <MyComments/>
         </>
     )
 

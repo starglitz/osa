@@ -87,6 +87,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public boolean setArchived(OrderDTO orderDTO) {
+        boolean ok = true;
+        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
+        if(order == null) {
+            ok = false;
+        }
+        else {
+            order.setArchived(true);
+            orderRepository.save(order);
+        }
+        return ok;
+    }
+
+    @Override
     public List<OrderDTO> findBySellerId(Long id) {
         List<Order> orders = orderRepository.findBySellerId(id);
 
