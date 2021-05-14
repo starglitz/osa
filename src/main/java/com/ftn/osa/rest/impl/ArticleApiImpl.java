@@ -1,12 +1,14 @@
 package com.ftn.osa.rest.impl;
 
 import com.ftn.osa.model.dto.ArticleDTO;
+import com.ftn.osa.model.dto.DiscountDTO;
 import com.ftn.osa.model.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Discount;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.rest.ArticleApi;
 import com.ftn.osa.service.ArticleService;
+import com.ftn.osa.service.DiscountService;
 import com.ftn.osa.service.SellerService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ArticleApiImpl implements ArticleApi {
@@ -30,6 +34,7 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Autowired
     private SellerService sellerService;
+
 
     @Override
     public ResponseEntity getAllArticles() {
@@ -71,9 +76,24 @@ public class ArticleApiImpl implements ArticleApi {
             return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
         }
 
+//        List<Discount> discounts = new ArrayList<>();
+//        for(DiscountDTO discountDTO : articleDTO.getDiscounts()) {
+//            Discount discount = discountService.findById(discountDTO.getId());
+//            if(discount == null) {
+//                return new ResponseEntity("Bad data", HttpStatus.BAD_REQUEST);
+//            }
+//            else {
+//                discounts.add(discount);
+//            }
+//        }
+//
+//        Article article = new Article(articleDTO.getId(), articleDTO.getName(),
+//                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(),
+//                discounts, seller);
+
         Article article = new Article(articleDTO.getId(), articleDTO.getName(),
                 articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(),
-                articleDTO.getDiscounts(), seller);
+                seller);
 
         articleService.update(article);
         return new ResponseEntity(articleDTO, HttpStatus.OK);
@@ -93,8 +113,7 @@ public class ArticleApiImpl implements ArticleApi {
     public ResponseEntity create(@Valid ArticleDTO articleDTO, Authentication authentication) {
 
         Article article = new Article(articleDTO.getId(), articleDTO.getName(),
-                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(),
-                articleDTO.getDiscounts());
+                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
         return new ResponseEntity(articleService.create(article, authentication), HttpStatus.OK);
     }
 }

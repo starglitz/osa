@@ -25,4 +25,9 @@ public class DiscountApiImpl implements DiscountApi {
         }
         return new ResponseEntity(discountDTO, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity getByCurrentSeller(Authentication authentication) {
+        return new ResponseEntity(discountService.getByCurrentSeller(authentication), HttpStatus.OK);
+    }
 }

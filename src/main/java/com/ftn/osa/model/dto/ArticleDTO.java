@@ -1,5 +1,6 @@
 package com.ftn.osa.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Discount;
@@ -11,7 +12,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,7 +36,8 @@ public class ArticleDTO {
     @NotBlank
     private String path;
 
-    private Set<Discount> discounts = new HashSet<>();
+
+    private int discounts;
 
     private SellerListDTO seller;
 
@@ -45,6 +49,11 @@ public class ArticleDTO {
         this.path = article.getPath();
         this.price = article.getPrice();
         this.seller = new SellerListDTO(article.getSeller());
-        this.discounts = article.getDiscounts();
+
+        List<DiscountDTO> discountDTOS = new ArrayList<>();
+        for(Discount discount : article.getDiscounts()) {
+            discounts += discount.getPercent();
+        }
+
     }
 }

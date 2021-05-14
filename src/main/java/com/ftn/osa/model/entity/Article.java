@@ -1,5 +1,6 @@
 package com.ftn.osa.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.osa.model.dto.ArticleDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,8 +43,9 @@ public class Article {
     @NotBlank
     private String path;
 
-    @ManyToMany(mappedBy = "articles")
-    private Set<Discount> discounts = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(mappedBy = "articles",fetch = FetchType.LAZY)
+    private List<Discount> discounts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -51,7 +53,7 @@ public class Article {
 
     public Article(Long id, @NotBlank String name, @NotBlank String description,
                    @NotNull @Positive String price, @NotBlank String path,
-                   Set<Discount> discounts, Seller seller) {
+                   List<Discount> discounts, Seller seller) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -63,12 +65,31 @@ public class Article {
 
     public Article(Long id, @NotBlank String name, @NotBlank String description,
                    @NotNull @Positive String price, @NotBlank String path,
-                   Set<Discount> discounts) {
+                   List<Discount> discounts) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.path = path;
         this.discounts = discounts;
+    }
+
+    public Article(Long id, @NotBlank String name, @NotBlank String description,
+                   @NotNull @Positive String price, @NotBlank String path) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.path = path;
+    }
+
+    public Article(Long id, @NotBlank String name, @NotBlank String description,
+                   @NotNull @Positive String price, @NotBlank String path, Seller seller) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.path = path;
+        this.seller = seller;
     }
 }

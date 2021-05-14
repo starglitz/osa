@@ -21,5 +21,9 @@ public interface DiscountApi {
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity add(@Valid @RequestBody DiscountDTO discountDTO, Authentication authentication);
 
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping(value = "/seller/me",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getByCurrentSeller(Authentication authentication);
 
 }

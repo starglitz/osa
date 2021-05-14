@@ -60,4 +60,27 @@ public class DiscountServiceImpl implements DiscountService {
         discountRepository.save(discount);
         return true;
     }
+
+    @Override
+    public List<DiscountDTO> getByCurrentSeller(Authentication authentication) {
+
+        UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
+        String username = userPrincipal.getUsername();
+        Seller seller = sellerRepository.findByUsername(username).orElse(null);
+
+        List<Discount> discounts = discountRepository.findBySellerId(seller.getId());
+        List<DiscountDTO> discountDTOS = new ArrayList<>();
+        for(Discount discount : discounts) {
+
+            DiscountDTO discountDTO = new DiscountDTO(discount);
+            discountDTOS.add(discountDTO);
+        }
+
+        return discountDTOS;
+    }
+
+    @Override
+    public Discount findById(Long id) {
+        return discountRepository.findById(id).orElse(null);
+    }
 }
