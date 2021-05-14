@@ -47,6 +47,10 @@ const UpdateProfile = () => {
         history.push("/notDeliveredOrders")
     }
 
+    const addDiscount = () => {
+        history.push("/addDiscount")
+    }
+
 
     async function fetchSeller() {
         try {
@@ -154,6 +158,10 @@ const UpdateProfile = () => {
 
             <Nav.Link eventKey={3} onClick={createNew}>
                 Add new article
+            </Nav.Link>
+
+            <Nav.Link eventKey={3} onClick={addDiscount}>
+                Add new discount
             </Nav.Link>
         </>
     }

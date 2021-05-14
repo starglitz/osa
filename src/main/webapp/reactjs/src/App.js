@@ -14,6 +14,7 @@ import ChangePassword from "./components/ChangePassword";
 import NotDeliveredOrders from "./components/customer/NotDeliveredOrders";
 import DeliveredOrders from "./components/customer/DeliveredOrders";
 import CommentOrder from "./components/customer/CommentOrder";
+import AddDiscount from "./components/seller/AddDiscount";
 
 function App() {
   return (
@@ -101,6 +102,13 @@ function App() {
               path="/comment"
               component={CommentOrder}
               roles={["ROLE_CUSTOMER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/addDiscount"
+              component={AddDiscount}
+              roles={["ROLE_SELLER"]}
           />
 
         </Switch>

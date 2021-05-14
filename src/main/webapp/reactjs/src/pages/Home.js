@@ -38,6 +38,10 @@ const Home = () => {
         history.push("/deliveredOrders")
     }
 
+    const addDiscount = () => {
+        history.push("/addDiscount")
+    }
+
 
     if(AuthenticationService.getRole() === "ROLE_CUSTOMER") {
         navContent = <>
@@ -66,6 +70,11 @@ const Home = () => {
             <Nav.Link eventKey={3} onClick={createNew}>
                 Add new article
             </Nav.Link>
+
+            <Nav.Link eventKey={3} onClick={addDiscount}>
+                Add new discount
+            </Nav.Link>
+
         </>
     }
 
