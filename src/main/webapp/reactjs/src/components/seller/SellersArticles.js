@@ -36,9 +36,9 @@ const SellersArticles = () => {
 
     return (
         <>
-            <div className="flex-container">
+            <div className="flex-container" style={{flexWrap:"wrap", width:'90%',margin:'0 auto'}}>
             {articles.map((a) =>
-                <div className="flex-child">
+                <div className="flex-child" style={{margin: '0 auto', marginTop:'30px'}}>
                     <ArticleCardSeller
                         key={a.id} id={a.id} path={a.path} name={a.name}
                         description={a.description} price={a.price} deleteArticle={deleteArticle}/>

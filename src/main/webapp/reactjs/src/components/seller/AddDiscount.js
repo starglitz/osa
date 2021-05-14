@@ -135,7 +135,8 @@ const AddDiscount = () => {
                 </div>
 
             </div>
-
+            <br/>
+            <br/>
             <h5>Pick articles that discount applies to:</h5>
 
             <div className="flex-container" style={{flexWrap:"wrap", width:'90%',margin:'0 auto'}}>
@@ -148,6 +149,8 @@ const AddDiscount = () => {
                     </div>
                 )}
             </div>
+            <br/>
+            <br/>
         </>
     )
 }

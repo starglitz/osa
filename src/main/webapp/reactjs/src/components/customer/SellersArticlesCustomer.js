@@ -200,9 +200,9 @@ const SellersArticlesCustomer = (props) => {
             <Button size="large" variant="contained" color="secondary"
                     style={{position:"absolute", right:'100px', top:'100px',padding:'15px'}} onClick={buy}> Finish your order </Button>
 
-            <div className="flex-container">
+            <div className="flex-container" style={{flexWrap:"wrap", width:'90%',margin:'0 auto'}}>
                 {articles.map((a) =>
-                    <div className="flex-child">
+                    <div className="flex-child" style={{margin: '0 auto', marginTop:'30px'}}>
                         <ArticleCardCustomer
                             key={a.id} id={a.id} path={a.path} name={a.name}
                             description={a.description} price={a.price} addToCart={addToCart} totalF={setTotalF}/>
