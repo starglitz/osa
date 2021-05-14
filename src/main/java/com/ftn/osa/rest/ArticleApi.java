@@ -40,7 +40,7 @@ public interface ArticleApi {
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @PutMapping(value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Article> update(@PathVariable("id") Long id,@Valid @RequestBody ArticleDTO articleDTO);
+    ResponseEntity update(@PathVariable("id") Long id,@Valid @RequestBody ArticleDTO articleDTO);
 
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
@@ -49,6 +49,6 @@ public interface ArticleApi {
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Article> create(@Valid @RequestBody ArticleDTO articleDTO, Authentication authentication);
+    ResponseEntity create(@Valid @RequestBody ArticleDTO articleDTO, Authentication authentication);
 
 }

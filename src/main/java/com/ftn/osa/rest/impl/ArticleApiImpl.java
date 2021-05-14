@@ -59,13 +59,24 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity<Article> update(Long id,@Valid ArticleDTO articleDTO) {
+    public ResponseEntity update(Long id,@Valid ArticleDTO articleDTO) {
+
         Seller seller = sellerService.getById(articleDTO.getSeller().getId());
+        if(seller == null) {
+            return new ResponseEntity("No such seller! ", HttpStatus.BAD_REQUEST);
+        }
+
+        Article articletest = articleService.getArticle(articleDTO.getId());
+        if(articletest == null) {
+            return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
+        }
+
         Article article = new Article(articleDTO.getId(), articleDTO.getName(),
                 articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(),
                 articleDTO.getDiscounts(), seller);
 
-        return new ResponseEntity(articleService.update(article), HttpStatus.OK);
+        articleService.update(article);
+        return new ResponseEntity(articleDTO, HttpStatus.OK);
     }
 
     @Override
@@ -79,7 +90,7 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity<Article> create(@Valid ArticleDTO articleDTO, Authentication authentication) {
+    public ResponseEntity create(@Valid ArticleDTO articleDTO, Authentication authentication) {
 
         Article article = new Article(articleDTO.getId(), articleDTO.getName(),
                 articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(),
