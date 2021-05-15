@@ -68,7 +68,8 @@ const ArticleCardCustomer = (props) => {
 
             let article = {
                 "id": props.id, "path": props.path, "name": props.name,
-                "description": props.description, "price": props.price
+                "description": props.description, "price": props.price,
+                "discounts":props.discounts
             };
 
             let orderItem = {"amount": amount, "article": article};
@@ -113,7 +114,7 @@ const ArticleCardCustomer = (props) => {
                             DISCOUNT {props.discounts} %
                         </RedTextTypography>
                         <Typography variant="body2" component="h4">
-                        price with discount: {props.price - (props.price * props.discounts)}
+                        price with discount: {props.price - (props.price * (props.discounts*0.01))}
                         </Typography>
                         </div>
                     }

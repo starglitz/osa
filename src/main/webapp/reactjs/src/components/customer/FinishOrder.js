@@ -21,7 +21,9 @@ const FinishOrder = () => {
 
     const countTotal = () => {
         let price = 0;
-        order.items.forEach(item => price += item.article.price * item.amount);
+        order.items.forEach(item => price +=
+            (item.article.price - (item.article.price * (item.article.discounts * 0.01)))
+            * item.amount);
 
 
 
@@ -87,7 +89,7 @@ const FinishOrder = () => {
             {order.items.map((a) =>
                 <div className="orderItem">
                     <p>Name: {a.article.name}</p>
-                    <p>Price: {a.article.price}</p>
+                    <p>Price: {a.article.price - (a.article.price * (a.article.discounts*0.01))}</p>
                     <p>Description: {a.article.description}</p>
                     <p>Amount: {a.amount}</p>
                 </div>

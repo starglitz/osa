@@ -62,7 +62,7 @@ const ArticleCardSeller = (props) => {
                                 DISCOUNT {props.discounts} %
                             </RedTextTypography>
                             <Typography variant="body2" component="h4">
-                                price with discount: {props.price - (props.price * props.discounts)}
+                                price with discount: {props.price - (props.price * (props.discounts * 0.01))}
                             </Typography>
                         </div>
                     }
