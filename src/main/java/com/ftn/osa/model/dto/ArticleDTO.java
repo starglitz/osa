@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +52,12 @@ public class ArticleDTO {
         this.seller = new SellerListDTO(article.getSeller());
 
         List<DiscountDTO> discountDTOS = new ArrayList<>();
+
+        LocalDate now = LocalDate.now();
+
         for(Discount discount : article.getDiscounts()) {
+            if((discount.getDateFrom().isBefore(now) || discount.getDateFrom().equals(now))
+            && (discount.getDateTo().isAfter(now) || discount.getDateTo().isEqual(now)))
             discounts += discount.getPercent();
         }
         if(discounts > 60) {
