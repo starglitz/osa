@@ -54,7 +54,7 @@ const ArticleCardDiscount = (props) => {
     return (
 
         <>
-            <Card className={classes.root} >
+            {/*<Card className={classes.root} >*/}
                 <CardActionArea>
                     <CardMedia
                         component="img"
@@ -65,7 +65,7 @@ const ArticleCardDiscount = (props) => {
                         image={window.location.origin + props.path}
                         title="Contemplative Reptile"
                     />
-                    <CardContent style={{height:'200px'}}>
+                    <CardContent style={{height:'180px'}}>
                         <Typography gutterBottom variant="h5" component="h2">
                             {props.name}
                         </Typography>
@@ -77,15 +77,15 @@ const ArticleCardDiscount = (props) => {
                         </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions style={{position:"relative"}}>
-                    <div style={{margin:'0 auto'}}>
-                    apply discount
-                    <input type="checkbox" style={{width:'20px'}}/>
-                    </div>
+                {/*<CardActions style={{position:"relative"}}>*/}
+                {/*    <div style={{margin:'0 auto'}}>*/}
+                {/*    apply discount*/}
+                {/*    <input type="checkbox" style={{width:'20px'}}/>*/}
+                {/*    </div>*/}
 
 
-                </CardActions>
-            </Card>
+                {/*</CardActions>*/}
+            {/*</Card>*/}
 
 
         </>
