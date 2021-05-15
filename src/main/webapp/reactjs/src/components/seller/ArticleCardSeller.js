@@ -1,4 +1,4 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -21,6 +21,12 @@ const useStyles = makeStyles({
     },
 });
 
+
+const RedTextTypography = withStyles({
+    root: {
+        color: "#e60000"
+    }
+})(Typography);
 
 const ArticleCardSeller = (props) => {
     const classes = useStyles();
@@ -48,9 +54,18 @@ const ArticleCardSeller = (props) => {
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.name}
                     </Typography>
-                    <Typography variant="body2" component="h4">
-                        price: {props.price}
-                    </Typography>
+                    {props.discounts === 0? <Typography variant="body2" component="h4">
+                            price: {props.price}
+                        </Typography>
+                        :<div>
+                            <RedTextTypography variant="body2" component="h4" style={{textColor:'red'}}>
+                                DISCOUNT {props.discounts} %
+                            </RedTextTypography>
+                            <Typography variant="body2" component="h4">
+                                price with discount: {props.price - (props.price * props.discounts)}
+                            </Typography>
+                        </div>
+                    }
                     <Typography variant="body2" component="p">
                         {props.description}
                     </Typography>

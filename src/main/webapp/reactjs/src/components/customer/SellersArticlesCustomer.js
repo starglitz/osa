@@ -205,7 +205,8 @@ const SellersArticlesCustomer = (props) => {
                     <div className="flex-child" style={{margin: '0 auto', marginTop:'30px'}}>
                         <ArticleCardCustomer
                             key={a.id} id={a.id} path={a.path} name={a.name}
-                            description={a.description} price={a.price} addToCart={addToCart} totalF={setTotalF}/>
+                            description={a.description} price={a.price} discounts={a.discounts}
+                            addToCart={addToCart} totalF={setTotalF}/>
                     </div>
                 )}
             </div>

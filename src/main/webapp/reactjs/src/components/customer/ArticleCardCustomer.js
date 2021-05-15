@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
 import {Modal} from "react-bootstrap";
+import { withStyles } from "@material-ui/core/styles";
 
 
 const useStyles = makeStyles({
@@ -33,6 +34,12 @@ const customStyles = {
         transform             : 'translate(-50%, -50%)'
     }
 };
+
+const RedTextTypography = withStyles({
+    root: {
+        color: "#e60000"
+    }
+})(Typography);
 
 const ArticleCardCustomer = (props) => {
     const classes = useStyles();
@@ -92,9 +99,27 @@ const ArticleCardCustomer = (props) => {
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.name}
                     </Typography>
-                    <Typography variant="body2" component="h4">
-                        price: {props.price}
-                    </Typography>
+                    {/*<Typography variant="body2" component="h4">*/}
+                    {/*    price: {props.price}*/}
+                    {/*</Typography>*/}
+
+
+
+                    {props.discounts === 0? <Typography variant="body2" component="h4">
+                            price: {props.price}
+                        </Typography>
+                        :<div>
+                        <RedTextTypography variant="body2" component="h4" style={{textColor:'red'}}>
+                            DISCOUNT {props.discounts} %
+                        </RedTextTypography>
+                        <Typography variant="body2" component="h4">
+                        price with discount: {props.price - (props.price * props.discounts)}
+                        </Typography>
+                        </div>
+                    }
+
+
+
                     <Typography variant="body2" component="p">
                         {props.description}
                     </Typography>

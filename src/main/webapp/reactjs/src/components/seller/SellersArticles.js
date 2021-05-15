@@ -12,7 +12,6 @@ const SellersArticles = () => {
         fetchArticles();
     }, []);
 
-
     async function fetchArticles() {
             try {
                 const response = await ArticlesService.getArticlesByCurrentSeller();
@@ -40,7 +39,7 @@ const SellersArticles = () => {
             {articles.map((a) =>
                 <div className="flex-child" style={{margin: '0 auto', marginTop:'30px'}}>
                     <ArticleCardSeller
-                        key={a.id} id={a.id} path={a.path} name={a.name}
+                        key={a.id} id={a.id} path={a.path} name={a.name} discounts={a.discounts}
                         description={a.description} price={a.price} deleteArticle={deleteArticle}/>
                 </div>
             )}
