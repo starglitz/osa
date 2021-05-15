@@ -54,6 +54,9 @@ public class ArticleDTO {
         for(Discount discount : article.getDiscounts()) {
             discounts += discount.getPercent();
         }
+        if(discounts > 60) {
+            this.discounts = 60;
+        }
 
     }
 }

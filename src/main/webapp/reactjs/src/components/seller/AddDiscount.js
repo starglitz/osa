@@ -222,9 +222,11 @@ const AddDiscount = () => {
             <br/>
             <br/>
             <h5>Pick articles that discount applies to:</h5>
+            <h6>(Articles that are already on discounts of more than 60% are not shown)</h6>
 
             <div className="flex-container" style={{flexWrap:"wrap", width:'90%',margin:'0 auto'}}>
                 {articles.map((article) =>
+                    article.discounts < 60 &&
                     <div className="flex-child" style={{margin: '0 auto', marginTop:'30px'}}>
                         <Card className={classes.root} >
                         <ArticleCardDiscount path={article.path} name={article.name}

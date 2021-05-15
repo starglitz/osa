@@ -40,6 +40,10 @@ public class DiscountServiceImpl implements DiscountService {
             return false;
         }
 
+        if(discountDTO.getArticles().size() == 0) {
+            return false;
+        }
+
         List<Article> articles = new ArrayList<>();
 
         for(ArticleDTO article : discountDTO.getArticles()) {
