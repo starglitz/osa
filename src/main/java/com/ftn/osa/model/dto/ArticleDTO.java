@@ -49,8 +49,9 @@ public class ArticleDTO {
         this.name = article.getName();
         this.path = article.getPath();
         this.price = article.getPrice();
-        this.seller = new SellerListDTO(article.getSeller());
-
+        if(article.getSeller() != null) {
+            this.seller = new SellerListDTO(article.getSeller());
+        }
         List<DiscountDTO> discountDTOS = new ArrayList<>();
 
         LocalDate now = LocalDate.now();

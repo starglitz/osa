@@ -107,7 +107,8 @@ const AddDiscount = () => {
 
                 //setDiscount({...discount, articles:articlesA})
 
-                const copy = {...discount, articles: articlesA};
+                const copy = {...discount, articles: articlesA, dateFrom: start.valueAsDate,
+                dateTo: end.valueAsDate};
                 console.log(copy)
 
                 if(copy.articles.length != 0) {

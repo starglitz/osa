@@ -18,7 +18,7 @@ public interface ArticleService {
 
     public Article getArticle(Long id);
 
-    public Article update(Article article);
+    public ArticleDTO update(Article article);
 
     public void delete(Long id);
 

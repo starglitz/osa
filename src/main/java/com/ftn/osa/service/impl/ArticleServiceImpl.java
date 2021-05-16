@@ -81,7 +81,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article update(Article article) {
+    public ArticleDTO update(Article article) {
        // Appointment appointmentJpa = findById(appointment.getAppointment_id()).get();
         Article articleJpa = getArticle(article.getId());
 
@@ -90,7 +90,8 @@ public class ArticleServiceImpl implements ArticleService {
         articleJpa.setPrice(article.getPrice());
         articleJpa.setPath(article.getPath());
 
-        return articleRepository.save(articleJpa);
+        Article save = articleRepository.save(articleJpa);
+        return new ArticleDTO(save);
     }
 
     @Override

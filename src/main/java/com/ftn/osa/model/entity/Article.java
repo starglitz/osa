@@ -92,4 +92,6 @@ public class Article {
         this.path = path;
         this.seller = seller;
     }
+
+
 }

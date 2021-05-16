@@ -66,37 +66,24 @@ public class ArticleApiImpl implements ArticleApi {
     @Override
     public ResponseEntity update(Long id,@Valid ArticleDTO articleDTO) {
 
-        Seller seller = sellerService.getById(articleDTO.getSeller().getId());
-        if(seller == null) {
-            return new ResponseEntity("No such seller! ", HttpStatus.BAD_REQUEST);
-        }
+//        Seller seller = sellerService.getById(articleDTO.getSeller().getId());
+//        if(seller == null) {
+//            return new ResponseEntity("No such seller! ", HttpStatus.BAD_REQUEST);
+//        }
 
         Article articletest = articleService.getArticle(articleDTO.getId());
         if(articletest == null) {
             return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
         }
 
-//        List<Discount> discounts = new ArrayList<>();
-//        for(DiscountDTO discountDTO : articleDTO.getDiscounts()) {
-//            Discount discount = discountService.findById(discountDTO.getId());
-//            if(discount == null) {
-//                return new ResponseEntity("Bad data", HttpStatus.BAD_REQUEST);
-//            }
-//            else {
-//                discounts.add(discount);
-//            }
-//        }
-//
-//        Article article = new Article(articleDTO.getId(), articleDTO.getName(),
-//                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(),
-//                discounts, seller);
 
         Article article = new Article(articleDTO.getId(), articleDTO.getName(),
-                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(),
-                seller);
+                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
 
-        articleService.update(article);
-        return new ResponseEntity(articleDTO, HttpStatus.OK);
+
+
+//        articleService.update(article);
+        return new ResponseEntity(articleService.update(article), HttpStatus.OK);
     }
 
     @Override
@@ -114,6 +101,11 @@ public class ArticleApiImpl implements ArticleApi {
 
         Article article = new Article(articleDTO.getId(), articleDTO.getName(),
                 articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
-        return new ResponseEntity(articleService.create(article, authentication), HttpStatus.OK);
+
+        Article create = articleService.create(article, authentication);
+        ArticleDTO dto = new ArticleDTO(create);
+
+
+        return new ResponseEntity(dto, HttpStatus.OK);
     }
 }
