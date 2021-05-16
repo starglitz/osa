@@ -87,6 +87,10 @@ const DiscountsTable = () => {
         }
     }
 
+    const goToTaskEditPage = (id) => {
+        history.push("/discounts/edit/" + id);
+    };
+
     return (
         <>
 
@@ -141,7 +145,7 @@ const DiscountsTable = () => {
                             {disc.articles.map(article => <p>{article.name} x{article.amount} </p> )}
                         </td>
                         <td>
-                            <Button variant="contained" color="primary">Modify</Button>
+                            <Button variant="contained" color="primary" onClick={() => goToTaskEditPage(disc.id)}>Modify</Button>
                         </td>
                         <td>
                             <Button variant="contained" color="secondary" onClick={() => deleteDisc(disc.id)}>Delete</Button>

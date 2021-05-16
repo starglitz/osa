@@ -30,4 +30,9 @@ public interface DiscountApi {
     @DeleteMapping(value = "/{id}")
     ResponseEntity delete(@PathVariable("id") Long id);
 
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity get(@PathVariable("id") Long id);
+
 }

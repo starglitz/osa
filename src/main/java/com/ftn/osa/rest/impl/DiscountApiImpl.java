@@ -1,6 +1,7 @@
 package com.ftn.osa.rest.impl;
 
 import com.ftn.osa.model.dto.DiscountDTO;
+import com.ftn.osa.model.entity.Discount;
 import com.ftn.osa.rest.DiscountApi;
 import com.ftn.osa.service.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,15 @@ public class DiscountApiImpl implements DiscountApi {
     public ResponseEntity delete(Long id) {
         discountService.delete(id);
         return new ResponseEntity("Successfully deleted", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity get(Long id) {
+        Discount discount = discountService.findById(id);
+        if(discount == null) {
+            return new ResponseEntity("No such discount", HttpStatus.NOT_FOUND);
+        }
+        DiscountDTO dto = new DiscountDTO(discount);
+        return new ResponseEntity(dto, HttpStatus.OK);
     }
 }

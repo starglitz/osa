@@ -16,6 +16,7 @@ import DeliveredOrders from "./components/customer/DeliveredOrders";
 import CommentOrder from "./components/customer/CommentOrder";
 import AddDiscount from "./components/seller/AddDiscount";
 import DiscountsTable from "./components/seller/DiscountsTable";
+import UpdateDiscount from "./components/seller/UpdateDiscount";
 
 function App() {
   return (
@@ -116,6 +117,13 @@ function App() {
               exact
               path="/allDiscounts"
               component={DiscountsTable}
+              roles={["ROLE_SELLER"]}
+          />
+
+          <PrivateRoute
+              exact
+              path="/discounts/edit/:id"
+              component={UpdateDiscount}
               roles={["ROLE_SELLER"]}
           />
 

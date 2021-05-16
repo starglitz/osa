@@ -3,7 +3,8 @@ import SprintsAxiosClient from "./clients/SprintsAxiosClient";
 export const DiscountService = {
     addDiscount,
     getDiscountByCurrentSeller,
-    deleteDiscount
+    deleteDiscount,
+    getDiscount
 };
 
 
@@ -18,4 +19,8 @@ async function addDiscount(discount) {
 
 async function deleteDiscount(id) {
     return await SprintsAxiosClient.delete(`http://localhost:8080/discounts/${id}`);
+}
+
+async function getDiscount(id) {
+    return await SprintsAxiosClient.get(`http://localhost:8080/discounts/${id}`);
 }
