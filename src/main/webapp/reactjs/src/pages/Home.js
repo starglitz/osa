@@ -39,7 +39,7 @@ const Home = () => {
     }
 
     const addDiscount = () => {
-        history.push("/addDiscount")
+        history.push("/allDiscounts")
     }
 
 
@@ -72,7 +72,7 @@ const Home = () => {
             </Nav.Link>
 
             <Nav.Link eventKey={3} onClick={addDiscount}>
-                Add new discount
+                Manage discounts
             </Nav.Link>
 
         </>
