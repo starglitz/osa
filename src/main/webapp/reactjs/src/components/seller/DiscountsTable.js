@@ -78,6 +78,15 @@ const DiscountsTable = () => {
         AuthenticationService.logout();
     }
 
+    async function deleteDisc(id) {
+        try {
+            await DiscountService.deleteDiscount(id)
+            setDiscounts((discounts) => discounts.filter(disc => disc.id != id))
+        } catch (error) {
+            console.error(`Error ocurred while deleting discount with id ${id}: ${error}`);
+        }
+    }
+
     return (
         <>
 
@@ -135,7 +144,7 @@ const DiscountsTable = () => {
                             <Button variant="contained" color="primary">Modify</Button>
                         </td>
                         <td>
-                            <Button variant="contained" color="secondary">Delete</Button>
+                            <Button variant="contained" color="secondary" onClick={() => deleteDisc(disc.id)}>Delete</Button>
                         </td>
                     </tr>
 
