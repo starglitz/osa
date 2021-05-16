@@ -87,4 +87,9 @@ public class DiscountServiceImpl implements DiscountService {
     public Discount findById(Long id) {
         return discountRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public void delete(Long id) {
+        discountRepository.deleteById(id);
+    }
 }

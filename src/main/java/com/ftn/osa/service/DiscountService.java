@@ -15,4 +15,6 @@ public interface DiscountService {
     List<DiscountDTO> getByCurrentSeller(Authentication authentication);
 
     Discount findById(Long id);
+
+    void delete(Long id);
 }

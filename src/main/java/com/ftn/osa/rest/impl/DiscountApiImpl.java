@@ -30,4 +30,10 @@ public class DiscountApiImpl implements DiscountApi {
     public ResponseEntity getByCurrentSeller(Authentication authentication) {
         return new ResponseEntity(discountService.getByCurrentSeller(authentication), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity delete(Long id) {
+        discountService.delete(id);
+        return new ResponseEntity("Successfully deleted", HttpStatus.OK);
+    }
 }

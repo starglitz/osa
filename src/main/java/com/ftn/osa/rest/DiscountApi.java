@@ -26,4 +26,8 @@ public interface DiscountApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getByCurrentSeller(Authentication authentication);
 
+    @PreAuthorize("hasRole('SELLER')")
+    @DeleteMapping(value = "/{id}")
+    ResponseEntity delete(@PathVariable("id") Long id);
+
 }
