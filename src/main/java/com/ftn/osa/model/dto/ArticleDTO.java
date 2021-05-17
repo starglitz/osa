@@ -25,16 +25,19 @@ public class ArticleDTO {
     private Long id;
 
     @NotBlank
+    @NotNull
     private String name;
 
     @NotBlank
+    @NotNull
     private String description;
 
     @NotNull
     @Positive
-    private String price;
+    private int price;
 
     @NotBlank
+    @NotNull
     private String path;
 
 

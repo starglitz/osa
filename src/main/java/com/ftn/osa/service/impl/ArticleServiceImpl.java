@@ -82,8 +82,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDTO update(Article article) {
-       // Appointment appointmentJpa = findById(appointment.getAppointment_id()).get();
+
         Article articleJpa = getArticle(article.getId());
+
+        if(articleJpa == null) {
+            return null;
+        }
 
         articleJpa.setName(article.getName());
         articleJpa.setDescription(article.getDescription());
@@ -100,7 +104,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article create(Article article, Authentication authentication) {
+    public ArticleDTO create(ArticleDTO articleDTO, Authentication authentication) {
 
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
@@ -108,9 +112,11 @@ public class ArticleServiceImpl implements ArticleService {
         User user = userRepository.findFirstByUsername(username).get();
         Seller seller = sellerRepository.findById(user.getId()).get();
 
-        article.setSeller(seller);
+        Article article = new Article(articleDTO.getId(), articleDTO.getName(),
+                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(), seller);
+        Article save = articleRepository.save(article);
 
-        return articleRepository.save(article);
+        return articleDTO;
     }
 
 

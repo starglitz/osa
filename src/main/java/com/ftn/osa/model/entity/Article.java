@@ -37,7 +37,7 @@ public class Article {
     @NotNull
     @Positive
     @Column(nullable = false)
-    private String price;
+    private int price;
 
     @Column(nullable = false)
     @NotBlank
@@ -52,7 +52,7 @@ public class Article {
     private Seller seller;
 
     public Article(Long id, @NotBlank String name, @NotBlank String description,
-                   @NotNull @Positive String price, @NotBlank String path,
+                   @NotNull @Positive int price, @NotBlank String path,
                    List<Discount> discounts, Seller seller) {
         this.id = id;
         this.name = name;
@@ -64,7 +64,7 @@ public class Article {
     }
 
     public Article(Long id, @NotBlank String name, @NotBlank String description,
-                   @NotNull @Positive String price, @NotBlank String path,
+                   @NotNull @Positive int price, @NotBlank String path,
                    List<Discount> discounts) {
         this.id = id;
         this.name = name;
@@ -75,7 +75,7 @@ public class Article {
     }
 
     public Article(Long id, @NotBlank String name, @NotBlank String description,
-                   @NotNull @Positive String price, @NotBlank String path) {
+                   @NotNull @Positive int price, @NotBlank String path) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -84,7 +84,7 @@ public class Article {
     }
 
     public Article(Long id, @NotBlank String name, @NotBlank String description,
-                   @NotNull @Positive String price, @NotBlank String path, Seller seller) {
+                   @NotNull @Positive int price, @NotBlank String path, Seller seller) {
         this.id = id;
         this.name = name;
         this.description = description;

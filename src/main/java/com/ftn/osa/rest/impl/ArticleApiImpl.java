@@ -71,18 +71,19 @@ public class ArticleApiImpl implements ArticleApi {
 //            return new ResponseEntity("No such seller! ", HttpStatus.BAD_REQUEST);
 //        }
 
-        Article articletest = articleService.getArticle(articleDTO.getId());
-        if(articletest == null) {
-            return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
-        }
+//        Article articletest = articleService.getArticle(articleDTO.getId());
+//        if(articletest == null) {
+//            return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
+//        }
 
 
-        Article article = new Article(articleDTO.getId(), articleDTO.getName(),
+        Article article = new Article(id, articleDTO.getName(),
                 articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
 
-
-
-//        articleService.update(article);
+        ArticleDTO update = articleService.update(article);
+        if(update == null) {
+            return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(articleService.update(article), HttpStatus.OK);
     }
 
@@ -99,13 +100,8 @@ public class ArticleApiImpl implements ArticleApi {
     @Override
     public ResponseEntity create(@Valid ArticleDTO articleDTO, Authentication authentication) {
 
-        Article article = new Article(articleDTO.getId(), articleDTO.getName(),
-                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
+        ArticleDTO article = articleService.create(articleDTO, authentication);
 
-        Article create = articleService.create(article, authentication);
-        ArticleDTO dto = new ArticleDTO(create);
-
-
-        return new ResponseEntity(dto, HttpStatus.OK);
+        return new ResponseEntity(article, HttpStatus.OK);
     }
 }
