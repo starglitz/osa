@@ -60,22 +60,33 @@ const FinishOrder = () => {
 
     const buy = () => {
 
+        if(order.items.length == 0) {
+            alert("You havent picked any articles!")
+            history.push("/home")
+        }
 
-        let item_ids = []
+        else {
 
-        order.items.forEach(item => item_ids.push({"amount":item.amount,
-            "article":{"id":item.article.id}}));
-        console.log(item_ids)
+            let item_ids = []
 
-        let orderPost = {"archived":false, "anonymous":false, "comment":"",
-            "items":item_ids}
+            order.items.forEach(item => item_ids.push({
+                "amount": item.amount,
+                "article": {"id": item.article.id}
+            }));
+            console.log(item_ids)
+
+            let orderPost = {
+                "archived": false, "anonymous": false, "comment": "",
+                "items": item_ids
+            }
 
 
-        //console.log(order)
-        //JSON.stringify({ items: orderItems });
-        OrderService.addOrder(orderPost);
-        //handleClose()
-        history.push("/home")
+            //console.log(order)
+            //JSON.stringify({ items: orderItems });
+            OrderService.addOrder(orderPost);
+            //handleClose()
+            history.push("/home")
+        }
     }
 
 

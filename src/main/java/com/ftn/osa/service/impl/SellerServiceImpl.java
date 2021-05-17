@@ -114,8 +114,13 @@ public class SellerServiceImpl implements SellerService {
 
         List<Integer> ratings = new ArrayList<>();
         for(OrderDTO order : sellersOrders) {
-            ratings.add(order.getRating());
+            if (order.isDelivered() == true && order.getRating() != 0) {
+                ratings.add(order.getRating());
+            }
         }
+
+        System.out.println("Sellers ratings:");
+        System.out.println(ratings);
 
         return calculateAverage(ratings);
     }
