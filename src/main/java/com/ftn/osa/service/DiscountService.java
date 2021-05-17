@@ -17,4 +17,6 @@ public interface DiscountService {
     Discount findById(Long id);
 
     void delete(Long id);
+
+    String update(DiscountDTO discountDTO);
 }

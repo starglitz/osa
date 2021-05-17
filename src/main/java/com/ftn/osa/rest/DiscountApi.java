@@ -35,4 +35,10 @@ public interface DiscountApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity get(@PathVariable("id") Long id);
 
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity update(@PathVariable("id") Long id,@Valid @RequestBody DiscountDTO discountDTO);
+
+
 }

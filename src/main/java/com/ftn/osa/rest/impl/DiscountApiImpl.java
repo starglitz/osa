@@ -47,4 +47,19 @@ public class DiscountApiImpl implements DiscountApi {
         DiscountDTO dto = new DiscountDTO(discount);
         return new ResponseEntity(dto, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity update(Long id, @Valid DiscountDTO discountDTO) {
+        String status = discountService.update(discountDTO);
+        if(status == "400") {
+            return new ResponseEntity("bad request", HttpStatus.BAD_REQUEST);
+        }
+        else if(status == "404") {
+            return new ResponseEntity("discount with id " + discountDTO.getId() + " not found",
+            HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity("Successfully modified!", HttpStatus.OK);
+        }
+    }
 }

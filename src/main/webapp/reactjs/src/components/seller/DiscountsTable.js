@@ -142,7 +142,7 @@ const DiscountsTable = () => {
                         <td>{disc.description}</td>
                         <td>{disc.percent}</td>
                         <td>
-                            {disc.articles.map(article => <p>{article.name} x{article.amount} </p> )}
+                            {disc.articles.map(article => <p>{article.name} </p> )}
                         </td>
                         <td>
                             <Button variant="contained" color="primary" onClick={() => goToTaskEditPage(disc.id)}>Modify</Button>

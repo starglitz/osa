@@ -92,4 +92,37 @@ public class DiscountServiceImpl implements DiscountService {
     public void delete(Long id) {
         discountRepository.deleteById(id);
     }
+
+    @Override
+    public String update(DiscountDTO discountDTO) {
+        Discount discount = discountRepository.findById(discountDTO.getId()).orElse(null);
+        if(discount == null) {
+            return "404";
+        }
+
+        else if(discountDTO.getArticles().size() == 0) {
+            return "400";
+        }
+
+        List<Article> articles = new ArrayList<>();
+
+        for(ArticleDTO article : discountDTO.getArticles()) {
+            Article articleJpa = articleRepository.findById(article.getId()).orElse(null);
+            if(articleJpa != null) {
+                articles.add(articleJpa);
+            }
+        }
+
+        discount.setArticles(articles);
+        discount.setPercent(discountDTO.getPercent());
+        discount.setDateFrom(discountDTO.getDateFrom());
+        discount.setDateTo(discountDTO.getDateTo());
+        discount.setDescription(discountDTO.getDescription());
+
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(discountDTO);
+        discountRepository.save(discount);
+
+        return "200";
+    }
 }

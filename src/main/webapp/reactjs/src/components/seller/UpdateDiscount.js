@@ -145,8 +145,11 @@ const UpdateDiscount = () => {
 
         let end = document.getElementById('end');
 
+        let description = document.getElementById('description').value
 
-        if(validate(start.valueAsDate, end.valueAsDate)) {
+        let percent = document.getElementById('percent').value
+
+        if(validate(start.valueAsDate, end.valueAsDate, description, percent)) {
 
             let articlesA = [];
             for (const checkbox of selectedCheckboxes) {
@@ -154,13 +157,13 @@ const UpdateDiscount = () => {
             }
 
             const copy = {...discount, articles: articlesA, dateFrom: start.valueAsDate,
-                dateTo: end.valueAsDate};
+                dateTo: end.valueAsDate, description: description, percent: percent};
             console.log(copy)
 
             if(copy.articles.length != 0) {
 
                 try {
-                    await DiscountService.editDiscount(id, discount);
+                    await DiscountService.editDiscount(id, copy);
                     setDiscount({
                         discount_id: "",
                         dateFrom: "",
@@ -177,7 +180,7 @@ const UpdateDiscount = () => {
         }
     }
 
-    const validate = (start, end) => {
+    const validate = (start, end, description, percent) => {
 
         let ok = true;
 
@@ -204,14 +207,14 @@ const UpdateDiscount = () => {
             alert("Start and end date cannot be the same!")
             ok = false;
         }
-        else if(discount.percent > 60 || discount.percent < 1) {
-            console.log(discount.description)
-            console.log(discount.percent)
+        else if(percent > 60 || percent < 1) {
+            // console.log(discount.description)
+            // console.log(discount.percent)
             alert("Discount cant be less than 1 or greater than 60!")
             ok = false;
         }
 
-        else if(discount.description === "" || isNaN(discount.percent)) {
+        else if(description === "" || isNaN(percent)) {
             console.log(discount.description)
             console.log(discount.percent)
             alert("Make sure to fill all fields!")
@@ -239,14 +242,12 @@ const UpdateDiscount = () => {
 
                         <label htmlFor="description" className="label-register">Description:</label>
                         <input defaultValue={discount.description}
-                               onChange={handleFormInputChange("description")}
                                id="description" type="text" placeholder="enter description"
                                className="input-register"/>
 
                         <label htmlFor="percent" className="label-register">Discount percentage:</label>
                         <input defaultValue={discount.percent} id="percent"
-                               type="number" className="input-register"
-                               onChange={handleFormInputChange("percent")}/>
+                               type="number" className="input-register"/>
 
                         <label htmlFor="start" className="label-register">Discount start date:</label>
                         <input defaultValue={discount.dateFrom} id="start" type="date" className="input-register"/>
