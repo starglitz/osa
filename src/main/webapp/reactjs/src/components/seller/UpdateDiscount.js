@@ -3,8 +3,8 @@ import Card from "@material-ui/core/Card";
 import ArticleCardDiscount from "./ArticleCardDiscount";
 import CardActions from "@material-ui/core/CardActions";
 import Checkbox from "./Checkbox";
-import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {useHistory, useParams} from "react-router-dom";
 import {ArticlesService} from "../../services/ArticlesService";
 import {DiscountService} from "../../services/DiscountService";
 import {makeStyles} from "@material-ui/core/styles";
@@ -23,35 +23,92 @@ const useStyles = makeStyles({
 
 const UpdateDiscount = () => {
 
-    const [discount, setDiscount] = useState({});
+    const [discount, setDiscount] = useState({
+        "discount_id": '',
+        "dateFrom": '',
+        "dateTo": '',
+        "description": '',
+        "percent": '',
+        "articles": []
+
+    });
 
     const [articles, setArticles] = useState([]);
 
     const [selectedCheckboxes, setSelectedCheckboxes] = useState(new Set());
+
+    const [rerender, setRerender] = useState(true);
+
+    const history = useHistory();
+
+    const articlesRef = useRef([])
+    const discountRef = useRef({
+        "discount_id": '',
+        "dateFrom": '',
+        "dateTo": '',
+        "description": '',
+        "percent": 0,
+        "articles": []
+    })
 
     const { id } = useParams();
     const classes = useStyles();
 
     useEffect(() => {
         fetchDiscount(id);
-        fetchArticles();
-    }, [id]);
+        fetchArticles(function () {
+            manageSelected()
+        });
+        manageSelected();
+
+    }, []);
+
+
+    function manageSelected() {
+
+
+        // console.log(articlesRef)
+        // console.log(discountRef)
+         let discount_article_ids = [];
+        // console.log(discountRef.current)
+        // console.log("here")
+
+
+        // console.log(articlesDisc)
+         discountRef.current.articles.forEach(article => discount_article_ids.push(article.id));
+        // console.log(articlesDisc)
+        let alreadySelected = new Set()
+
+        articlesRef.current.forEach(article => {if(discount_article_ids.includes(article.id)) {
+            alreadySelected.add(article.id);
+        }});
+
+        setSelectedCheckboxes(alreadySelected);
+
+        setRerender(!rerender)
+
+        console.log("Already selected:")
+        console.log(alreadySelected)
+    }
 
 
     async function fetchDiscount(id) {
         try {
             const response = await DiscountService.getDiscount(id);
             setDiscount(response.data);
+            discountRef.current = response.data
         } catch (error) {
             console.error(`Error while loading discount with id ${id}: ${error}`);
         }
     }
 
-    async function fetchArticles() {
+    async function fetchArticles(_callback) {
         try {
             const response = await ArticlesService.getArticlesByCurrentSeller();
             setArticles(response.data);
+            articlesRef.current = response.data
             console.log(response.data);
+            _callback();
         } catch (error) {
             console.error(`Error loading sellers articles !: ${error}`);
         }
@@ -75,6 +132,98 @@ const UpdateDiscount = () => {
             setSelectedCheckboxes(copy)
             //selectedCheckboxes.add(label);
         }
+    }
+
+
+    async function edit() {
+        console.log("selected items: ")
+        console.log(selectedCheckboxes)
+        console.log("entered")
+
+
+        let start = document.getElementById('start');
+
+        let end = document.getElementById('end');
+
+
+        if(validate(start.valueAsDate, end.valueAsDate)) {
+
+            let articlesA = [];
+            for (const checkbox of selectedCheckboxes) {
+                articlesA.push({"id":checkbox})
+            }
+
+            const copy = {...discount, articles: articlesA, dateFrom: start.valueAsDate,
+                dateTo: end.valueAsDate};
+            console.log(copy)
+
+            if(copy.articles.length != 0) {
+
+                try {
+                    await DiscountService.editDiscount(id, discount);
+                    setDiscount({
+                        discount_id: "",
+                        dateFrom: "",
+                        dateTo: "",
+                        description: "",
+                        percent: 0,
+                        articles: []
+                    });
+                    history.push("/home")
+                } catch (error) {
+                    console.error(`Error ocurred while updating the discount: ${error}`);
+                }
+            }
+        }
+    }
+
+    const validate = (start, end) => {
+
+        let ok = true;
+
+        let today = new Date();
+
+        console.log(start)
+        console.log(end)
+
+        if(start === null || end === null) {
+            alert("Make sure to fill all fields!")
+            ok = false;
+        }
+
+        // else if(start <= today) {
+        //     alert("Start date must be after current date!")
+        //     ok = false;
+        // }
+        else if(end <= start) {
+            alert("End date must be after the start date!")
+            ok = false;
+        }
+
+        else if(start === end) {
+            alert("Start and end date cannot be the same!")
+            ok = false;
+        }
+        else if(discount.percent > 60 || discount.percent < 1) {
+            console.log(discount.description)
+            console.log(discount.percent)
+            alert("Discount cant be less than 1 or greater than 60!")
+            ok = false;
+        }
+
+        else if(discount.description === "" || isNaN(discount.percent)) {
+            console.log(discount.description)
+            console.log(discount.percent)
+            alert("Make sure to fill all fields!")
+            ok = false;
+        }
+
+
+        else if(selectedCheckboxes.size === 0) {
+            alert("You haven't picked any articles!");
+            ok = false;
+        }
+        return ok
     }
 
     return (
@@ -108,7 +257,7 @@ const UpdateDiscount = () => {
                     </div>
                 </div>
                 <br/>
-                <Button variant="contained" color="primary">EDIT</Button>
+                <Button onClick={edit} variant="contained" color="primary">EDIT</Button>
 
             </div>
             <br/>
@@ -131,7 +280,9 @@ const UpdateDiscount = () => {
                                     <Checkbox style={{width:'20px'}}
                                               label={article.id}
                                               handleCheckboxChange={() => toggleCheckbox(article.id)}
-                                              key={article.id}/>
+                                              key={article.id}
+                                              checked={selectedCheckboxes.has(article.id) ? true : false}
+                                    />
                                 </div>
                             </CardActions>
                         </Card>

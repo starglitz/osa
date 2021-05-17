@@ -4,7 +4,8 @@ export const DiscountService = {
     addDiscount,
     getDiscountByCurrentSeller,
     deleteDiscount,
-    getDiscount
+    getDiscount,
+    editDiscount
 };
 
 
@@ -23,4 +24,8 @@ async function deleteDiscount(id) {
 
 async function getDiscount(id) {
     return await SprintsAxiosClient.get(`http://localhost:8080/discounts/${id}`);
+}
+
+async function editDiscount(id, discount) {
+    return await SprintsAxiosClient.put(`http://localhost:8080/discounts/${id}`, discount);
 }
