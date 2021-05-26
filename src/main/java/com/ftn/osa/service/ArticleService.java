@@ -10,19 +10,19 @@ import java.util.List;
 @Service
 public interface ArticleService {
 
-    public List<ArticleDTO> findAll();
+    public List<Article> findAll();
 
-    public List<ArticleDTO> findAllByCurrentSeller(Authentication authentication);
+    public List<Article> findAllByCurrentSeller(Authentication authentication);
 
-    public List<ArticleDTO> findAllBySellerId(Long id);
+    public List<Article> findAllBySellerId(Long id);
 
     public Article getArticle(Long id);
 
-    public ArticleDTO update(Article article);
+    public Article update(Article article);
 
     public void delete(Long id);
 
-    public ArticleDTO create(ArticleDTO article, Authentication authentication);
+    public Article create(Article article, Authentication authentication);
 
 
 }

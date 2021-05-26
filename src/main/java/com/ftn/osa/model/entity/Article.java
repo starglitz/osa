@@ -93,5 +93,11 @@ public class Article {
         this.seller = seller;
     }
 
-
+    public Article(@NotBlank String name, @NotBlank String description,
+                   @NotNull @Positive int price, @NotBlank String path) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.path = path;
+    }
 }

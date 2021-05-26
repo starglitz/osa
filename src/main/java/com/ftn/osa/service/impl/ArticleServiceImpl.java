@@ -35,43 +35,43 @@ public class ArticleServiceImpl implements ArticleService {
     private TokenUtils tokenUtils;
 
     @Override
-    public List<ArticleDTO> findAll() {
+    public List<Article> findAll() {
 
         List<Article> articles = articleRepository.findAll();
-        List<ArticleDTO> articleDtos = new ArrayList<>();
-        for(Article article : articles) {
-            ArticleDTO articleDTO = new ArticleDTO(article);
-            articleDtos.add(articleDTO);
-        }
+//        List<ArticleDTO> articleDtos = new ArrayList<>();
+//        for(Article article : articles) {
+//            ArticleDTO articleDTO = new ArticleDTO(article);
+//            articleDtos.add(articleDTO);
+//        }
 
-        return articleDtos;
+        return articles;
     }
 
     @Override
-    public List<ArticleDTO> findAllByCurrentSeller(Authentication authentication) {
+    public List<Article> findAllByCurrentSeller(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
 
         List<Article> articles = articleRepository.getArticlesByCurrentSellerUsername(username);
-        List<ArticleDTO> articleDtos = new ArrayList<>();
-        for(Article article : articles) {
-            ArticleDTO articleDTO = new ArticleDTO(article);
-            articleDtos.add(articleDTO);
-        }
+//        List<ArticleDTO> articleDtos = new ArrayList<>();
+//        for(Article article : articles) {
+//            ArticleDTO articleDTO = new ArticleDTO(article);
+//            articleDtos.add(articleDTO);
+//        }
 
-        return articleDtos;
+        return articles;
     }
 
     @Override
-    public List<ArticleDTO> findAllBySellerId(Long id) {
+    public List<Article> findAllBySellerId(Long id) {
         List<Article> articles = articleRepository.getArticlesBySellerId(id);
-        List<ArticleDTO> articleDtos = new ArrayList<>();
-        for(Article article : articles) {
-            ArticleDTO articleDTO = new ArticleDTO(article);
-            articleDtos.add(articleDTO);
-        }
+//        List<ArticleDTO> articleDtos = new ArrayList<>();
+//        for(Article article : articles) {
+//            ArticleDTO articleDTO = new ArticleDTO(article);
+//            articleDtos.add(articleDTO);
+//        }
 
-        return articleDtos;
+        return articles;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDTO update(Article article) {
+    public Article update(Article article) {
 
         Article articleJpa = getArticle(article.getId());
 
@@ -95,7 +95,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleJpa.setPath(article.getPath());
 
         Article save = articleRepository.save(articleJpa);
-        return new ArticleDTO(save);
+        return save;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDTO create(ArticleDTO articleDTO, Authentication authentication) {
+    public Article create(Article article, Authentication authentication) {
 
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
@@ -112,11 +112,10 @@ public class ArticleServiceImpl implements ArticleService {
         User user = userRepository.findFirstByUsername(username).get();
         Seller seller = sellerRepository.findById(user.getId()).get();
 
-        Article article = new Article(articleDTO.getId(), articleDTO.getName(),
-                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath(), seller);
+        article.setSeller(seller);
         Article save = articleRepository.save(article);
 
-        return articleDTO;
+        return article;
     }
 
 

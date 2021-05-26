@@ -38,7 +38,13 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity getAllArticles() {
-        return new ResponseEntity(articleService.findAll(), HttpStatus.OK);
+        List<Article> articles = articleService.findAll();
+        List<ArticleDTO> articleDtos = new ArrayList<>();
+        for(Article article : articles) {
+            ArticleDTO articleDTO = new ArticleDTO(article);
+            articleDtos.add(articleDTO);
+        }
+        return new ResponseEntity(articleDtos, HttpStatus.OK);
     }
 
     @Override
@@ -54,13 +60,26 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity getArticlesByCurrentSeller(Authentication authentication) {
+
+        List<Article> articles = articleService.findAllByCurrentSeller(authentication);
+        List<ArticleDTO> articleDtos = new ArrayList<>();
+        for(Article article : articles) {
+            ArticleDTO articleDTO = new ArticleDTO(article);
+            articleDtos.add(articleDTO);
+        }
         System.out.println(" entered api method!!!!!");
-        return new ResponseEntity(articleService.findAllByCurrentSeller(authentication), HttpStatus.OK);
+        return new ResponseEntity(articleDtos, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getArticlesBySeller(Long id) {
-        return new ResponseEntity(articleService.findAllBySellerId(id), HttpStatus.OK);
+        List<Article> articles = articleService.findAllBySellerId(id);
+        List<ArticleDTO> articleDtos = new ArrayList<>();
+        for(Article article : articles) {
+            ArticleDTO articleDTO = new ArticleDTO(article);
+            articleDtos.add(articleDTO);
+        }
+        return new ResponseEntity(articleDtos, HttpStatus.OK);
     }
 
     @Override
@@ -80,7 +99,7 @@ public class ArticleApiImpl implements ArticleApi {
         Article article = new Article(id, articleDTO.getName(),
                 articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
 
-        ArticleDTO update = articleService.update(article);
+        Article update = articleService.update(article);
         if(update == null) {
             return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
         }
@@ -99,9 +118,13 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity create(@Valid ArticleDTO articleDTO, Authentication authentication) {
+//@NotBlank String name, @NotBlank String description,
+//                   @NotNull @Positive int price, @NotBlank String path
+        Article article = new Article(articleDTO.getName(),
+                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
 
-        ArticleDTO article = articleService.create(articleDTO, authentication);
+        Article create = articleService.create(article, authentication);
 
-        return new ResponseEntity(article, HttpStatus.OK);
+        return new ResponseEntity(articleDTO, HttpStatus.OK);
     }
 }
