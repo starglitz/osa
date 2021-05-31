@@ -19,6 +19,6 @@ public class OrderItemApiImpl implements OrderItemApi {
     @Override
     public ResponseEntity<OrderItem> add(OrderItemDTO orderItem, Authentication authentication) {
         System.out.println(orderItem);
-        return new ResponseEntity("test", HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

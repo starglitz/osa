@@ -7,6 +7,7 @@ import com.ftn.osa.model.entity.*;
 import com.ftn.osa.rest.OrderApi;
 import com.ftn.osa.service.*;
 import org.apache.coyote.Response;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -83,43 +84,72 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public ResponseEntity getOrdersByUser(Authentication authentication) {
-        return new ResponseEntity(orderService.findByUser(authentication),HttpStatus.OK);
+        List<Order> orders = orderService.findByUser(authentication);
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for(Order order : orders) {
+            OrderDTO orderDTO = new OrderDTO(order);
+            orderDTOS.add(orderDTO);
+        }
+        return new ResponseEntity(orderDTOS,HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity update(Long id, @Valid OrderUpdateDTO orderDTO) {
-        return new ResponseEntity(orderService.update(orderDTO), HttpStatus.OK);
+        Order order = new Order(id, orderDTO.isDelivered(), orderDTO.getRating(), orderDTO.getComment(),
+                orderDTO.isAnonymous(), orderDTO.isArchived());
+        order = orderService.update(order);
+        return new ResponseEntity(orderDTO, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getOrdersBySellerId(Long id) {
-        System.out.println("DOES THIS WOOOOORRRKKKKKKK!?!?!?!?!");
         double rating = sellerService.findAverageSellerRating(id);
-        System.out.println("SELLER RATING: " + rating);
-        return new ResponseEntity(orderService.findBySellerId(id), HttpStatus.OK);
+
+        List<Order> orders = orderService.findBySellerId(id);
+
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for(Order order : orders) {
+            OrderDTO orderDTO = new OrderDTO(order);
+            orderDTOS.add(orderDTO);
+        }
+
+        return new ResponseEntity(orderDTOS, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getOrdersByCurrentSeller(Authentication authentication) {
-        return new ResponseEntity(orderService.findByCurrentSeller(authentication), HttpStatus.OK);
+
+        List<Order> orders = orderService.findByCurrentSeller(authentication);
+
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        for(Order order : orders) {
+            OrderDTO orderDTO = new OrderDTO(order);
+            orderDTOS.add(orderDTO);
+        }
+
+        return new ResponseEntity(orderDTOS, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity setDelivered(Long id, @Valid OrderDTO orderDTO) {
-        boolean ok = orderService.setDelivered(orderDTO);
-        if(ok) {
-            return new ResponseEntity("Successfuly set to delivered", HttpStatus.OK);
+        Order order = orderService.findById(id);
+        if(order == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity("Bad data sent", HttpStatus.BAD_REQUEST);
+
+        order = orderService.setDelivered(order);
+
+        return new ResponseEntity(HttpStatus.OK);
 
     }
 
     @Override
     public ResponseEntity<OrderDTO> setArchived(Long id, @Valid OrderDTO orderDTO) {
-        boolean ok = orderService.setArchived(orderDTO);
-        if(ok) {
-            return new ResponseEntity("Successfuly archived", HttpStatus.OK);
+        Order order = orderService.findById(id);
+        if(order == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity("Bad data sent", HttpStatus.BAD_REQUEST);
+        order = orderService.setArchived(order);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

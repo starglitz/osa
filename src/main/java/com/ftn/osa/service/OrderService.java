@@ -13,15 +13,17 @@ public interface OrderService {
 
     Order save(Order order);
 
-    List<OrderDTO> findByUser(Authentication authentication);
+    List<Order> findByUser(Authentication authentication);
 
-    OrderUpdateDTO update(OrderUpdateDTO orderDTO);
+    Order update(Order order);
 
-    List<OrderDTO> findBySellerId(Long id);
+    List<Order> findBySellerId(Long id);
 
-    List<OrderDTO> findByCurrentSeller(Authentication authentication);
+    Order findById(Long id);
 
-   boolean setDelivered(OrderDTO orderDTO);
+    List<Order> findByCurrentSeller(Authentication authentication);
 
-    boolean setArchived(OrderDTO orderDTO);
+    Order setDelivered(Order order);
+
+    Order setArchived(Order order);
 }

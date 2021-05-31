@@ -35,86 +35,77 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> findByUser(Authentication authentication) {
+    public List<Order> findByUser(Authentication authentication) {
         System.out.println("before orders");
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         System.out.println(userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
 
         List<Order> orders = orderRepository.findByUserUsername(username);
-        System.out.println("after getting jpa orders");
+//        System.out.println("after getting jpa orders");
+//
+//        List<OrderDTO> orderDtos = new ArrayList<>();
+//        for(Order order : orders) {
+//            OrderDTO orderDTO = new OrderDTO(order);
+//            orderDtos.add(orderDTO);
+//        }
 
-        List<OrderDTO> orderDtos = new ArrayList<>();
-        for(Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO(order);
-            orderDtos.add(orderDTO);
-        }
-
-        return orderDtos;
+        return orders;
     }
 
 
 
     @Override
-    public OrderUpdateDTO update(OrderUpdateDTO orderDTO) {
+    public Order update(Order update) {
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!1");
-        System.out.println(orderDTO);
-        Order order = orderRepository.findById(orderDTO.getId()).get();
-        order.setDelivered(orderDTO.isDelivered());
-        order.setComment(orderDTO.getComment());
-        order.setRating(orderDTO.getRating());
-        order.setAnonymous(orderDTO.isAnonymous());
-        order.setArchived(orderDTO.isArchived());
-
+        Order order = orderRepository.findById(update.getId()).get();
+        order.setDelivered(update.isDelivered());
+        order.setComment(update.getComment());
+        order.setRating(update.getRating());
+        order.setAnonymous(update.isAnonymous());
+        order.setArchived(update.isArchived());
 
         orderRepository.save(order);
-        return orderDTO;
+        return order;
     }
 
     @Override
-    public boolean setDelivered(OrderDTO orderDTO) {
-        boolean ok = true;
-        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
-        if(order == null) {
-            ok = false;
-        }
-        else {
-            order.setDelivered(true);
-            orderRepository.save(order);
-        }
-        return ok;
+    public Order setDelivered(Order order) {
+
+        order.setDelivered(true);
+        order = orderRepository.save(order);
+
+        return order;
     }
 
     @Override
-    public boolean setArchived(OrderDTO orderDTO) {
-        boolean ok = true;
-        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
-        if(order == null) {
-            ok = false;
-        }
-        else {
-            order.setArchived(true);
-            orderRepository.save(order);
-        }
-        return ok;
+    public Order setArchived(Order order) {
+
+        order.setArchived(true);
+        order = orderRepository.save(order);
+        return order;
     }
 
     @Override
-    public List<OrderDTO> findBySellerId(Long id) {
+    public List<Order> findBySellerId(Long id) {
         List<Order> orders = orderRepository.findBySellerId(id);
 
-        List<OrderDTO> orderDTOS = new ArrayList<>();
-        for(Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO(order);
-            orderDTOS.add(orderDTO);
-        }
+//        List<OrderDTO> orderDTOS = new ArrayList<>();
+//        for(Order order : orders) {
+//            OrderDTO orderDTO = new OrderDTO(order);
+//            orderDTOS.add(orderDTO);
+//        }
 
-        return orderDTOS;
+        return orders;
     }
 
     @Override
-    public List<OrderDTO> findByCurrentSeller(Authentication authentication) {
+    public Order findById(Long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Order> findByCurrentSeller(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
         System.out.println("USER USERNAME: " + username);
@@ -122,13 +113,13 @@ public class OrderServiceImpl implements OrderService {
         Seller seller = sellerRepository.findByUsername(username).get();
         System.out.println("SELLER: " + seller);
         List<Order> orders = orderRepository.findBySellerId(seller.getId());
-        List<OrderDTO> orderDTOS = new ArrayList<>();
-        for(Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO(order);
-            orderDTOS.add(orderDTO);
-        }
+//        List<OrderDTO> orderDTOS = new ArrayList<>();
+//        for(Order order : orders) {
+//            OrderDTO orderDTO = new OrderDTO(order);
+//            orderDTOS.add(orderDTO);
+//        }
 
-        return orderDTOS;
+        return orders;
     }
 
 }

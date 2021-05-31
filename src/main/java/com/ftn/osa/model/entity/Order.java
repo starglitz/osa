@@ -41,4 +41,12 @@ public class Order {
     private List<OrderItem> items = new ArrayList<>();
 
 
+    public Order(Long id, boolean delivered, int rating, String comment, boolean anonymous, boolean archived) {
+        this.delivered = delivered;
+        this.rating = rating;
+        this.comment = comment;
+        this.anonymous = anonymous;
+        this.archived = archived;
+        this.id = id;
+    }
 }
