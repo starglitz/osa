@@ -74,6 +74,10 @@ const DiscountsTable = () => {
         history.push("/allDiscounts")
     }
 
+    const addDiscount = () => {
+        history.push("/addDiscount")
+    }
+
     const logout = () => {
         AuthenticationService.logout();
     }
@@ -109,8 +113,12 @@ const DiscountsTable = () => {
                         Add new article
                     </Nav.Link>
 
+                    <Nav.Link eventKey={3} onClick={addDiscount}>
+                        Add new discount
+                    </Nav.Link>
+
                     <Nav.Link eventKey={3} onClick={manageDisc}>
-                        ManageDiscounts
+                        Manage Discounts
                     </Nav.Link>
 
 

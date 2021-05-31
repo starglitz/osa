@@ -104,33 +104,10 @@ const CreateArticle = () => {
     };
 
 
-
-    // const onFileChangeHandler = (e) => {
-    //     e.preventDefault();
-    //     setSelectedFile(e.target.files[0])
-    //
-    //     const formData = new FormData();
-    //     const selected = document.getElementById('img').files[0];
-    //     formData.append('file', selected);
-    //     console.log(selected)
-    //     //console.log(selectedFile)
-    //    // console.log(e.target.files[0])
-    //     ApiService.upload(formData)
-    //         .then(res => {
-    //             console.log(res.data);
-    //             alert("File uploaded successfully.")
-    //         })
-    //         .catch(error => {
-    //             console.log(error)
-    //         })
-    // };
-
-
-
     return (
         <>
             <div className="edit-article-div">
-                <h1>Edit article</h1>
+                <h1>Add new article</h1>
                 <Form action="./upload?${_csrf.parameterName}=${_csrf.token}">
                     <Form.Group>
                         <Form.Label>Name</Form.Label>

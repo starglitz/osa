@@ -13,7 +13,7 @@ import {useHistory} from "react-router-dom";
 const useStyles = makeStyles({
     root: {
         width:250,
-        height:460,
+        height:480,
         backgroundColor:'aliceblue',
         borderRadius:'10px',
         boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
@@ -47,7 +47,7 @@ const SellerCard = (props) => {
                     image={img}
                     title="Contemplative Reptile"
                 />
-                <CardContent>
+                <CardContent style={{height:'190px'}}>
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.sellerName}
                     </Typography>
@@ -66,15 +66,17 @@ const SellerCard = (props) => {
                     </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActions>
+            <div style={{position:'relative'}}>
+            <CardActions style={{position:'relative'}}>
                 <Button
                     onClick={showArticles}
                     variant="contained"
                     color="default"
-                    className={classes.button} style={{margin:'0 auto', marginBottom:'10px'}}>
+                    className={classes.button} style={{margin:'0 auto', marginBottom:'10px', position:"absolute", left:'20px'}}>
                     ORDER
                 </Button>
             </CardActions>
+            </div>
         </Card>
     );
 }
