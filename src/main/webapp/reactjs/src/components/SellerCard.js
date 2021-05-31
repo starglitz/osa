@@ -36,6 +36,8 @@ const SellerCard = (props) => {
         });
     }
 
+    console.log(props.rating)
+
     return (
         <Card className={classes.root} >
             <CardActionArea>
@@ -62,7 +64,8 @@ const SellerCard = (props) => {
                         address: {props.address}
                     </Typography>
                     <Typography variant="body2"  component="p">
-                        average rating: {props.rating}
+                        {props.rating != 0? <p>average rating: {props.rating} </p>
+                            : <p> This seller is not rated yet</p>    }
                     </Typography>
                 </CardContent>
             </CardActionArea>
