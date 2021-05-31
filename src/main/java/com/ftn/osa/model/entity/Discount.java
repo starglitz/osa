@@ -58,6 +58,17 @@ public class Discount {
         this.seller = seller;
         this.articles = articles;
     }
+
+    public Discount(Long id, @NotNull int percent, @NotNull LocalDate dateFrom,
+                    @NotNull LocalDate dateTo, @NotBlank String description,
+                    List<Article> articles) {
+        this.id = id;
+        this.percent = percent;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.description = description;
+        this.articles = articles;
+    }
 }
 
 

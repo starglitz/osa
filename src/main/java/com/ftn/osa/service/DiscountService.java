@@ -10,13 +10,13 @@ import java.util.List;
 @Service
 public interface DiscountService {
 
-    boolean addDiscount(DiscountDTO discountDTO, Authentication authentication);
+    Discount addDiscount(Discount discount);
 
-    List<DiscountDTO> getByCurrentSeller(Authentication authentication);
+    List<Discount> getByCurrentSeller(Authentication authentication);
 
     Discount findById(Long id);
 
     void delete(Long id);
 
-    String update(DiscountDTO discountDTO);
+    Discount update(Discount discount);
 }

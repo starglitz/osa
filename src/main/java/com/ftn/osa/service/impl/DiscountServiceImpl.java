@@ -30,57 +30,49 @@ public class DiscountServiceImpl implements DiscountService {
     private SellerRepository sellerRepository;
 
     @Override
-    public boolean addDiscount(DiscountDTO discountDTO, Authentication authentication) {
+    public Discount addDiscount(Discount discount) {
 
-        UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        String username = userPrincipal.getUsername();
-        Seller seller = sellerRepository.findByUsername(username).orElse(null);
+//        UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
+//        String username = userPrincipal.getUsername();
+//        Seller seller = sellerRepository.findByUsername(username).orElse(null);
+//
+//        if(seller == null) {
+//            return false;
+//        }
+//
+//        if(discountDTO.getArticles().size() == 0) {
+//            return false;
+//        }
+//
+//        List<Article> articles = new ArrayList<>();
+//
+//        for(ArticleDTO article : discountDTO.getArticles()) {
+//            Article articleJpa = articleRepository.findById(article.getId()).orElse(null);
+//            if(articleJpa != null) {
+//                articles.add(articleJpa);
+//            }
+//        }
+//
+//        if(discountDTO.getArticles().size() != articles.size()) {
+//            return false;
+//        }
+//
+//        Discount discount = new Discount(discountDTO.getPercent(), discountDTO.getDateFrom(),
+//                discountDTO.getDateTo(), discountDTO.getDescription(), seller,
+//                articles);
 
-        if(seller == null) {
-            return false;
-        }
 
-        if(discountDTO.getArticles().size() == 0) {
-            return false;
-        }
-
-        List<Article> articles = new ArrayList<>();
-
-        for(ArticleDTO article : discountDTO.getArticles()) {
-            Article articleJpa = articleRepository.findById(article.getId()).orElse(null);
-            if(articleJpa != null) {
-                articles.add(articleJpa);
-            }
-        }
-
-        if(discountDTO.getArticles().size() != articles.size()) {
-            return false;
-        }
-
-        Discount discount = new Discount(discountDTO.getPercent(), discountDTO.getDateFrom(),
-                discountDTO.getDateTo(), discountDTO.getDescription(), seller,
-                articles);
-
-        discountRepository.save(discount);
-        return true;
+        return discountRepository.save(discount);
     }
 
     @Override
-    public List<DiscountDTO> getByCurrentSeller(Authentication authentication) {
+    public List<Discount> getByCurrentSeller(Authentication authentication) {
 
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
         Seller seller = sellerRepository.findByUsername(username).orElse(null);
 
-        List<Discount> discounts = discountRepository.findBySellerId(seller.getId());
-        List<DiscountDTO> discountDTOS = new ArrayList<>();
-        for(Discount discount : discounts) {
-
-            DiscountDTO discountDTO = new DiscountDTO(discount);
-            discountDTOS.add(discountDTO);
-        }
-
-        return discountDTOS;
+        return discountRepository.findBySellerId(seller.getId());
     }
 
     @Override
@@ -94,35 +86,32 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public String update(DiscountDTO discountDTO) {
-        Discount discount = discountRepository.findById(discountDTO.getId()).orElse(null);
-        if(discount == null) {
-            return "404";
-        }
+    public Discount update(Discount update) {
+        Discount discount = discountRepository.findById(update.getId()).orElse(null);
+//        if(discount == null) {
+//            return "404";
+//        }
+//
+//        else if(discountDTO.getArticles().size() == 0) {
+//            return "400";
+//        }
+//
+//        List<Article> articles = new ArrayList<>();
+//
+//        for(ArticleDTO article : discountDTO.getArticles()) {
+//            Article articleJpa = articleRepository.findById(article.getId()).orElse(null);
+//            if(articleJpa != null) {
+//                articles.add(articleJpa);
+//            }
+//        }
 
-        else if(discountDTO.getArticles().size() == 0) {
-            return "400";
-        }
+        discount.setArticles(update.getArticles());
+        discount.setPercent(update.getPercent());
+        discount.setDateFrom(update.getDateFrom());
+        discount.setDateTo(update.getDateTo());
+        discount.setDescription(update.getDescription());
 
-        List<Article> articles = new ArrayList<>();
 
-        for(ArticleDTO article : discountDTO.getArticles()) {
-            Article articleJpa = articleRepository.findById(article.getId()).orElse(null);
-            if(articleJpa != null) {
-                articles.add(articleJpa);
-            }
-        }
-
-        discount.setArticles(articles);
-        discount.setPercent(discountDTO.getPercent());
-        discount.setDateFrom(discountDTO.getDateFrom());
-        discount.setDateTo(discountDTO.getDateTo());
-        discount.setDescription(discountDTO.getDescription());
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(discountDTO);
-        discountRepository.save(discount);
-
-        return "200";
+        return discountRepository.save(discount);
     }
 }

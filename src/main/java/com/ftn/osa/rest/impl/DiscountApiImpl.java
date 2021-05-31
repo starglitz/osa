@@ -1,9 +1,14 @@
 package com.ftn.osa.rest.impl;
 
+import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.DiscountDTO;
+import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Discount;
+import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.rest.DiscountApi;
+import com.ftn.osa.service.ArticleService;
 import com.ftn.osa.service.DiscountService;
+import com.ftn.osa.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DiscountApiImpl implements DiscountApi {
@@ -18,18 +25,49 @@ public class DiscountApiImpl implements DiscountApi {
     @Autowired
     private DiscountService discountService;
 
+    @Autowired
+    private ArticleService articleService;
+
+    @Autowired
+    private SellerService sellerService;
+
     @Override
     public ResponseEntity add(@Valid DiscountDTO discountDTO, Authentication authentication) {
-        boolean ok = discountService.addDiscount(discountDTO, authentication);
-        if(!ok) {
-            return new ResponseEntity("Bad data sent", HttpStatus.BAD_REQUEST);
+
+        List<Article> articles = new ArrayList<>();
+
+        if(discountDTO.getArticles().size() == 0) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+
+
+        for(ArticleDTO article : discountDTO.getArticles()) {
+            Article articleJpa = articleService.getArticle(article.getId());
+            if(articleJpa != null) {
+                articles.add(articleJpa);
+            }
+        }
+
+        Seller seller = sellerService.getLoggedIn(authentication);
+
+        Discount discount = new Discount(discountDTO.getPercent(), discountDTO.getDateFrom(),
+                discountDTO.getDateTo(), discountDTO.getDescription(), seller,
+                articles);
+
+        discount = discountService.addDiscount(discount);
+
         return new ResponseEntity(discountDTO, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getByCurrentSeller(Authentication authentication) {
-        return new ResponseEntity(discountService.getByCurrentSeller(authentication), HttpStatus.OK);
+        List<Discount> discounts = discountService.getByCurrentSeller(authentication);
+        List<DiscountDTO> discountDTOS = new ArrayList<>();
+        for(Discount discount : discounts) {
+            DiscountDTO discountDTO = new DiscountDTO(discount);
+            discountDTOS.add(discountDTO);
+        }
+        return new ResponseEntity(discountDTOS, HttpStatus.OK);
     }
 
     @Override
@@ -50,16 +88,25 @@ public class DiscountApiImpl implements DiscountApi {
 
     @Override
     public ResponseEntity update(Long id, @Valid DiscountDTO discountDTO) {
-        String status = discountService.update(discountDTO);
-        if(status == "400") {
-            return new ResponseEntity("bad request", HttpStatus.BAD_REQUEST);
+
+        Discount discount = discountService.findById(id);
+        if(discount == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        else if(status == "404") {
-            return new ResponseEntity("discount with id " + discountDTO.getId() + " not found",
-            HttpStatus.NOT_FOUND);
+
+        List<Article> articles = new ArrayList<>();
+
+        for(ArticleDTO article : discountDTO.getArticles()) {
+            Article articleJpa = articleService.getArticle(article.getId());
+            if(articleJpa != null) {
+                articles.add(articleJpa);
+            }
         }
-        else {
-            return new ResponseEntity("Successfully modified!", HttpStatus.OK);
-        }
+
+        Discount update = new Discount(id, discountDTO.getPercent(), discountDTO.getDateFrom(),
+                discountDTO.getDateTo(), discountDTO.getDescription(), articles);
+
+        Discount updatedJpa = discountService.update(update);
+        return  new ResponseEntity(discountDTO, HttpStatus.OK);
     }
 }
