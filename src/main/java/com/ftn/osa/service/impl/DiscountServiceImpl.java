@@ -31,37 +31,6 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Discount addDiscount(Discount discount) {
-
-//        UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-//        String username = userPrincipal.getUsername();
-//        Seller seller = sellerRepository.findByUsername(username).orElse(null);
-//
-//        if(seller == null) {
-//            return false;
-//        }
-//
-//        if(discountDTO.getArticles().size() == 0) {
-//            return false;
-//        }
-//
-//        List<Article> articles = new ArrayList<>();
-//
-//        for(ArticleDTO article : discountDTO.getArticles()) {
-//            Article articleJpa = articleRepository.findById(article.getId()).orElse(null);
-//            if(articleJpa != null) {
-//                articles.add(articleJpa);
-//            }
-//        }
-//
-//        if(discountDTO.getArticles().size() != articles.size()) {
-//            return false;
-//        }
-//
-//        Discount discount = new Discount(discountDTO.getPercent(), discountDTO.getDateFrom(),
-//                discountDTO.getDateTo(), discountDTO.getDescription(), seller,
-//                articles);
-
-
         return discountRepository.save(discount);
     }
 
@@ -88,22 +57,6 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public Discount update(Discount update) {
         Discount discount = discountRepository.findById(update.getId()).orElse(null);
-//        if(discount == null) {
-//            return "404";
-//        }
-//
-//        else if(discountDTO.getArticles().size() == 0) {
-//            return "400";
-//        }
-//
-//        List<Article> articles = new ArrayList<>();
-//
-//        for(ArticleDTO article : discountDTO.getArticles()) {
-//            Article articleJpa = articleRepository.findById(article.getId()).orElse(null);
-//            if(articleJpa != null) {
-//                articles.add(articleJpa);
-//            }
-//        }
 
         discount.setArticles(update.getArticles());
         discount.setPercent(update.getPercent());
