@@ -34,13 +34,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO getLoggedIn(Authentication authentication) {
+    public Customer getLoggedIn(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         Customer customer = customerRepository.findByUsername(username).get();
-        CustomerDTO customerDTO = new CustomerDTO(customer);
-        return customerDTO;
+        //CustomerDTO customerDTO = new CustomerDTO(customer);
+        return customer;
     }
 
     @Override

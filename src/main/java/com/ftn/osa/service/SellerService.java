@@ -11,9 +11,9 @@ import java.util.List;
 @Service
 public interface SellerService {
 
-    List<SellerListDTO> getAllSellerListDTO();
+    List<Seller> getAll();
 
-    SellerDTO getLoggedIn(Authentication authentication);
+    Seller getLoggedIn(Authentication authentication);
 
     boolean update(Seller seller, String validatePassword);
 

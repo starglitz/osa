@@ -11,7 +11,7 @@ public interface CustomerService{
 
     Customer findById(Long id);
 
-    CustomerDTO getLoggedIn(Authentication authentication);
+    Customer getLoggedIn(Authentication authentication);
 
     boolean update(Customer customer, String passwordValidate);
 

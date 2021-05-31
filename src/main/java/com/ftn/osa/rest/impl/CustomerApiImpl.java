@@ -30,7 +30,8 @@ public class CustomerApiImpl implements CustomerApi {
 
     @Override
     public ResponseEntity getLoggedIn(Authentication authentication) {
-        return new ResponseEntity(customerService.getLoggedIn(authentication), HttpStatus.OK);
+        CustomerDTO dto = new CustomerDTO(customerService.getLoggedIn(authentication));
+        return new ResponseEntity(dto, HttpStatus.OK);
     }
 
     @Override

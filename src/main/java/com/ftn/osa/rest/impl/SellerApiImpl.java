@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class SellerApiImpl implements SellerApi {
@@ -38,7 +40,19 @@ public class SellerApiImpl implements SellerApi {
 
     @Override
     public ResponseEntity getAllSellers() {
-            return new ResponseEntity(sellerService.getAllSellerListDTO(), HttpStatus.OK);
+
+        List<Seller> sellers = sellerService.getAll();
+
+        List<SellerListDTO> sellersForShow = new ArrayList<>();
+        for(Seller seller : sellers) {
+            SellerListDTO sellerForShow = new SellerListDTO(seller);
+
+            double rating = sellerService.findAverageSellerRating(seller.getId());
+            sellerForShow.setRating(rating);
+            sellersForShow.add(sellerForShow);
+        }
+
+        return new ResponseEntity(sellersForShow, HttpStatus.OK);
     }
 
     @Override
@@ -57,7 +71,8 @@ public class SellerApiImpl implements SellerApi {
 
     @Override
     public ResponseEntity getLoggedIn(Authentication authentication) {
-        return new ResponseEntity(sellerService.getLoggedIn(authentication), HttpStatus.OK);
+        SellerDTO sellerDTO = new SellerDTO(sellerService.getLoggedIn(authentication));
+        return new ResponseEntity(sellerDTO, HttpStatus.OK);
     }
 
     @Override

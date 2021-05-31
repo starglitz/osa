@@ -3,6 +3,7 @@ package com.ftn.osa.service.impl;
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.SellerListDTO;
+import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.repository.SellerRepository;
@@ -37,29 +38,18 @@ public class SellerServiceImpl implements SellerService {
 
 
     @Override
-    public List<SellerListDTO> getAllSellerListDTO() {
-        List<Seller> sellers = sellerRepository.findAll();
-
-        List<SellerListDTO> sellersForShow = new ArrayList<>();
-        for(Seller seller : sellers) {
-            SellerListDTO sellerForShow = new SellerListDTO(seller);
-
-            double rating = findAverageSellerRating(seller.getId());
-            sellerForShow.setRating(rating);
-            sellersForShow.add(sellerForShow);
-        }
-
-        return sellersForShow;
+    public List<Seller> getAll() {
+        return sellerRepository.findAll();
     }
 
     @Override
-    public SellerDTO getLoggedIn(Authentication authentication) {
+    public Seller getLoggedIn(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         Seller seller = sellerRepository.findByUsername(username).get();
-        SellerDTO sellerDTO = new SellerDTO(seller);
-        return sellerDTO;
+        //SellerDTO sellerDTO = new SellerDTO(seller);
+        return seller;
     }
 
     @Override
@@ -128,10 +118,10 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public double findAverageSellerRating(Long sellerId) {
-        List<OrderDTO> sellersOrders = orderService.findBySellerId(sellerId);
+        List<Order> sellersOrders = orderService.findBySellerId(sellerId);
 
         List<Integer> ratings = new ArrayList<>();
-        for(OrderDTO order : sellersOrders) {
+        for(Order order : sellersOrders) {
             if (order.isDelivered() == true && order.getRating() != 0) {
                 ratings.add(order.getRating());
             }
