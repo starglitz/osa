@@ -80,8 +80,8 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/registerCustomer").permitAll()
-                .antMatchers(HttpMethod.POST, "/registerSeller").permitAll()
+                .antMatchers(HttpMethod.POST, "/sellers").permitAll()
+                .antMatchers(HttpMethod.POST, "/customers").permitAll()
                 .antMatchers(HttpMethod.POST, "/upload").permitAll()
                 .anyRequest().authenticated();
 

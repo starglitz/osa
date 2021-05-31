@@ -18,10 +18,6 @@ public interface UserService {
 
     User createUser(UserDTO userDTO);
 
-    Customer createCustomer(CustomerDTO customerDTO);
-
-    Seller createSeller(SellerDTO sellerDTO);
-
     List<User> findAll();
 
     User update(UserListDTO userDTO);

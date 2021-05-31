@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button} from "@material-ui/core";
 import {CustomersService} from "../services/CustomersService";
 import {SellersService} from "../services/SellersService";
@@ -9,6 +9,7 @@ const RegisterForm = () => {
 
     const [role, setRole] = useState('customer');
     const [showAlert, setShowAlert] = useState({ success: null, message: "" });
+    const [error, setError] = useState('');
 
     let sameData = <>
         <div style={{margin: '0 auto', display: 'flex',
@@ -59,6 +60,9 @@ const RegisterForm = () => {
         }
     }
 
+    useEffect(() => {
+    }, [error]);
+
 
     const renderAuthButton = () => {
 
@@ -96,16 +100,19 @@ const RegisterForm = () => {
         let ok = true;
         if(password === ""  || confirm === "" || name === "" || surname === "" || address=== "") {
             ok = false;
-            alert("Make sure to fill all fields!")
+            //alert("Make sure to fill all fields!")
+            setError("Make sure to fill all fields!")
         }
 
         else if(password.length < 8) {
             ok = false;
-            alert("Password should be at least 8 characters long! 😡")
+            //alert("Password should be at least 8 characters long! 😡")
+            setError("Password should be at least 8 characters long 😡")
         }
         else if(password !== confirm) {
             ok = false;
-            alert("Passwords don't match!")
+            setError("Passwords don't match")
+            //alert("Passwords don't match!")
         }
 
         return ok;
@@ -117,16 +124,20 @@ const RegisterForm = () => {
         if (email === "" || address === "" || seller_name === "" ||
             password === "" || confirm === "" || username==="" || name === "" || surname === "") {
             ok = false;
-            alert("Make sure to fill all fields!")
+            setError("Make sure to fill all fields!")
+            //alert("Make sure to fill all fields!")
         } else if (password.length < 8) {
             ok = false;
-            alert("Password should be at least 8 characters long! 😡")
+            setError("Password should be at least 8 characters long 😡")
+            //alert("Password should be at least 8 characters long! 😡")
         } else if (password !== confirm) {
             ok = false;
-            alert("Passwords don't match!")
+            setError("Passwords don't match")
+            //alert("Passwords don't match!")
         } else if (validateEmail(email) === false) {
             ok = false;
-            alert("You have entered an invalid email address!")
+            setError("You have entered an invalid email address")
+            //alert("You have entered an invalid email address!")
         }
         return ok;
     }
@@ -156,15 +167,24 @@ const RegisterForm = () => {
          try {
              await CustomersService.addCustomer(customer);
              setShowAlert({ success: true, message: "Successfully registered" });
+             alert("successfully registered! log in before u start using the website")
+             window.location.assign("/");
          } catch (error) {
-             console.error(`Greška prilikom dodavanja novog zadataka: ${error}`);
+             if(error.response.status === 409) {
+                 console.log("its 409")
+                 //alert("Username you entered is already taken! Make sure you")
+                 setError("Username you entered is already taken")
+             }
+             else if(error.response.status === 400) {
+                 alert("Data you entered is invalid!")
+             }
+             console.error(`Error: ${error.status}`);
              setShowAlert({
                  success: false,
                  message: "Error ocurred while registering",
              });
          }
-         alert("successfully registered! log in before u start using the website")
-         window.location.assign("/");
+
      }
  }
 
@@ -189,15 +209,23 @@ const RegisterForm = () => {
             try {
                 await SellersService.addSeller(seller);
                 setShowAlert({ success: true, message: "Successfully registered" });
+                alert("successfully registered! log in before u start using the website")
+                window.location.assign("/");
             } catch (error) {
-                console.error(`Greška prilikom dodavanja novog zadataka: ${error}`);
+                if(error.response.status === 409) {
+                    console.log("its 409")
+                    //alert("Username you entered is already taken! Make sure you")
+                    setError("Username you entered is already taken")
+                }
+                else if(error.response.status === 400) {
+                    alert("Data you entered is invalid!")
+                }
+                console.error(`Error occured: ${error.response.status}`);
                 setShowAlert({
                     success: false,
                     message: "Error ocurred while registering",
                 });
             }
-            alert("successfully registered! log in before u start using the website")
-            window.location.assign("/");
         }
     }
 
@@ -214,9 +242,11 @@ const RegisterForm = () => {
             <input type="radio" id="seller" name="usertype" className="right" value="seller" onClick={setRoleSeller}/>
                 <label className="labelRadio" htmlFor="female">Register as seller</label>
                 </div>
+                <p style={{color:'#e60000'}}>{error}</p>
             {sameData}
 
             {renderAuthButton()}
+
             </div>
         </>
     );

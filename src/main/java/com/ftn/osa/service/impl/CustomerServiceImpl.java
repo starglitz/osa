@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -66,5 +68,22 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerRepository.save(customerJpa);
         return ok;
+    }
+
+    @Override
+    public Customer createCustomer(Customer customer) {
+
+        Optional<User> user = userRepository.findFirstByUsername(customer.getUser().getUsername());
+
+        if(user.isPresent()){
+            return null;
+        }
+
+        User userJpa = userRepository.save(customer.getUser());
+        customer.setUser(userJpa);
+        customer.setId(userJpa.getId());
+
+        customer = customerRepository.save(customer);
+        return customer;
     }
 }

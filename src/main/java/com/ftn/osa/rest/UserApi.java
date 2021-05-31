@@ -21,12 +21,6 @@ public interface UserApi {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDTO userDto);
 
-    @PostMapping("/registerCustomer")
-    public ResponseEntity<CustomerDTO> create(@RequestBody @Valid CustomerDTO newUser);
-
-    @PostMapping("/registerSeller")
-    public ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser);
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value="/users", produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getAll();

@@ -36,7 +36,7 @@ async function deleteSeller(id) {
 }
 
 async function addSeller(seller) {
-    return await SprintsAxiosClient.post("http://localhost:8080/registerSeller", seller);
+    return await SprintsAxiosClient.post("http://localhost:8080/sellers", seller);
 }
 
 async function getMe() {

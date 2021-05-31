@@ -19,6 +19,8 @@ public interface SellerService {
 
     Seller getById(Long id);
 
+    Seller createSeller(Seller seller);
+
     double findAverageSellerRating(Long id);
 
 //    List<Integer> findPreviousRatings(Long sellerId);

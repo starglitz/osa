@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -103,6 +104,23 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    public Seller createSeller(Seller seller) {
+        Optional<User> user = userRepository.findFirstByUsername(seller.getUser().getUsername());
+
+        if(user.isPresent()){
+            return null;
+        }
+
+        User userJpa = userRepository.save(seller.getUser());
+
+        seller.setUser(userJpa);
+        seller.setId(userJpa.getId());
+        seller = sellerRepository.save(seller);
+        return seller;
+    }
+
+
+    @Override
     public Seller getById(Long id) {
         return sellerRepository.findById(id).orElse(null);
     }
@@ -125,18 +143,6 @@ public class SellerServiceImpl implements SellerService {
         return calculateAverage(ratings);
     }
 
-
-//    @Override
-//    public List<Integer> findPreviousRatings(Long sellerId) {
-//        List<OrderDTO> sellersOrders = findBySellerId(sellerId);
-//
-//        List<Integer> ratings = new ArrayList<>();
-//        for(OrderDTO order : sellersOrders) {
-//            ratings.add(order.getRating());
-//        }
-//
-//        return ratings;
-//    }
 
     private double calculateAverage(List <Integer> ratings) {
         return ratings.stream()

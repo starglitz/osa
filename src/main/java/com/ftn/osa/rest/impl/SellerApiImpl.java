@@ -9,20 +9,32 @@ import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.rest.SellerApi;
 import com.ftn.osa.service.SellerService;
+import com.ftn.osa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Component
 public class SellerApiImpl implements SellerApi {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public ResponseEntity getAllSellers() {
@@ -64,5 +76,25 @@ public class SellerApiImpl implements SellerApi {
             return new ResponseEntity("bad data", HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @Override
+    public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO sellerDTO) {
+
+        User newUser = new User(sellerDTO.getName(), sellerDTO.getSurname(),
+                sellerDTO.getUsername(), passwordEncoder.encode(sellerDTO.getPassword()),
+                true, Role.SELLER);
+
+        Seller newSeller = new Seller(new Date(), sellerDTO.getEmail(), sellerDTO.getAddress(),
+                sellerDTO.getSellerName(), newUser);
+
+        Seller createdSeller = sellerService.createSeller(newSeller);
+
+        if(createdSeller == null){
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
+        SellerDTO dto = new SellerDTO(createdSeller);
+
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }

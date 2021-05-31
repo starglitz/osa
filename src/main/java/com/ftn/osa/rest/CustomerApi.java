@@ -21,6 +21,9 @@ public interface CustomerApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getLoggedIn(Authentication authentication);
 
+    @PostMapping
+    public ResponseEntity<CustomerDTO> create(@RequestBody @Valid CustomerDTO newUser);
+
     @PreAuthorize("hasRole('CUSTOMER')")
     @PutMapping(value = "/{id}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})

@@ -5,6 +5,7 @@ import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.UserDTO;
 import com.ftn.osa.model.dto.UserListDTO;
 import com.ftn.osa.model.entity.Customer;
+import com.ftn.osa.model.entity.Role;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.rest.UserApi;
@@ -19,12 +20,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Component
 public class UserApiImpl implements UserApi {
@@ -40,6 +43,9 @@ public class UserApiImpl implements UserApi {
 
     @Autowired
     TokenUtils tokenUtils;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /*
     @Autowired
@@ -91,36 +97,6 @@ public class UserApiImpl implements UserApi {
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(404).build();
         }
-    }
-
-
-    @PostMapping("/registerCustomer")
-    public ResponseEntity<CustomerDTO> create(@RequestBody @Validated CustomerDTO newUser){
-
-        Customer createdCustomer = userService.createCustomer(newUser);
-        //User createdUser = userService.createUser(newUser);
-
-        if(createdCustomer == null){
-            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-        }
-        CustomerDTO customerDTO = new CustomerDTO(createdCustomer);
-        //UserDTO userDTO = new UserDTO(createdUser);
-
-        return new ResponseEntity<>(customerDTO, HttpStatus.CREATED);
-    }
-
-    @Override
-    public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO newUser) {
-        Seller createdSeller = userService.createSeller(newUser);
-        //User createdUser = userService.createUser(newUser);
-
-        if(createdSeller == null){
-            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-        }
-        SellerDTO sellerDTO = new SellerDTO(createdSeller);
-        //UserDTO userDTO = new UserDTO(createdUser);
-
-        return new ResponseEntity<>(sellerDTO, HttpStatus.CREATED);
     }
 
     @Override

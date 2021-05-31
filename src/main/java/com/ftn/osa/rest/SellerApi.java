@@ -30,6 +30,8 @@ public interface SellerApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getLoggedIn(Authentication authentication);
 
+    @PostMapping
+    public ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser);
 
     @PreAuthorize("hasRole('SELLER')")
     @PutMapping(value = "/{id}",

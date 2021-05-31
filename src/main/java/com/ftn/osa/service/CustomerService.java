@@ -14,4 +14,6 @@ public interface CustomerService{
     CustomerDTO getLoggedIn(Authentication authentication);
 
     boolean update(Customer customer, String passwordValidate);
+
+    Customer createCustomer(Customer customer);
 }

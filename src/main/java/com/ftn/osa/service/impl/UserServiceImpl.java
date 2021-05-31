@@ -75,64 +75,6 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
-    @Override
-    public Customer createCustomer(CustomerDTO customerDTO) {
-
-        Optional<User> user = userRepository.findFirstByUsername(customerDTO.getUsername());
-
-        if(user.isPresent()){
-            return null;
-        }
-
-        User newUser = new User();
-        Customer newCustomer = new Customer();
-
-        newUser.setUsername(customerDTO.getUsername());
-        newUser.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
-        newUser.setName(customerDTO.getName());
-        newUser.setSurname(customerDTO.getSurname());
-        newUser.setEnabled(true);
-        newUser.setRole(Role.CUSTOMER);
-
-        newUser = userRepository.save(newUser);
-
-        newCustomer.setUser(newUser);
-        newCustomer.setId(newUser.getId());
-        newCustomer.setAddress(customerDTO.getAddress());
-
-        newCustomer = customerRepository.save(newCustomer);
-        return newCustomer;
-    }
-
-    @Override
-    public Seller createSeller(SellerDTO sellerDTO) {
-        Optional<User> user = userRepository.findFirstByUsername(sellerDTO.getUsername());
-
-        if(user.isPresent()){
-            return null;
-        }
-
-        User newUser = new User();
-        Seller newSeller = new Seller();
-
-        newUser.setUsername(sellerDTO.getUsername());
-        newUser.setPassword(passwordEncoder.encode(sellerDTO.getPassword()));
-        newUser.setName(sellerDTO.getName());
-        newUser.setSurname(sellerDTO.getSurname());
-        newUser.setEnabled(true);
-        newUser.setRole(Role.SELLER);
-
-        newUser = userRepository.save(newUser);
-
-        newSeller.setUser(newUser);
-        newSeller.setId(newUser.getId());
-        newSeller.setAddress(sellerDTO.getAddress());
-        newSeller.setEmail(sellerDTO.getEmail());
-        newSeller.setSellerName(sellerDTO.getSellerName());
-        newSeller.setSince(new Date());
-        newSeller = sellerRepository.save(newSeller);
-        return newSeller;
-    }
 
     @Override
     public List<User> findAll() {

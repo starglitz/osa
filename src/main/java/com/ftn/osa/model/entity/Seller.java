@@ -32,12 +32,22 @@ public class Seller{
     @Id
     private Long id;
 
-    public Seller(Date since, String email, String address, String sellerName, User user, Long id) {
+    public Seller(Date since, String email, String address,
+                  String sellerName, User user, Long id) {
         this.since = since;
         this.email = email;
         this.address = address;
         this.sellerName = sellerName;
         this.user = user;
         this.id = id;
+    }
+
+    public Seller(Date since, String email, String address,
+                  String sellerName, User user) {
+        this.since = since;
+        this.email = email;
+        this.address = address;
+        this.sellerName = sellerName;
+        this.user = user;
     }
 }
