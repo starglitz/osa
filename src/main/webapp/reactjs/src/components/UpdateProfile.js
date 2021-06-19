@@ -213,7 +213,7 @@ const UpdateProfile = () => {
                 <label htmlFor="username" className="label-register">Username:</label>
                 <input id="username" type="text" placeholder="enter your username here"
                        defaultValue={user.username}
-                       className="input-register" onChange={handleFormInputChange("username")}/>
+                       className="input-register" readOnly/>
 
                 {sellerData}
 

@@ -10,7 +10,9 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    @Query(value = "SELECT * FROM customer  WHERE user_id = (select user_id from user where username = ?1)",
+    @Query(value = "SELECT * FROM customer  WHERE user_id = (select id from user where username = ?1)",
             nativeQuery = true)
     Optional<Customer> findByUsername(String username);
+
+
 }

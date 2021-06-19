@@ -176,7 +176,7 @@ const RegisterForm = () => {
                  setError("Username you entered is already taken")
              }
              else if(error.response.status === 400) {
-                 alert("Data you entered is invalid!")
+                 setError("Data you entered is invalid! Make sure you have unique username")
              }
              console.error(`Error: ${error.status}`);
              setShowAlert({
@@ -218,7 +218,7 @@ const RegisterForm = () => {
                     setError("Username you entered is already taken")
                 }
                 else if(error.response.status === 400) {
-                    alert("Data you entered is invalid!")
+                    setError("Data you entered is invalid! Make sure you have unique email & username")
                 }
                 console.error(`Error occured: ${error.response.status}`);
                 setShowAlert({

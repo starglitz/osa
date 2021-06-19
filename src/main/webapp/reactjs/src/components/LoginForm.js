@@ -51,7 +51,12 @@ const LoginForm = (props) => {
             setError("Wrong username or password. Try again")
         }
         else if(status === '200') {
-            window.location.assign("/home");
+            if(AuthenticationService.getRole() === "ROLE_ADMIN") {
+                window.location.assign("/users")
+            }
+            else {
+                window.location.assign("/home");
+            }
         }
     };
 

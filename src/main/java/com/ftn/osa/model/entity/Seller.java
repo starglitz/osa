@@ -15,7 +15,7 @@ public class Seller{
     @Column(nullable = false)
     private Date since;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)

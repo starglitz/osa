@@ -1,18 +1,18 @@
 package com.ftn.osa;
 
-import com.ftn.osa.model.entity.Order;
-import com.ftn.osa.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
-
 @SpringBootApplication
 public class OsaApplication {
+	static Logger log = Logger.getLogger(OsaApplication.class.getName());
 
 	public static void main(String[] args) {
+		BasicConfigurator.configure();
 		SpringApplication.run(OsaApplication.class, args);
+		log.info("Started server");
 	}
 
 }

@@ -39,6 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
         System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         Customer customer = customerRepository.findByUsername(username).get();
+        System.out.println("!!!");
         //CustomerDTO customerDTO = new CustomerDTO(customer);
         return customer;
     }

@@ -21,7 +21,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
-   // extends WebSecurityConfigurerAdapter
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -57,20 +56,11 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
         return authenticationTokenFilter;
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**").allowedMethods("*");
-//    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
-        //Naglasavamo browser-u da ne cache-ira podatke koje dobije u header-ima
-        //detaljnije: https://www.baeldung.com/spring-security-cache-control-headers
         httpSecurity.headers().cacheControl().disable();
-       // httpSecurity.csrf().disable();
-        //Neophodno da ne bi proveravali autentifikaciju kod Preflight zahteva
         httpSecurity.cors();
-        //sledeca linija je neophodna iskljucivo zbog nacina na koji h2 konzola komunicira sa aplikacijom
         httpSecurity.headers().frameOptions().disable();
         httpSecurity.csrf().disable()
                 .sessionManagement()

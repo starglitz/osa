@@ -13,6 +13,8 @@ const Sellers = () => {
     async function fetchSellers() {
         try {
             const response = await SellersService.getSellers();
+            response.data.filter((seller) => seller.enabled == true);
+
             setSellers(response.data);
             console.log(response.data);
         } catch (error) {

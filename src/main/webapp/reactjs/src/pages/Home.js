@@ -5,6 +5,7 @@ import Sellers from "../components/Sellers";
 import {AuthenticationService} from "../services/AuthenticationService";
 import SellersArticles from "../components/seller/SellersArticles";
 import {useHistory} from "react-router-dom";
+import UsersTable from "../components/admin/UsersTable";
 
 const Home = () => {
 
@@ -12,6 +13,7 @@ const Home = () => {
         AuthenticationService.logout();
     }
 
+    console.log(AuthenticationService.getRole())
 
     let navContent;
 
@@ -103,6 +105,7 @@ const Home = () => {
     }
 
 
+
     let pageContent;
 
 
@@ -122,6 +125,8 @@ const Home = () => {
             <SellersArticles/>
         </>
     }
+
+
 
 
 return (

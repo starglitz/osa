@@ -10,16 +10,16 @@ import {AuthenticationService} from "../../services/AuthenticationService";
 const UsersTable = () => {
 
     const [users, setUsers] = useState([]);
-    const [random, setRandom] = useState([]);
+    const [random, setRandom] = useState(true);
 
     useEffect(() => {
         fetchUsers();
-    }, [users]);
+    }, []);
 
     async function fetchUsers() {
         try {
             const response = await UserService.getUsers();
-            let usersfetch = response.data.filter(user => user.blocked === false)
+            let usersfetch = response.data.filter(user => user.enabled === true)
             setUsers(usersfetch);
             console.log(response.data);
         } catch (error) {
@@ -36,6 +36,7 @@ const UsersTable = () => {
             console.log(user)
             user.enabled = false;
             await UserService.update(id, user);
+            setRandom(!random)
         } catch (error) {
             console.error(`Error ocurred: ${error}`);
         }
@@ -45,7 +46,7 @@ const UsersTable = () => {
         <>
             <NavigationBar>
                 <Nav>
-                    <Nav.Link href="/home">Admin option</Nav.Link>
+
                     {/*<Nav.Link eventKey={2} href="#memes">*/}
                     {/*    Dank memes*/}
                     {/*</Nav.Link>*/}

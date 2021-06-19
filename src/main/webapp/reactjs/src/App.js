@@ -33,7 +33,7 @@ function App() {
                 exact
                 path="/home"
                 component={Home}
-                roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
+                roles={["ROLE_CUSTOMER", "ROLE_SELLER", "ROLE_ADMIN"]}
             />
 
           <PrivateRoute
@@ -54,7 +54,7 @@ function App() {
               exact
               path="/createArticle"
               component={CreateArticle}
-              roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
+              roles={["ROLE_SELLER"]}
           />
 
           <PrivateRoute
@@ -68,7 +68,7 @@ function App() {
               exact
               path="/updateArticle/:id"
               component={UpdateArticle}
-              roles={["ROLE_ADMIN", "ROLE_SELLER"]}
+              roles={["ROLE_SELLER"]}
           />
 
           <PrivateRoute

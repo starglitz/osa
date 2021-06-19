@@ -6,6 +6,7 @@ import com.ftn.osa.model.entity.Seller;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
