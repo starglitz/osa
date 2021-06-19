@@ -1,5 +1,6 @@
 package com.ftn.osa.service.impl;
 
+import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.OrderUpdateDTO;
@@ -64,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         order.setRating(update.getRating());
         order.setAnonymous(update.isAnonymous());
         order.setArchived(update.isArchived());
-
+        OsaApplication.log.info("Successfully updated an order with ID " + order.getId());
         orderRepository.save(order);
         return order;
     }
@@ -74,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setDelivered(true);
         order = orderRepository.save(order);
-
+        OsaApplication.log.info("Order with ID " + order.getId() + " set to delivered");
         return order;
     }
 
@@ -83,6 +84,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setArchived(true);
         order = orderRepository.save(order);
+        OsaApplication.log.info("Order with ID " + order.getId() + " set to archived");
         return order;
     }
 

@@ -1,5 +1,6 @@
 package com.ftn.osa.service.impl;
 
+import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.SellerListDTO;
@@ -10,6 +11,7 @@ import com.ftn.osa.repository.SellerRepository;
 import com.ftn.osa.repository.UserRepository;
 import com.ftn.osa.service.OrderService;
 import com.ftn.osa.service.SellerService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,8 @@ import java.util.Optional;
 
 @Service
 public class SellerServiceImpl implements SellerService {
+
+    static Logger log = Logger.getLogger(OsaApplication.class.getName());
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -45,7 +49,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Seller getLoggedIn(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
+        //System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         Seller seller = sellerRepository.findByUsername(username).get();
         //SellerDTO sellerDTO = new SellerDTO(seller);
@@ -127,8 +131,6 @@ public class SellerServiceImpl implements SellerService {
             }
         }
 
-        System.out.println("Sellers ratings:");
-        System.out.println(ratings);
 
         return calculateAverage(ratings);
     }

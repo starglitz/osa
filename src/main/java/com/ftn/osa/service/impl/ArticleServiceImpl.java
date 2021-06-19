@@ -1,6 +1,7 @@
 package com.ftn.osa.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Seller;
@@ -86,6 +87,7 @@ public class ArticleServiceImpl implements ArticleService {
         Article articleJpa = getArticle(article.getId());
 
         if(articleJpa == null) {
+            OsaApplication.log.info("Article an user is trying to update doesn't exist");
             return null;
         }
 
@@ -95,11 +97,13 @@ public class ArticleServiceImpl implements ArticleService {
         articleJpa.setPath(article.getPath());
 
         Article save = articleRepository.save(articleJpa);
+        OsaApplication.log.info("Successfully updated an article with ID " + article.getId());
         return save;
     }
 
     @Override
     public void delete(Long id) {
+        OsaApplication.log.info("Deleted article with ID " + id);
         articleRepository.deleteById(id);
     }
 
@@ -114,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         article.setSeller(seller);
         Article save = articleRepository.save(article);
-
+        OsaApplication.log.info("Created new article");
         return article;
     }
 

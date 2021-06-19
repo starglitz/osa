@@ -1,5 +1,6 @@
 package com.ftn.osa.service.impl;
 
+import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.DiscountDTO;
 import com.ftn.osa.model.entity.Article;
@@ -51,6 +52,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public void delete(Long id) {
+        OsaApplication.log.info("Discount with ID " + id + "deleted");
         discountRepository.deleteById(id);
     }
 
@@ -63,7 +65,7 @@ public class DiscountServiceImpl implements DiscountService {
         discount.setDateFrom(update.getDateFrom());
         discount.setDateTo(update.getDateTo());
         discount.setDescription(update.getDescription());
-
+        OsaApplication.log.info("Discount with ID " + update.getId() + " successfully updated");
 
         return discountRepository.save(discount);
     }

@@ -1,5 +1,6 @@
 package com.ftn.osa.service.impl;
 
+import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.dto.CustomerDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.entity.Customer;
@@ -56,6 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
         if(passwordEncoder.matches(validatePassword,
                 userJpa.getPassword())) {
             userJpa.setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
+            OsaApplication.log.info("Password successfully changed");
         }
 
         else {
@@ -68,6 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerJpa.setAddress(customer.getAddress());
 
         customerRepository.save(customerJpa);
+        OsaApplication.log.info("User successfully updated");
         return ok;
     }
 
@@ -85,6 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setId(userJpa.getId());
 
         customer = customerRepository.save(customer);
+        OsaApplication.log.info("Successfully registered a customer");
         return customer;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class OsaApplication {
-	static Logger log = Logger.getLogger(OsaApplication.class.getName());
+	 public static Logger log = Logger.getLogger(OsaApplication.class.getName());
 
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
