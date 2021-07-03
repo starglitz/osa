@@ -172,8 +172,10 @@ const RegisterForm = () => {
          } catch (error) {
              if(error.response.status === 409) {
                  console.log("its 409")
+
+                     setError("Username you entered is already taken")
+
                  //alert("Username you entered is already taken! Make sure you")
-                 setError("Username you entered is already taken")
              }
              else if(error.response.status === 400) {
                  setError("Data you entered is invalid! Make sure you have unique username")
@@ -215,7 +217,7 @@ const RegisterForm = () => {
                 if(error.response.status === 409) {
                     console.log("its 409")
                     //alert("Username you entered is already taken! Make sure you")
-                    setError("Username you entered is already taken")
+                    setError("Username & email have to be unique")
                 }
                 else if(error.response.status === 400) {
                     setError("Data you entered is invalid! Make sure you have unique email & username")

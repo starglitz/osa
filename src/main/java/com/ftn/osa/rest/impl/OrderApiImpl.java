@@ -47,11 +47,15 @@ public class OrderApiImpl implements OrderApi {
     @Override
     public ResponseEntity<Order> add(OrderDTO orderDto, Authentication authentication) {
         System.out.println(orderDto);
+        System.out.println("Im in add order");
+
 
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
         User user = userService.findByUsername(username);
         Customer customer = customerService.findById(user.getId());
+        System.out.println(customer);
+
 
         Order order = new Order();
         order.setDelivered(false);
@@ -73,11 +77,11 @@ public class OrderApiImpl implements OrderApi {
             OrderItem itemJpa = orderItemService.save(itemFull);
             //orderItemService.save(item);
             itemsJpa.add(itemJpa);
-            System.out.println(itemJpa);
+          //  System.out.println(itemJpa);
         }
 
         orderService.save(order);
-        System.out.println(order);
+      //  System.out.println(order);
 
         return new ResponseEntity("Successfully ordered", HttpStatus.OK);
     }

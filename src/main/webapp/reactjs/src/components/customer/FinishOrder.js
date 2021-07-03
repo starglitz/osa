@@ -21,6 +21,12 @@ const FinishOrder = () => {
 
     const countTotal = () => {
         let price = 0;
+
+        // order.items.forEach(item => item.article.price =
+        //     (item.article.price - (item.article.price * (item.article.discounts * 0.01)))
+        //     * item.amount);
+
+
         order.items.forEach(item => price +=
             (item.article.price - (item.article.price * (item.article.discounts * 0.01)))
             * item.amount);

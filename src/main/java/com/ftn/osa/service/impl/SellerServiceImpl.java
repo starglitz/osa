@@ -105,6 +105,11 @@ public class SellerServiceImpl implements SellerService {
             return null;
         }
 
+        Optional<Seller> sellerJpa = sellerRepository.findByEmail(seller.getEmail());
+        if(sellerJpa.isPresent()) {
+            return null;
+        }
+
         User userJpa = userRepository.save(seller.getUser());
 
         seller.setUser(userJpa);

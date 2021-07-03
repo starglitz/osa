@@ -19,4 +19,8 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
             "(select order_id from orders where order_id =?1)))",
             nativeQuery = true)
     Optional<Seller> findByOrder(Long id);
+
+    @Query(value = "SELECT * FROM seller  WHERE email = ?1",
+            nativeQuery = true)
+    Optional<Seller> findByEmail(String email);
 }
