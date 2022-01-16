@@ -1,13 +1,10 @@
-import NavigationBar from "../components/NavigationBar";
+import NavigationBar from "./NavigationBar";
 import { Nav } from "react-bootstrap";
 import React from "react";
-import Sellers from "../components/Sellers";
 import { AuthenticationService } from "../services/AuthenticationService";
-import SellersArticles from "../components/seller/SellersArticles";
 import { useHistory } from "react-router-dom";
-import UsersTable from "../components/admin/UsersTable";
 
-const Home = () => {
+const NavBar = () => {
   const logout = () => {
     AuthenticationService.logout();
   };
@@ -98,27 +95,8 @@ const Home = () => {
     );
   }
 
-  let pageContent;
-
-  if (AuthenticationService.getRole() === "ROLE_CUSTOMER") {
-    pageContent = (
-      <>
-        <h1 style={{ marginTop: "30px" }}>List of available sellers:</h1>
-
-        <Sellers />
-      </>
-    );
-  } else if (AuthenticationService.getRole() === "ROLE_SELLER") {
-    pageContent = (
-      <>
-        <h1>List of your articles: </h1>
-        <SellersArticles />
-      </>
-    );
-  }
-
   return (
-    <>
+    <div>
       <NavigationBar>
         <Nav>
           <Nav.Link eventKey={3} onClick={profile}>
@@ -128,9 +106,8 @@ const Home = () => {
           {navContent}
         </Nav>
       </NavigationBar>
-      {pageContent}
-    </>
+    </div>
   );
 };
 
-export default Home;
+export default NavBar;

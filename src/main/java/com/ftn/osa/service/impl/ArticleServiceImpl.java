@@ -6,9 +6,11 @@ import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
+import com.ftn.osa.model.es.ArticleES;
 import com.ftn.osa.repository.ArticleRepository;
 import com.ftn.osa.repository.SellerRepository;
 import com.ftn.osa.repository.UserRepository;
+import com.ftn.osa.searchRepository.ArticleSearchRepository;
 import com.ftn.osa.security.TokenUtils;
 import com.ftn.osa.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleRepository articleRepository;
 
     @Autowired
+    private ArticleSearchRepository articleSearchRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -36,16 +41,17 @@ public class ArticleServiceImpl implements ArticleService {
     private TokenUtils tokenUtils;
 
     @Override
-    public List<Article> findAll() {
+    public List<ArticleES> findAll(String name) {
+        System.out.println("NAME: " + name);
+        List<ArticleES> l = new ArrayList<>();
+        if(!name.equals("")) {
+            return articleSearchRepository.findAllByName(name);
+        }
+        Iterable<ArticleES> articles = articleSearchRepository.findAll();
+        articles.forEach(l::add);
+        System.out.println(articles);
 
-        List<Article> articles = articleRepository.findAll();
-//        List<ArticleDTO> articleDtos = new ArrayList<>();
-//        for(Article article : articles) {
-//            ArticleDTO articleDTO = new ArticleDTO(article);
-//            articleDtos.add(articleDTO);
-//        }
-
-        return articles;
+        return l;
     }
 
     @Override
@@ -54,24 +60,12 @@ public class ArticleServiceImpl implements ArticleService {
         String username = userPrincipal.getUsername();
 
         List<Article> articles = articleRepository.getArticlesByCurrentSellerUsername(username);
-//        List<ArticleDTO> articleDtos = new ArrayList<>();
-//        for(Article article : articles) {
-//            ArticleDTO articleDTO = new ArticleDTO(article);
-//            articleDtos.add(articleDTO);
-//        }
-
         return articles;
     }
 
     @Override
     public List<Article> findAllBySellerId(Long id) {
         List<Article> articles = articleRepository.getArticlesBySellerId(id);
-//        List<ArticleDTO> articleDtos = new ArrayList<>();
-//        for(Article article : articles) {
-//            ArticleDTO articleDTO = new ArticleDTO(article);
-//            articleDtos.add(articleDTO);
-//        }
-
         return articles;
     }
 

@@ -1,8 +1,8 @@
-import './App.css';
+import "./App.css";
 import LoginForm from "./components/LoginForm";
-import Home from "../src/pages/Home"
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {PrivateRoute} from "./services/PrivateRoute";
+import Home from "../src/pages/Home";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { PrivateRoute } from "./services/PrivateRoute";
 import RegisterForm from "./components/RegisterForm";
 import UpdateArticle from "./components/UpdateArticle";
 import CreateArticle from "./components/CreateArticle";
@@ -17,116 +17,121 @@ import CommentOrder from "./components/customer/CommentOrder";
 import AddDiscount from "./components/seller/AddDiscount";
 import DiscountsTable from "./components/seller/DiscountsTable";
 import UpdateDiscount from "./components/seller/UpdateDiscount";
+import ArticlesSearch from "./pages/ArticlesSearch";
 
 function App() {
   return (
     <div className="App">
-
       <Router>
         <Switch>
-          {/*<Route path="/register" exact component={RegisterLayout}/>*/}
-          <Route path="/" exact component={LoginForm}/>
-          {/*<Route path="/home" exact component={Home}/>*/}
-            <Route path="/register" exact component={RegisterForm}/>
+          <Route path="/" exact component={LoginForm} />
 
-            <PrivateRoute
-                exact
-                path="/home"
-                component={Home}
-                roles={["ROLE_CUSTOMER", "ROLE_SELLER", "ROLE_ADMIN"]}
-            />
+          <Route path="/register" exact component={RegisterForm} />
 
           <PrivateRoute
-              exact
-              path="/finish"
-              component={FinishOrder}
-              roles={["ROLE_CUSTOMER"]}
+            exact
+            path="/articlesSearch"
+            component={ArticlesSearch}
+            roles={["ROLE_CUSTOMER", "ROLE_SELLER", "ROLE_ADMIN"]}
+          ></PrivateRoute>
+
+          <PrivateRoute
+            exact
+            path="/home"
+            component={Home}
+            roles={["ROLE_CUSTOMER", "ROLE_SELLER", "ROLE_ADMIN"]}
           />
 
           <PrivateRoute
-              exact
-              path="/users"
-              component={UsersTable}
-              roles={["ROLE_ADMIN"]}
+            exact
+            path="/finish"
+            component={FinishOrder}
+            roles={["ROLE_CUSTOMER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/createArticle"
-              component={CreateArticle}
-              roles={["ROLE_SELLER"]}
+            exact
+            path="/users"
+            component={UsersTable}
+            roles={["ROLE_ADMIN"]}
           />
 
           <PrivateRoute
-              exact
-              path="/profile"
-              component={UpdateProfile}
-              roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
+            exact
+            path="/createArticle"
+            component={CreateArticle}
+            roles={["ROLE_SELLER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/updateArticle/:id"
-              component={UpdateArticle}
-              roles={["ROLE_SELLER"]}
+            exact
+            path="/profile"
+            component={UpdateProfile}
+            roles={["ROLE_CUSTOMER", "ROLE_SELLER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/sellersArticles"
-              component={SellersArticlesCustomer}
-              roles={["ROLE_ADMIN", "ROLE_CUSTOMER"]}
+            exact
+            path="/updateArticle/:id"
+            component={UpdateArticle}
+            roles={["ROLE_SELLER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/changePassword"
-              component={ChangePassword}
-              roles={["ROLE_SELLER", "ROLE_CUSTOMER"]}
+            exact
+            path="/sellersArticles"
+            component={SellersArticlesCustomer}
+            roles={["ROLE_ADMIN", "ROLE_CUSTOMER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/notDeliveredOrders"
-              component={NotDeliveredOrders}
-              roles={["ROLE_CUSTOMER"]}
+            exact
+            path="/changePassword"
+            component={ChangePassword}
+            roles={["ROLE_SELLER", "ROLE_CUSTOMER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/deliveredOrders"
-              component={DeliveredOrders}
-              roles={["ROLE_CUSTOMER"]}
+            exact
+            path="/notDeliveredOrders"
+            component={NotDeliveredOrders}
+            roles={["ROLE_CUSTOMER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/comment"
-              component={CommentOrder}
-              roles={["ROLE_CUSTOMER"]}
+            exact
+            path="/deliveredOrders"
+            component={DeliveredOrders}
+            roles={["ROLE_CUSTOMER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/addDiscount"
-              component={AddDiscount}
-              roles={["ROLE_SELLER"]}
+            exact
+            path="/comment"
+            component={CommentOrder}
+            roles={["ROLE_CUSTOMER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/allDiscounts"
-              component={DiscountsTable}
-              roles={["ROLE_SELLER"]}
+            exact
+            path="/addDiscount"
+            component={AddDiscount}
+            roles={["ROLE_SELLER"]}
           />
 
           <PrivateRoute
-              exact
-              path="/discounts/edit/:id"
-              component={UpdateDiscount}
-              roles={["ROLE_SELLER"]}
+            exact
+            path="/allDiscounts"
+            component={DiscountsTable}
+            roles={["ROLE_SELLER"]}
           />
 
+          <PrivateRoute
+            exact
+            path="/discounts/edit/:id"
+            component={UpdateDiscount}
+            roles={["ROLE_SELLER"]}
+          />
         </Switch>
       </Router>
     </div>

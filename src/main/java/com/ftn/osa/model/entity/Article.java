@@ -2,6 +2,7 @@ package com.ftn.osa.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.osa.model.dto.ArticleDTO;
+import com.ftn.osa.model.es.ArticleES;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -43,36 +44,13 @@ public class Article {
     @NotBlank
     private String path;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "articles",fetch = FetchType.LAZY)
-    private List<Discount> discounts = new ArrayList<>();
+    //@JsonIgnore
+    //@ManyToMany(mappedBy = "articles")
+    //private List<Discount> discounts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Seller seller;
-
-    public Article(Long id, @NotBlank String name, @NotBlank String description,
-                   @NotNull @Positive int price, @NotBlank String path,
-                   List<Discount> discounts, Seller seller) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.path = path;
-        this.discounts = discounts;
-        this.seller = seller;
-    }
-
-    public Article(Long id, @NotBlank String name, @NotBlank String description,
-                   @NotNull @Positive int price, @NotBlank String path,
-                   List<Discount> discounts) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.path = path;
-        this.discounts = discounts;
-    }
 
     public Article(Long id, @NotBlank String name, @NotBlank String description,
                    @NotNull @Positive int price, @NotBlank String path) {

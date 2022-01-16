@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -17,9 +18,10 @@ import java.security.Principal;
 @RequestMapping("/articles")
 public interface ArticleApi {
 
-    @GetMapping(
+    @PermitAll
+    @GetMapping(value="/search",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getAllArticles();
+    ResponseEntity getAllArticles(@RequestParam(defaultValue = "") String search);
 
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
     @GetMapping(value = "/{id}",
@@ -29,7 +31,9 @@ public interface ArticleApi {
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping(value = "/seller/me",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getArticlesByCurrentSeller(Authentication authentication);
+    ResponseEntity getArticlesByCurrentSeller(
+            Authentication authentication
+    );
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping(value = "/seller/{id}",

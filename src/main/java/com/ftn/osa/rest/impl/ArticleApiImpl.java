@@ -6,6 +6,7 @@ import com.ftn.osa.model.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Discount;
 import com.ftn.osa.model.entity.Seller;
+import com.ftn.osa.model.es.ArticleES;
 import com.ftn.osa.rest.ArticleApi;
 import com.ftn.osa.service.ArticleService;
 import com.ftn.osa.service.DiscountService;
@@ -37,10 +38,10 @@ public class ArticleApiImpl implements ArticleApi {
 
 
     @Override
-    public ResponseEntity getAllArticles() {
-        List<Article> articles = articleService.findAll();
+    public ResponseEntity getAllArticles(String search) {
+        List<ArticleES> articles = articleService.findAll(search);
         List<ArticleDTO> articleDtos = new ArrayList<>();
-        for(Article article : articles) {
+        for(ArticleES article : articles) {
             ArticleDTO articleDTO = new ArticleDTO(article);
             articleDtos.add(articleDTO);
         }
@@ -68,6 +69,8 @@ public class ArticleApiImpl implements ArticleApi {
             articleDtos.add(articleDTO);
         }
         System.out.println(" entered api method!!!!!");
+
+
         return new ResponseEntity(articleDtos, HttpStatus.OK);
     }
 

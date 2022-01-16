@@ -5,6 +5,7 @@ import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Discount;
 import com.ftn.osa.model.entity.Seller;
+import com.ftn.osa.model.es.ArticleES;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -59,14 +60,38 @@ public class ArticleDTO {
 
         LocalDate now = LocalDate.now();
 
-        for(Discount discount : article.getDiscounts()) {
-            if((discount.getDateFrom().isBefore(now) || discount.getDateFrom().equals(now))
-            && (discount.getDateTo().isAfter(now) || discount.getDateTo().isEqual(now)))
-            discounts += discount.getPercent();
+//        for(Discount discount : article.getDiscounts()) {
+//            if((discount.getDateFrom().isBefore(now) || discount.getDateFrom().equals(now))
+//            && (discount.getDateTo().isAfter(now) || discount.getDateTo().isEqual(now)))
+//            discounts += discount.getPercent();
+//        }
+//        if(discounts > 60) {
+//            this.discounts = 60;
+//        }
+
+    }
+
+    public ArticleDTO(ArticleES article) {
+        this.id = article.getId();
+        this.description = article.getDescription();
+        this.name = article.getName();
+        this.path = article.getPath();
+        this.price = article.getPrice();
+        if(article.getSeller() != null) {
+            this.seller = new SellerListDTO(article.getSeller());
         }
-        if(discounts > 60) {
-            this.discounts = 60;
-        }
+        List<DiscountDTO> discountDTOS = new ArrayList<>();
+
+        LocalDate now = LocalDate.now();
+
+//        for(Discount discount : article.getDiscounts()) {
+//            if((discount.getDateFrom().isBefore(now) || discount.getDateFrom().equals(now))
+//            && (discount.getDateTo().isAfter(now) || discount.getDateTo().isEqual(now)))
+//            discounts += discount.getPercent();
+//        }
+//        if(discounts > 60) {
+//            this.discounts = 60;
+//        }
 
     }
 }

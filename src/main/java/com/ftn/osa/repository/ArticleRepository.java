@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-//    @JsonIgnore
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Query(value = "SELECT * FROM article  WHERE user_id = (select id from user where username = ?1)",
             nativeQuery = true)
     List<Article> getArticlesByCurrentSellerUsername(String username);
@@ -21,5 +19,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query(value = "SELECT * FROM article  WHERE user_id = ?1",
             nativeQuery = true)
     List<Article> getArticlesBySellerId(Long id);
+
+    @JsonIgnore
+    List<Article> findAll();
 
 }
