@@ -23,6 +23,10 @@ public interface ArticleApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getAllArticles(@RequestParam(defaultValue = "") String search);
 
+    @GetMapping(value="/searchByRange")
+    ResponseEntity getByPriceRange(@RequestParam(defaultValue = "0") int start,
+                                   @RequestParam(defaultValue = "999999") int end);
+
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})

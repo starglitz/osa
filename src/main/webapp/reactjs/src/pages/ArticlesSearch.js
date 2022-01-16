@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import ArticleCardCustomer from "../components/customer/ArticleCardCustomer";
@@ -8,12 +9,23 @@ const ArticlesSearch = () => {
   const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState("");
 
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(999999);
+
   useEffect(() => {
     fetchArticles();
   }, [query]);
 
   async function fetchArticles() {
     const response = await ArticlesService.getAll(query);
+    setArticles(response.data);
+    console.log(response.data);
+  }
+
+  async function fetchArticlesByRange() {
+    console.log("FROM JE : ", from);
+    console.log("TO JE: ", to);
+    const response = await ArticlesService.getByRange(from, to);
     setArticles(response.data);
     console.log(response.data);
   }
@@ -26,42 +38,12 @@ const ArticlesSearch = () => {
     debouncedFetchArticles(e.target.value);
   };
 
-  //   async function addToCart(orderItem) {
-
-  //     try {
-
-  //         console.log("order item: " + JSON.stringify(orderItem))
-
-  //          let item_ids = []
-
-  //         orderItems.forEach(item => item_ids.push(item.article.id));
-
-  //         if(item_ids.includes(orderItem.article.id)) {
-  //             let itemsModified = orderItems
-
-  //             for (let i = 0; i < orderItems.length - 1; i++) {
-  //                 if (orderItems[i].article.id === orderItem.article.id) {
-  //                     let itemMod = orderItems[i];
-  //                     itemMod.amount = +itemMod.amount + +orderItem.amount;
-  //                     itemsModified.splice(i, 1);
-  //                     itemsModified.push(itemMod);
-  //                 }
-  //             }
-  //             setOrderItems(itemsModified)
-  //             console.log(itemsModified)
-  //             }
-
-  //     else {
-  //             setOrderItems(orderItems => [...orderItems, orderItem]);
-  //         }
-
-  //         console.log("order items now:" + orderItems);
-
-  //     } catch (error) {
-  //         console.error(`Error loading sellers articles !: ${error}`);
-  //     }
-
-  // }
+  const reset = () => {
+    setQuery("");
+    setFrom(0);
+    setTo(999999);
+    fetchArticles();
+  };
 
   return (
     <div>
@@ -76,6 +58,34 @@ const ArticlesSearch = () => {
         name="articleName"
         onChange={onSearchInputChange}
       ></input>
+
+      <br></br>
+      <label for="from" className="margin-right margin-bottom">
+        Search all articles by price range:
+      </label>
+      <input
+        className="margin-bottom margin-right"
+        type="number"
+        name="from"
+        onChange={(event) => setFrom(event.target.value)}
+      ></input>
+
+      <input
+        className="margin-bottom margin-right"
+        type="number"
+        name="to"
+        onChange={(event) => setTo(event.target.value)}
+      ></input>
+
+      <Button variant="contained" onClick={fetchArticlesByRange}>
+        Search by price range
+      </Button>
+
+      <br></br>
+      <Button variant="contained" color="error" onClick={reset}>
+        {" "}
+        Reset all{" "}
+      </Button>
 
       <div
         className="flex-container"

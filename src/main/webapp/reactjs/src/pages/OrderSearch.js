@@ -27,6 +27,12 @@ const OrderSearch = () => {
     debouncedFetchOrders(e.target.value);
   };
 
+  const resetSearch = () => {
+    setQuery("");
+
+    fetchOrders();
+  };
+
   //   async function addToCart(orderItem) {
 
   //     try {

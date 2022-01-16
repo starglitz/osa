@@ -3,6 +3,7 @@ package com.ftn.osa.service.impl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.dto.ArticleDTO;
+import com.ftn.osa.model.dto.SimpleQueryEs;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
@@ -13,7 +14,19 @@ import com.ftn.osa.repository.UserRepository;
 import com.ftn.osa.searchRepository.ArticleSearchRepository;
 import com.ftn.osa.security.TokenUtils;
 import com.ftn.osa.service.ArticleService;
+import org.apache.log4j.Logger;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.util.Streamable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -24,6 +37,8 @@ import java.util.Optional;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
+
+    public static Logger log = Logger.getLogger(ArticleServiceImpl.class.getName());
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -36,6 +51,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private SellerRepository sellerRepository;
+
+    @Autowired
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     @Autowired
     private TokenUtils tokenUtils;
@@ -52,6 +70,32 @@ public class ArticleServiceImpl implements ArticleService {
         System.out.println(articles);
 
         return l;
+    }
+
+    @Override
+    public List<ArticleES> findByPriceRange(int from, int to) {
+        log.info("Its happening! ");
+        log.info(from);
+        log.info(to);
+        String range = from + "-" + to;
+        QueryBuilder priceQuery = SearchQueryGenerator.createRangeQueryBuilder(new SimpleQueryEs("price", range));
+
+        BoolQueryBuilder boolQueryPrice = QueryBuilders
+                .boolQuery()
+                .must(priceQuery);
+
+        SearchHits<ArticleES> articles = searchByBoolQuery(boolQueryPrice);
+
+
+        return articles.map(SearchHit::getContent).toList();
+    }
+
+    private SearchHits<ArticleES> searchByBoolQuery(BoolQueryBuilder boolQueryBuilder) {
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(boolQueryBuilder)
+                .build();
+
+        return elasticsearchRestTemplate.search(searchQuery, ArticleES.class,  IndexCoordinates.of("articles"));
     }
 
     @Override

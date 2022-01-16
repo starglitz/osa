@@ -8,6 +8,7 @@ export const ArticlesService = {
   addArticle,
   getArticlesBySellerId,
   getAll,
+  getByRange,
 };
 
 async function getArticlesByCurrentSeller() {
@@ -50,4 +51,16 @@ async function getAll(search) {
   return await SprintsAxiosClient.get("http://localhost:8080/articles/search", {
     params: { search },
   });
+}
+
+async function getByRange(from, to) {
+  return await SprintsAxiosClient.get(
+    "http://localhost:8080/articles/searchByRange",
+    {
+      params: {
+        start: from,
+        end: to,
+      },
+    }
+  );
 }

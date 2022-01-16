@@ -12,6 +12,7 @@ import com.ftn.osa.service.ArticleService;
 import com.ftn.osa.service.DiscountService;
 import com.ftn.osa.service.SellerService;
 import org.apache.coyote.Response;
+import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,11 @@ public class ArticleApiImpl implements ArticleApi {
             articleDtos.add(articleDTO);
         }
         return new ResponseEntity(articleDtos, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getByPriceRange(int start, int end) {
+        return new ResponseEntity(articleService.findByPriceRange(start, end), HttpStatus.OK);
     }
 
     @Override
@@ -87,16 +93,6 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity update(Long id,@Valid ArticleDTO articleDTO) {
-
-//        Seller seller = sellerService.getById(articleDTO.getSeller().getId());
-//        if(seller == null) {
-//            return new ResponseEntity("No such seller! ", HttpStatus.BAD_REQUEST);
-//        }
-
-//        Article articletest = articleService.getArticle(articleDTO.getId());
-//        if(articletest == null) {
-//            return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
-//        }
 
 
         Article article = new Article(id, articleDTO.getName(),

@@ -13,6 +13,8 @@ public interface ArticleService {
 
     public List<ArticleES> findAll(String name);
 
+    public List<ArticleES> findByPriceRange(int start, int end);
+
     public List<Article> findAllByCurrentSeller(Authentication authentication);
 
     public List<Article> findAllBySellerId(Long id);
