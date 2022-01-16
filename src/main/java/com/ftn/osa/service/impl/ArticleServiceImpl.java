@@ -42,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleES> findAll(String name) {
-        System.out.println("NAME: " + name);
+
         List<ArticleES> l = new ArrayList<>();
         if(!name.equals("")) {
             return articleSearchRepository.findAllByName(name);

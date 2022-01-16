@@ -4,6 +4,7 @@ import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.OrderItemDTO;
 import com.ftn.osa.model.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.*;
+import com.ftn.osa.model.es.OrderES;
 import com.ftn.osa.rest.OrderApi;
 import com.ftn.osa.service.*;
 import org.apache.coyote.Response;
@@ -43,6 +44,11 @@ public class OrderApiImpl implements OrderApi {
 
     @Autowired
     private ArticleService articleService;
+
+    @Override
+    public ResponseEntity getAll(String query) {
+        return new ResponseEntity<>(orderService.getAll(query), HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<Order> add(OrderDTO orderDto, Authentication authentication) {

@@ -20,7 +20,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@Document(indexName = "books")
+@Document(indexName = "articles")
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class ArticleES {
 

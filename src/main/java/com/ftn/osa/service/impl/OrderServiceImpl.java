@@ -7,9 +7,13 @@ import com.ftn.osa.model.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.Seller;
+import com.ftn.osa.model.es.ArticleES;
+import com.ftn.osa.model.es.OrderES;
 import com.ftn.osa.repository.OrderRepository;
 import com.ftn.osa.repository.SellerRepository;
+import com.ftn.osa.searchRepository.OrderSearchRepository;
 import com.ftn.osa.service.OrderService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +27,13 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    public static Logger log = Logger.getLogger(OrderServiceImpl.class.getName());
+
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderSearchRepository orderSearchRepository;
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -104,6 +113,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(Long id) {
         return orderRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<OrderES> getAll(String query) {
+        log.info("KVERI: ");
+        log.info(query);
+        List<OrderES> l = new ArrayList<>();
+        if(!query.equals("")) {
+            return orderSearchRepository.findAllByComment(query);
+        }
+        Iterable<OrderES> orders = orderSearchRepository.findAll();
+        orders.forEach(l::add);
+        System.out.println(orders);
+
+        return l;
     }
 
     @Override

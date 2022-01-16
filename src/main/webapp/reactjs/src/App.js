@@ -18,6 +18,7 @@ import AddDiscount from "./components/seller/AddDiscount";
 import DiscountsTable from "./components/seller/DiscountsTable";
 import UpdateDiscount from "./components/seller/UpdateDiscount";
 import ArticlesSearch from "./pages/ArticlesSearch";
+import OrderSearch from "./pages/OrderSearch";
 
 function App() {
   return (
@@ -32,6 +33,13 @@ function App() {
             exact
             path="/articlesSearch"
             component={ArticlesSearch}
+            roles={["ROLE_CUSTOMER", "ROLE_SELLER", "ROLE_ADMIN"]}
+          ></PrivateRoute>
+
+          <PrivateRoute
+            exact
+            path="/ordersSearch"
+            component={OrderSearch}
             roles={["ROLE_CUSTOMER", "ROLE_SELLER", "ROLE_ADMIN"]}
           ></PrivateRoute>
 

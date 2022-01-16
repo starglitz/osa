@@ -3,27 +3,28 @@ import { useEffect, useState } from "react";
 import ArticleCardCustomer from "../components/customer/ArticleCardCustomer";
 import NavBar from "../components/NavBar";
 import { ArticlesService } from "../services/ArticlesService";
+import { OrderService } from "../services/OrderService";
 
-const ArticlesSearch = () => {
-  const [articles, setArticles] = useState([]);
+const OrderSearch = () => {
+  const [orders, setOrders] = useState([]);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetchArticles();
+    fetchOrders();
   }, [query]);
 
-  async function fetchArticles() {
-    const response = await ArticlesService.getAll(query);
-    setArticles(response.data);
+  async function fetchOrders() {
+    const response = await OrderService.getAll(query);
+    setOrders(response.data);
     console.log(response.data);
   }
 
-  const debouncedFetchArticles = debounce((query) => {
+  const debouncedFetchOrders = debounce((query) => {
     setQuery(query);
   }, 2000);
 
   const onSearchInputChange = (e) => {
-    debouncedFetchArticles(e.target.value);
+    debouncedFetchOrders(e.target.value);
   };
 
   //   async function addToCart(orderItem) {
@@ -68,38 +69,51 @@ const ArticlesSearch = () => {
       <NavBar></NavBar>
       <br></br>
       <label for="articleName" className="margin-right margin-bottom">
-        Search all articles:{" "}
+        Search all orders by comment:{" "}
       </label>
       <input
         className="margin-bottom"
         type="text"
-        name="articleName"
+        name="orderComment"
         onChange={onSearchInputChange}
       ></input>
 
-      <div
-        className="flex-container"
-        style={{ flexWrap: "wrap", width: "90%", margin: "0 auto" }}
-      >
-        {articles.map((a) => (
-          <div
-            className="flex-child"
-            style={{ margin: "0 auto", marginTop: "30px" }}
-          >
-            <ArticleCardCustomer
-              key={a.id}
-              id={a.id}
-              path={a.path}
-              name={a.name}
-              description={a.description}
-              price={a.price}
-              discounts={a.discounts}
-            />
-          </div>
-        ))}
-      </div>
+      <table className="styled-table width-80">
+        <thead>
+          <tr>
+            <td>Order ID</td>
+            <td>Time</td>
+            <td>Order items</td>
+            <td>Comment</td>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map((order) => (
+            <tr>
+              <td>{order.id}</td>
+              <td>{order.time}</td>
+              <td>
+                {order.items.map((item) => (
+                  <p>
+                    {item.article.name} x{item.amount}{" "}
+                  </p>
+                ))}
+              </td>
+              <td>
+                {order.comment
+                  ? (order.anonymous
+                      ? "Amonymous: "
+                      : order.customer.user.name + ": ") +
+                    " " +
+                    order.comment
+                  : "Customer hasn't left a comment yet"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default ArticlesSearch;
+export default OrderSearch;

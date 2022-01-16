@@ -44,9 +44,9 @@ public class Article {
     @NotBlank
     private String path;
 
-    //@JsonIgnore
-    //@ManyToMany(mappedBy = "articles")
-    //private List<Discount> discounts = new ArrayList<>();
+//    @JsonIgnore
+//    @ManyToMany(mappedBy = "articles")
+//    private List<Discount> discounts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

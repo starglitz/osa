@@ -50,6 +50,10 @@ const Home = () => {
     history.push("/articlesSearch");
   };
 
+  const orderSearch = () => {
+    history.push("/ordersSearch");
+  };
+
   if (AuthenticationService.getRole() === "ROLE_CUSTOMER") {
     navContent = (
       <>
@@ -125,6 +129,7 @@ const Home = () => {
             Profile
           </Nav.Link>
           <Nav.Link onClick={articlesSearch}>Articles search</Nav.Link>
+          <Nav.Link onClick={orderSearch}>Orders search</Nav.Link>
           {navContent}
         </Nav>
       </NavigationBar>
