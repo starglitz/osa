@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import ArticleCardCustomer from "../components/customer/ArticleCardCustomer";
@@ -8,6 +9,9 @@ import { OrderService } from "../services/OrderService";
 const OrderSearch = () => {
   const [orders, setOrders] = useState([]);
   const [query, setQuery] = useState("");
+
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(999999);
 
   useEffect(() => {
     fetchOrders();
@@ -27,48 +31,17 @@ const OrderSearch = () => {
     debouncedFetchOrders(e.target.value);
   };
 
-  const resetSearch = () => {
-    setQuery("");
+  async function fetchOrdersByRange() {
+    const response = await OrderService.getByRange(from, to);
+    setOrders(response.data);
+  }
 
+  const reset = () => {
+    setQuery("");
+    setFrom(0);
+    setTo(999999);
     fetchOrders();
   };
-
-  //   async function addToCart(orderItem) {
-
-  //     try {
-
-  //         console.log("order item: " + JSON.stringify(orderItem))
-
-  //          let item_ids = []
-
-  //         orderItems.forEach(item => item_ids.push(item.article.id));
-
-  //         if(item_ids.includes(orderItem.article.id)) {
-  //             let itemsModified = orderItems
-
-  //             for (let i = 0; i < orderItems.length - 1; i++) {
-  //                 if (orderItems[i].article.id === orderItem.article.id) {
-  //                     let itemMod = orderItems[i];
-  //                     itemMod.amount = +itemMod.amount + +orderItem.amount;
-  //                     itemsModified.splice(i, 1);
-  //                     itemsModified.push(itemMod);
-  //                 }
-  //             }
-  //             setOrderItems(itemsModified)
-  //             console.log(itemsModified)
-  //             }
-
-  //     else {
-  //             setOrderItems(orderItems => [...orderItems, orderItem]);
-  //         }
-
-  //         console.log("order items now:" + orderItems);
-
-  //     } catch (error) {
-  //         console.error(`Error loading sellers articles !: ${error}`);
-  //     }
-
-  // }
 
   return (
     <div>
@@ -84,6 +57,34 @@ const OrderSearch = () => {
         onChange={onSearchInputChange}
       ></input>
 
+      <br></br>
+      <label for="from" className="margin-right margin-bottom">
+        Search all orders by article range:
+      </label>
+      <input
+        className="margin-bottom margin-right"
+        type="number"
+        name="from"
+        onChange={(event) => setFrom(event.target.value)}
+      ></input>
+
+      <input
+        className="margin-bottom margin-right"
+        type="number"
+        name="to"
+        onChange={(event) => setTo(event.target.value)}
+      ></input>
+
+      <Button variant="contained" onClick={fetchOrdersByRange}>
+        Search by rating range
+      </Button>
+
+      <br></br>
+      <Button variant="contained" color="error" onClick={reset}>
+        {" "}
+        Reset all{" "}
+      </Button>
+
       <table className="styled-table width-80">
         <thead>
           <tr>
@@ -91,6 +92,7 @@ const OrderSearch = () => {
             <td>Time</td>
             <td>Order items</td>
             <td>Comment</td>
+            <td>Rating</td>
           </tr>
         </thead>
         <tbody>
@@ -114,6 +116,7 @@ const OrderSearch = () => {
                     order.comment
                   : "Customer hasn't left a comment yet"}
               </td>
+              <td>{order.rating ? order.rating : "Not rated yet"}</td>
             </tr>
           ))}
         </tbody>

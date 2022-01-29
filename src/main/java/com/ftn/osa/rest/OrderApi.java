@@ -24,6 +24,10 @@ public interface OrderApi {
     @PermitAll
     ResponseEntity getAll(@RequestParam(defaultValue = "") String query);
 
+    @GetMapping(value="/range")
+    ResponseEntity getByRatingRange(@RequestParam(defaultValue = "0") int start,
+                                   @RequestParam(defaultValue = "999999") int end);
+
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE})

@@ -9,6 +9,7 @@ export const OrderService = {
   getOrdersByCurrentSeller,
   setArchived,
   getAll,
+  getByRange,
 };
 
 async function addOrder(order) {
@@ -25,6 +26,15 @@ async function getAll(query) {
   console.log("Query at the time: ", query);
   return await SprintsAxiosClient.get("http://localhost:8080/order", {
     params: { query },
+  });
+}
+
+async function getByRange(from, to) {
+  return await SprintsAxiosClient.get("http://localhost:8080/order/range", {
+    params: {
+      start: from,
+      end: to,
+    },
   });
 }
 

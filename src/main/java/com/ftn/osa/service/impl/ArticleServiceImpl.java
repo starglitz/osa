@@ -74,9 +74,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleES> findByPriceRange(int from, int to) {
-        log.info("Its happening! ");
-        log.info(from);
-        log.info(to);
         String range = from + "-" + to;
         QueryBuilder priceQuery = SearchQueryGenerator.createRangeQueryBuilder(new SimpleQueryEs("price", range));
 
@@ -85,8 +82,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .must(priceQuery);
 
         SearchHits<ArticleES> articles = searchByBoolQuery(boolQueryPrice);
-
-
         return articles.map(SearchHit::getContent).toList();
     }
 

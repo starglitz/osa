@@ -36,11 +36,16 @@ public class InjectDataToElastic {
     public void init() {
         List<Article> articles = articleRepository.findAll();
         List<ArticleES> es = ArticleES.fromArticleList(articles);
+
+        articleSearchRepository.deleteAll();
         for(ArticleES article : es) {
             articleSearchRepository.save(article);
         }
 
         List<Order> orders = orderRepository.findAll();
+
+        orderSearchRepository.deleteAll();
+
         List<OrderES> orderEs = OrderES.fromOrderList(orders);
         for(OrderES order : orderEs) {
             orderSearchRepository.save(order);

@@ -3,6 +3,7 @@ package com.ftn.osa.service;
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.Order;
+import com.ftn.osa.model.es.ArticleES;
 import com.ftn.osa.model.es.OrderES;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public interface OrderService {
     Order findById(Long id);
 
     List<OrderES> getAll(String query);
+
+    public List<OrderES> findByRatingRange(int start, int end);
 
     List<Order> findByCurrentSeller(Authentication authentication);
 

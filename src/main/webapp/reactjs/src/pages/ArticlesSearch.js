@@ -23,11 +23,8 @@ const ArticlesSearch = () => {
   }
 
   async function fetchArticlesByRange() {
-    console.log("FROM JE : ", from);
-    console.log("TO JE: ", to);
     const response = await ArticlesService.getByRange(from, to);
     setArticles(response.data);
-    console.log(response.data);
   }
 
   const debouncedFetchArticles = debounce((query) => {

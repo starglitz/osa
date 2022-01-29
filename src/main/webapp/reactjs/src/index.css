@@ -181,7 +181,7 @@ register-form {
 .styled-table thead tr {
   background-color: #353a40;
   color: #ffffff;
-  text-align: left;
+  text-align: center;
 }
 
 .styled-table th,

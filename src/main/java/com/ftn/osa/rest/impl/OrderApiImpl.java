@@ -51,6 +51,11 @@ public class OrderApiImpl implements OrderApi {
     }
 
     @Override
+    public ResponseEntity getByRatingRange(int start, int end) {
+        return new ResponseEntity(orderService.findByRatingRange(start, end), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Order> add(OrderDTO orderDto, Authentication authentication) {
         System.out.println(orderDto);
         System.out.println("Im in add order");
