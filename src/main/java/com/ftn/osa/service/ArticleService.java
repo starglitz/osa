@@ -1,6 +1,5 @@
 package com.ftn.osa.service;
 
-import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

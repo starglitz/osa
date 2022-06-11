@@ -1,6 +1,5 @@
 package com.ftn.osa.rest;
 
-import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.entity.Article;
 import org.springframework.http.MediaType;
@@ -31,7 +30,7 @@ public interface SellerApi {
     ResponseEntity getLoggedIn(Authentication authentication);
 
     @PostMapping
-    public ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser);
+    ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser);
 
     @PreAuthorize("hasRole('SELLER')")
     @PutMapping(value = "/{id}",

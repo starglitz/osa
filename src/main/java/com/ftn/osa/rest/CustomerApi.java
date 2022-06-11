@@ -1,7 +1,6 @@
 package com.ftn.osa.rest;
 
 import com.ftn.osa.model.dto.CustomerDTO;
-import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.entity.Article;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

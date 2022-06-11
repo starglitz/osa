@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 @RestController
 public class FileController {
 
-    //private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadFile(@RequestParam MultipartFile file) throws IOException {
 

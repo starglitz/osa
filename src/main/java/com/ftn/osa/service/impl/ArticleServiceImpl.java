@@ -2,7 +2,6 @@ package com.ftn.osa.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.osa.OsaApplication;
-import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
@@ -16,9 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -111,7 +108,6 @@ public class ArticleServiceImpl implements ArticleService {
     public Article create(Article article, Authentication authentication) {
 
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         User user = userRepository.findFirstByUsername(username).get();
         Seller seller = sellerRepository.findById(user.getId()).get();

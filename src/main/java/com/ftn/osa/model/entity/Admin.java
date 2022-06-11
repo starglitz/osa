@@ -17,8 +17,4 @@ public class Admin {
 
     @Id
     private Long id;
-
-//    public Admin() {
-//        this.id = user.getId();
-//    }
 }

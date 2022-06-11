@@ -39,8 +39,6 @@ public class SellerServiceImpl implements SellerService {
     @Autowired
     private OrderService orderService;
 
-
-
     @Override
     public List<Seller> getAll() {
         return sellerRepository.findAll();
@@ -49,7 +47,6 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Seller getLoggedIn(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        //System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         Seller seller = sellerRepository.findByUsername(username).get();
         //SellerDTO sellerDTO = new SellerDTO(seller);
@@ -66,18 +63,10 @@ public class SellerServiceImpl implements SellerService {
         userJpa.setSurname(seller.getUser().getSurname());
         userJpa.setUsername(seller.getUser().getUsername());
 
-//        if(passwordEncoder.matches(seller.getUser().getPassword(),
-//                userJpa.getPassword()) ||
-//                passwordEncoder.matches(passwordEncoder.encode(seller.getUser().getPassword()),
-//                        userJpa.getPassword())) {
-//            userJpa.setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
-//        }
-
         if(passwordEncoder.matches(validatePassword,
                 userJpa.getPassword())) {
             userJpa.setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
         }
-
 
         else {
             ok = false;
@@ -131,7 +120,7 @@ public class SellerServiceImpl implements SellerService {
 
         List<Integer> ratings = new ArrayList<>();
         for(Order order : sellersOrders) {
-            if (order.isDelivered() == true && order.getRating() != 0) {
+            if (order.isDelivered() && order.getRating() != 0) {
                 ratings.add(order.getRating());
             }
         }

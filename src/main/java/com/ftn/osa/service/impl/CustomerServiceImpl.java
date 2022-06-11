@@ -1,10 +1,7 @@
 package com.ftn.osa.service.impl;
 
 import com.ftn.osa.OsaApplication;
-import com.ftn.osa.model.dto.CustomerDTO;
-import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.entity.Customer;
-import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.repository.CustomerRepository;
 import com.ftn.osa.repository.UserRepository;
@@ -37,11 +34,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getLoggedIn(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        System.out.println("TRENUTNI ULOGOVANI usernname =" + userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
         Customer customer = customerRepository.findByUsername(username).get();
-        System.out.println("!!!");
-        //CustomerDTO customerDTO = new CustomerDTO(customer);
         return customer;
     }
 

@@ -3,7 +3,6 @@ package com.ftn.osa.service.impl;
 import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.service.UserService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.DisabledException;
@@ -21,8 +20,6 @@ import java.util.List;
 @Primary
 public class UserDetailsServiceImpl implements UserDetailsService{
 
-    //static Logger log = Logger.getLogger(OsaApplication.class.getName());
-
     @Autowired
     private UserService userService;
 
@@ -36,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
             OsaApplication.log.info("Failed login: there is no user with given username");
             throw new UsernameNotFoundException("There is no user with username " + username);
         }
-        else if(user.isEnabled() == false) {
+        else if(!user.isEnabled()) {
             OsaApplication.log.info("Failed login: chosen user is blocked");
             throw new DisabledException("This user is disabled");
         }else {

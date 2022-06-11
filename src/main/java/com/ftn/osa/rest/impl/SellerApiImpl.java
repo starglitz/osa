@@ -1,6 +1,5 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Article;
@@ -17,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;

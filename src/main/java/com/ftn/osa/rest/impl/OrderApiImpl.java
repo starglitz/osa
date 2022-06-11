@@ -6,8 +6,6 @@ import com.ftn.osa.model.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.*;
 import com.ftn.osa.rest.OrderApi;
 import com.ftn.osa.service.*;
-import org.apache.coyote.Response;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,16 +41,10 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public ResponseEntity<Order> add(OrderDTO orderDto, Authentication authentication) {
-        System.out.println(orderDto);
-        System.out.println("Im in add order");
-
-
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
         User user = userService.findByUsername(username);
         Customer customer = customerService.findById(user.getId());
-        System.out.println(customer);
-
 
         Order order = new Order();
         order.setDelivered(false);
@@ -73,15 +62,11 @@ public class OrderApiImpl implements OrderApi {
             itemFull.setArticle(article);
             itemFull.setAmount(item.getAmount());
             itemFull.setOrder(orderJpa);
-            //entityManager.merge(item);
             OrderItem itemJpa = orderItemService.save(itemFull);
-            //orderItemService.save(item);
             itemsJpa.add(itemJpa);
-          //  System.out.println(itemJpa);
         }
 
         orderService.save(order);
-      //  System.out.println(order);
 
         return new ResponseEntity("Successfully ordered", HttpStatus.OK);
     }

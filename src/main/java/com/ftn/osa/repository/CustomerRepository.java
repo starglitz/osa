@@ -14,5 +14,4 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             nativeQuery = true)
     Optional<Customer> findByUsername(String username);
 
-
 }

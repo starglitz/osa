@@ -43,8 +43,7 @@ public class OrderServiceImpl implements OrderService {
         String username = userPrincipal.getUsername();
 
         List<Order> orders = orderRepository.findByUserUsername(username);
-//        System.out.println("after getting jpa orders");
-//
+
 //        List<OrderDTO> orderDtos = new ArrayList<>();
 //        for(Order order : orders) {
 //            OrderDTO orderDTO = new OrderDTO(order);

@@ -1,9 +1,7 @@
 package com.ftn.osa.rest;
 
-import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.OrderUpdateDTO;
-import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

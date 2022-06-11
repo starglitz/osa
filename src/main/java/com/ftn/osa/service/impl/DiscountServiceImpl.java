@@ -1,9 +1,6 @@
 package com.ftn.osa.service.impl;
 
 import com.ftn.osa.OsaApplication;
-import com.ftn.osa.model.dto.ArticleDTO;
-import com.ftn.osa.model.dto.DiscountDTO;
-import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Discount;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.repository.ArticleRepository;
@@ -15,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

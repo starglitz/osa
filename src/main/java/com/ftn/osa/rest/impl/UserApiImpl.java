@@ -1,12 +1,7 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.model.dto.CustomerDTO;
-import com.ftn.osa.model.dto.SellerDTO;
 import com.ftn.osa.model.dto.UserDTO;
 import com.ftn.osa.model.dto.UserListDTO;
-import com.ftn.osa.model.entity.Customer;
-import com.ftn.osa.model.entity.Role;
-import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.rest.UserApi;
 import com.ftn.osa.security.TokenUtils;
@@ -27,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @Component
 public class UserApiImpl implements UserApi {
@@ -47,16 +41,7 @@ public class UserApiImpl implements UserApi {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /*
-    @Autowired
-    public UserController(UserServiceImpl userService, AuthenticationManager authenticationManager,
-                          UserDetailsService userDetailsService, TokenUtils tokenUtils){
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.tokenUtils = tokenUtils;
-    }
-    */
+
     @PostMapping("/register")
     public ResponseEntity<UserDTO> create(@RequestBody @Validated UserDTO newUser){
 
@@ -87,11 +72,6 @@ public class UserApiImpl implements UserApi {
 
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
-
-//            User user = userService.findByUsername(userDto.getUsername());
-//            if(!user.isEnabled()) {
-//                return ResponseEntity.status(404).build();
-//            }
 
             return ResponseEntity.ok(tokenUtils.generateToken(userDetails));
         } catch (UsernameNotFoundException e) {
