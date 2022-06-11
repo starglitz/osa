@@ -5,28 +5,18 @@ import com.ftn.osa.model.dto.OrderDTO;
 import com.ftn.osa.model.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
-import com.ftn.osa.model.es.OrderES;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/order")
 public interface OrderApi {
-
-    @GetMapping
-    @PermitAll
-    ResponseEntity getAll(@RequestParam(defaultValue = "") String query);
-
-    @GetMapping(value="/range")
-    ResponseEntity getByRatingRange(@RequestParam(defaultValue = "0") int start,
-                                   @RequestParam(defaultValue = "999999") int end);
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping(

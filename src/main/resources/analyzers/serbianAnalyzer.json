@@ -1,9 +1,0 @@
-{
-  "analysis":{
-    "analyzer":{
-      "default":{
-        "type":"serbian"
-      }
-    }
-  }
-}

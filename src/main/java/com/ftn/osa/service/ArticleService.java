@@ -2,7 +2,6 @@ package com.ftn.osa.service;
 
 import com.ftn.osa.model.dto.ArticleDTO;
 import com.ftn.osa.model.entity.Article;
-import com.ftn.osa.model.es.ArticleES;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +10,7 @@ import java.util.List;
 @Service
 public interface ArticleService {
 
-    public List<ArticleES> findAll(String name);
-
-    public List<ArticleES> findByPriceRange(int start, int end);
+    public List<Article> findAll();
 
     public List<Article> findAllByCurrentSeller(Authentication authentication);
 
