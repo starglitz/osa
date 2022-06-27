@@ -1,9 +1,6 @@
 package com.ftn.osa.service.impl;
 
 import com.ftn.osa.OsaApplication;
-import com.ftn.osa.model.dto.OrderDTO;
-import com.ftn.osa.model.dto.SellerDTO;
-import com.ftn.osa.model.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;

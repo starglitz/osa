@@ -1,17 +1,22 @@
 package com.ftn.osa.service;
 
 import com.ftn.osa.model.entity.Customer;
+import com.ftn.osa.rest.dto.CustomerDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public interface CustomerService{
 
-    Customer findById(Long id);
+    CustomerDTO findById(Long id);
 
-    Customer getLoggedIn(Authentication authentication);
+    Optional<Customer> findCustomerById(Long id);
 
-    boolean update(Customer customer, String passwordValidate);
+    CustomerDTO getLoggedIn(Authentication authentication);
 
-    Customer createCustomer(Customer customer);
+    boolean update(CustomerDTO customer, String passwordValidate);
+
+    CustomerDTO createCustomer(CustomerDTO customer);
 }

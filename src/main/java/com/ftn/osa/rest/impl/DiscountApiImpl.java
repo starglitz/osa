@@ -1,7 +1,7 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.model.dto.ArticleDTO;
-import com.ftn.osa.model.dto.DiscountDTO;
+import com.ftn.osa.rest.dto.ArticleDTO;
+import com.ftn.osa.rest.dto.DiscountDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Discount;
 import com.ftn.osa.model.entity.Seller;
@@ -42,7 +42,7 @@ public class DiscountApiImpl implements DiscountApi {
 
 
         for(ArticleDTO article : discountDTO.getArticles()) {
-            Article articleJpa = articleService.getArticle(article.getId());
+            Article articleJpa = articleService.getArticleEntity(article.getId());
             if(articleJpa != null) {
                 articles.add(articleJpa);
             }
@@ -97,7 +97,7 @@ public class DiscountApiImpl implements DiscountApi {
         List<Article> articles = new ArrayList<>();
 
         for(ArticleDTO article : discountDTO.getArticles()) {
-            Article articleJpa = articleService.getArticle(article.getId());
+            Article articleJpa = articleService.getArticleEntity(article.getId());
             if(articleJpa != null) {
                 articles.add(articleJpa);
             }

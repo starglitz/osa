@@ -1,22 +1,17 @@
-package com.ftn.osa.model.dto;
+package com.ftn.osa.rest.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ftn.osa.model.entity.Article;
-import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Discount;
-import com.ftn.osa.model.entity.Seller;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -68,5 +63,34 @@ public class ArticleDTO {
             this.discounts = 60;
         }
 
+    }
+
+    public static ArticleDTO fromEntity(Article entity) {
+        ArticleDTO article = new ArticleDTO();
+        article.id = entity.getId();
+        article.description = entity.getDescription();
+        article.name = entity.getName();
+        article.path = entity.getPath();
+        article.price = entity.getPrice();
+        if(entity.getSeller() != null) {
+            article.seller = new SellerListDTO(entity.getSeller());
+        }
+
+        LocalDate now = LocalDate.now();
+
+        for(Discount discount : entity.getDiscounts()) {
+            if((discount.getDateFrom().isBefore(now) || discount.getDateFrom().equals(now))
+                    && (discount.getDateTo().isAfter(now) || discount.getDateTo().isEqual(now)))
+                article.discounts += discount.getPercent();
+        }
+        if(article.discounts > 60) {
+            article.discounts = 60;
+        }
+
+        return article;
+    }
+
+    public static List<ArticleDTO> fromEntityList(List<Article> articles) {
+        return articles.stream().map(ArticleDTO::fromEntity).collect(Collectors.toList());
     }
 }

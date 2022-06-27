@@ -1,18 +1,15 @@
-package com.ftn.osa.model.dto;
+package com.ftn.osa.rest.dto;
 
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Discount;
-import com.ftn.osa.model.entity.Seller;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Data

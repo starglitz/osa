@@ -1,6 +1,6 @@
 package com.ftn.osa.rest;
 
-import com.ftn.osa.model.dto.SellerDTO;
+import com.ftn.osa.rest.dto.SellerDTO;
 import com.ftn.osa.model.entity.Article;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URISyntaxException;
 
 @RestController
 @CrossOrigin
@@ -30,7 +31,7 @@ public interface SellerApi {
     ResponseEntity getLoggedIn(Authentication authentication);
 
     @PostMapping
-    ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser);
+    ResponseEntity<SellerDTO> create(@RequestBody @Valid SellerDTO newUser) throws URISyntaxException;
 
     @PreAuthorize("hasRole('SELLER')")
     @PutMapping(value = "/{id}",

@@ -1,10 +1,6 @@
 package com.ftn.osa.service.impl;
 
 import com.ftn.osa.OsaApplication;
-import com.ftn.osa.model.dto.ArticleDTO;
-import com.ftn.osa.model.dto.OrderDTO;
-import com.ftn.osa.model.dto.OrderUpdateDTO;
-import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.repository.OrderRepository;
@@ -15,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {

@@ -1,7 +1,7 @@
 package com.ftn.osa.service;
 
-import com.ftn.osa.model.dto.UserDTO;
-import com.ftn.osa.model.dto.UserListDTO;
+import com.ftn.osa.rest.dto.UserDTO;
+import com.ftn.osa.rest.dto.UserListDTO;
 import com.ftn.osa.model.entity.User;
 import org.springframework.stereotype.Service;
 

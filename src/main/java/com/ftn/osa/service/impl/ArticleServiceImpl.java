@@ -8,6 +8,7 @@ import com.ftn.osa.model.entity.User;
 import com.ftn.osa.repository.ArticleRepository;
 import com.ftn.osa.repository.SellerRepository;
 import com.ftn.osa.repository.UserRepository;
+import com.ftn.osa.rest.dto.ArticleDTO;
 import com.ftn.osa.security.TokenUtils;
 import com.ftn.osa.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -33,55 +35,45 @@ public class ArticleServiceImpl implements ArticleService {
     private TokenUtils tokenUtils;
 
     @Override
-    public List<Article> findAll() {
+    public List<ArticleDTO> findAll() {
 
         List<Article> articles = articleRepository.findAll();
-//        List<ArticleDTO> articleDtos = new ArrayList<>();
-//        for(Article article : articles) {
-//            ArticleDTO articleDTO = new ArticleDTO(article);
-//            articleDtos.add(articleDTO);
-//        }
-
-        return articles;
+        return ArticleDTO.fromEntityList(articles);
     }
 
     @Override
-    public List<Article> findAllByCurrentSeller(Authentication authentication) {
+    public List<ArticleDTO> findAllByCurrentSeller(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
 
         List<Article> articles = articleRepository.getArticlesByCurrentSellerUsername(username);
-//        List<ArticleDTO> articleDtos = new ArrayList<>();
-//        for(Article article : articles) {
-//            ArticleDTO articleDTO = new ArticleDTO(article);
-//            articleDtos.add(articleDTO);
-//        }
 
-        return articles;
+
+        return ArticleDTO.fromEntityList(articles);
     }
 
     @Override
-    public List<Article> findAllBySellerId(Long id) {
+    public List<ArticleDTO> findAllBySellerId(Long id) {
         List<Article> articles = articleRepository.getArticlesBySellerId(id);
-//        List<ArticleDTO> articleDtos = new ArrayList<>();
-//        for(Article article : articles) {
-//            ArticleDTO articleDTO = new ArticleDTO(article);
-//            articleDtos.add(articleDTO);
-//        }
-
-        return articles;
+        return ArticleDTO.fromEntityList(articles);
     }
 
     @Override
     @JsonIgnore
-    public Article getArticle(Long id) {
+    public ArticleDTO getArticle(Long id) {
+        Optional<Article> article = articleRepository.findById(id);
+        return article.map(ArticleDTO::fromEntity).orElse(null);
+    }
+
+    @Override
+    public Article getArticleEntity(Long id) {
         return articleRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Article update(Article article) {
+    public ArticleDTO update(ArticleDTO article) {
 
-        Article articleJpa = getArticle(article.getId());
+        Article articleJpa = getArticleEntity(article.getId());
 
         if(articleJpa == null) {
             OsaApplication.log.info("Article an user is trying to update doesn't exist");
@@ -95,7 +87,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article save = articleRepository.save(articleJpa);
         OsaApplication.log.info("Successfully updated an article with ID " + article.getId());
-        return save;
+        return ArticleDTO.fromEntity(save);
     }
 
     @Override
@@ -105,17 +97,19 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article create(Article article, Authentication authentication) {
+    public ArticleDTO create(ArticleDTO articleDTO, Authentication authentication) {
 
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
         User user = userRepository.findFirstByUsername(username).get();
         Seller seller = sellerRepository.findById(user.getId()).get();
 
+        Article article = new Article(articleDTO.getName(),
+                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
         article.setSeller(seller);
         Article save = articleRepository.save(article);
         OsaApplication.log.info("Created new article");
-        return article;
+        return ArticleDTO.fromEntity(save);
     }
 
 

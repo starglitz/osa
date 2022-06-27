@@ -1,6 +1,6 @@
 package com.ftn.osa.rest;
 
-import com.ftn.osa.model.dto.DiscountDTO;
+import com.ftn.osa.rest.dto.DiscountDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

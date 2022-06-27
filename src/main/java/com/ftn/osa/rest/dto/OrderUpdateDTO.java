@@ -1,4 +1,4 @@
-package com.ftn.osa.model.dto;
+package com.ftn.osa.rest.dto;
 
 import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.OrderItem;

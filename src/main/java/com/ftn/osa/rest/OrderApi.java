@@ -1,7 +1,7 @@
 package com.ftn.osa.rest;
 
-import com.ftn.osa.model.dto.OrderDTO;
-import com.ftn.osa.model.dto.OrderUpdateDTO;
+import com.ftn.osa.rest.dto.OrderDTO;
+import com.ftn.osa.rest.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URISyntaxException;
 
 @RestController
 @CrossOrigin
@@ -19,7 +20,7 @@ public interface OrderApi {
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping(
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Order> add(@RequestBody OrderDTO order, Authentication authentication);
+    ResponseEntity<Order> add(@RequestBody OrderDTO order, Authentication authentication) throws URISyntaxException;
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping(value = "/customer/me",

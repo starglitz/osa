@@ -1,4 +1,4 @@
-package com.ftn.osa.model.dto;
+package com.ftn.osa.rest.dto;
 
 import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Role;
@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -39,5 +41,13 @@ public class CustomerDTO {
         this.password = createdUser.getUser().getPassword();
         this.surname = createdUser.getUser().getSurname();
         this.address = createdUser.getAddress();
+    }
+
+    public static CustomerDTO fromEntity(Customer entity) {
+        return new CustomerDTO(entity);
+    }
+
+    public static List<CustomerDTO> fromEntityList(List<Customer> customers) {
+        return customers.stream().map(CustomerDTO::fromEntity).collect(Collectors.toList());
     }
 }

@@ -1,27 +1,31 @@
 package com.ftn.osa.service;
 
 import com.ftn.osa.model.entity.Article;
+import com.ftn.osa.rest.dto.ArticleDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface ArticleService {
 
-    public List<Article> findAll();
+    public List<ArticleDTO> findAll();
 
-    public List<Article> findAllByCurrentSeller(Authentication authentication);
+    public List<ArticleDTO> findAllByCurrentSeller(Authentication authentication);
 
-    public List<Article> findAllBySellerId(Long id);
+    public List<ArticleDTO> findAllBySellerId(Long id);
 
-    public Article getArticle(Long id);
+    public ArticleDTO getArticle(Long id);
 
-    public Article update(Article article);
+    public Article getArticleEntity(Long id);
+
+    public ArticleDTO update(ArticleDTO article);
 
     public void delete(Long id);
 
-    public Article create(Article article, Authentication authentication);
+    public ArticleDTO create(ArticleDTO article, Authentication authentication);
 
 
 }

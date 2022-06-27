@@ -1,7 +1,6 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.model.dto.ArticleDTO;
-import com.ftn.osa.model.entity.Article;
+import com.ftn.osa.rest.dto.ArticleDTO;
 import com.ftn.osa.rest.ArticleApi;
 import com.ftn.osa.service.ArticleService;
 import com.ftn.osa.service.SellerService;
@@ -12,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -27,65 +25,46 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity getAllArticles() {
-        List<Article> articles = articleService.findAll();
-        List<ArticleDTO> articleDtos = new ArrayList<>();
-        for(Article article : articles) {
-            ArticleDTO articleDTO = new ArticleDTO(article);
-            articleDtos.add(articleDTO);
-        }
-        return new ResponseEntity(articleDtos, HttpStatus.OK);
+        List<ArticleDTO> articles = articleService.findAll();
+        return new ResponseEntity(articles, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getArticle(Long id) {
 
-        Article article = articleService.getArticle(id);
+        ArticleDTO article = articleService.getArticle(id);
 
         if(article != null) {
-            return new ResponseEntity(new ArticleDTO(article), HttpStatus.OK);
+            return new ResponseEntity(article, HttpStatus.OK);
         }
         return new ResponseEntity("Article not found", HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity getArticlesByCurrentSeller(Authentication authentication) {
-
-        List<Article> articles = articleService.findAllByCurrentSeller(authentication);
-        List<ArticleDTO> articleDtos = new ArrayList<>();
-        for(Article article : articles) {
-            ArticleDTO articleDTO = new ArticleDTO(article);
-            articleDtos.add(articleDTO);
-        }
-        return new ResponseEntity(articleDtos, HttpStatus.OK);
+        List<ArticleDTO> articles = articleService.findAllByCurrentSeller(authentication);
+        return new ResponseEntity(articles, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getArticlesBySeller(Long id) {
-        List<Article> articles = articleService.findAllBySellerId(id);
-        List<ArticleDTO> articleDtos = new ArrayList<>();
-        for(Article article : articles) {
-            ArticleDTO articleDTO = new ArticleDTO(article);
-            articleDtos.add(articleDTO);
-        }
-        return new ResponseEntity(articleDtos, HttpStatus.OK);
+        List<ArticleDTO> articles = articleService.findAllBySellerId(id);
+        return new ResponseEntity(articles, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity update(Long id,@Valid ArticleDTO articleDTO) {
+    public ResponseEntity update(Long id, @Valid ArticleDTO articleDTO) {
 
-        Article article = new Article(id, articleDTO.getName(),
-                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
-
-        Article update = articleService.update(article);
+        ArticleDTO update = articleService.update(articleDTO);
         if(update == null) {
             return new ResponseEntity("No article with such id!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(articleService.update(article), HttpStatus.OK);
+        return new ResponseEntity(update, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity delete(Long id) {
-        Article article = articleService.getArticle(id);
+        ArticleDTO article = articleService.getArticle(id);
         if(article == null) {
             return new ResponseEntity("No article with chosen id", HttpStatus.NOT_FOUND);
         }
@@ -95,11 +74,7 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity create(@Valid ArticleDTO articleDTO, Authentication authentication) {
-        Article article = new Article(articleDTO.getName(),
-                articleDTO.getDescription(), articleDTO.getPrice(), articleDTO.getPath());
-
-        Article create = articleService.create(article, authentication);
-
-        return new ResponseEntity(articleDTO, HttpStatus.OK);
+        ArticleDTO created = articleService.create(articleDTO, authentication);
+        return new ResponseEntity(created, HttpStatus.OK);
     }
 }

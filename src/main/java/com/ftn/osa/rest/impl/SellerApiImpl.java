@@ -1,7 +1,8 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.model.dto.SellerDTO;
-import com.ftn.osa.model.dto.SellerListDTO;
+import com.ftn.osa.rest.dto.OrderDTO;
+import com.ftn.osa.rest.dto.SellerDTO;
+import com.ftn.osa.rest.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Role;
 import com.ftn.osa.model.entity.Seller;
@@ -19,6 +20,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -92,7 +95,7 @@ public class SellerApiImpl implements SellerApi {
     }
 
     @Override
-    public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO sellerDTO) {
+    public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO sellerDTO) throws URISyntaxException {
 
         User newUser = new User(sellerDTO.getName(), sellerDTO.getSurname(),
                 sellerDTO.getUsername(), passwordEncoder.encode(sellerDTO.getPassword()),
@@ -107,7 +110,8 @@ public class SellerApiImpl implements SellerApi {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
         SellerDTO dto = new SellerDTO(createdSeller);
-
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        return ResponseEntity
+                .created(new URI("/sellers/" + dto.getId()))
+                .body(dto);
     }
 }

@@ -1,8 +1,9 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.model.dto.OrderDTO;
-import com.ftn.osa.model.dto.OrderItemDTO;
-import com.ftn.osa.model.dto.OrderUpdateDTO;
+import com.ftn.osa.rest.dto.CustomerDTO;
+import com.ftn.osa.rest.dto.OrderDTO;
+import com.ftn.osa.rest.dto.OrderItemDTO;
+import com.ftn.osa.rest.dto.OrderUpdateDTO;
 import com.ftn.osa.model.entity.*;
 import com.ftn.osa.rest.OrderApi;
 import com.ftn.osa.service.*;
@@ -14,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,11 +43,11 @@ public class OrderApiImpl implements OrderApi {
     private ArticleService articleService;
 
     @Override
-    public ResponseEntity<Order> add(OrderDTO orderDto, Authentication authentication) {
+    public ResponseEntity add(OrderDTO orderDto, Authentication authentication) throws URISyntaxException {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
         User user = userService.findByUsername(username);
-        Customer customer = customerService.findById(user.getId());
+        Customer customer = customerService.findCustomerById(user.getId()).get();
 
         Order order = new Order();
         order.setDelivered(false);
@@ -57,7 +60,7 @@ public class OrderApiImpl implements OrderApi {
 
         for(OrderItemDTO item : orderDto.getItems()) {
 
-            Article article = articleService.getArticle(item.getArticle().getId());
+            Article article = articleService.getArticleEntity(item.getArticle().getId());
             OrderItem itemFull = new OrderItem();
             itemFull.setArticle(article);
             itemFull.setAmount(item.getAmount());
@@ -66,20 +69,16 @@ public class OrderApiImpl implements OrderApi {
             itemsJpa.add(itemJpa);
         }
 
-        orderService.save(order);
-
-        return new ResponseEntity("Successfully ordered", HttpStatus.OK);
+        Order saved = orderService.save(order);
+        return ResponseEntity
+                .created(new URI("/orders/" + saved.getId()))
+                .body(OrderDTO.fromEntity(saved));
     }
 
     @Override
     public ResponseEntity getOrdersByUser(Authentication authentication) {
         List<Order> orders = orderService.findByUser(authentication);
-        List<OrderDTO> orderDTOS = new ArrayList<>();
-        for(Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO(order);
-            orderDTOS.add(orderDTO);
-        }
-        return new ResponseEntity(orderDTOS,HttpStatus.OK);
+        return new ResponseEntity(OrderDTO.fromEntityList(orders),HttpStatus.OK);
     }
 
     @Override
@@ -92,31 +91,14 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public ResponseEntity getOrdersBySellerId(Long id) {
-        double rating = sellerService.findAverageSellerRating(id);
-
         List<Order> orders = orderService.findBySellerId(id);
-
-        List<OrderDTO> orderDTOS = new ArrayList<>();
-        for(Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO(order);
-            orderDTOS.add(orderDTO);
-        }
-
-        return new ResponseEntity(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity(OrderDTO.fromEntityList(orders), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getOrdersByCurrentSeller(Authentication authentication) {
-
         List<Order> orders = orderService.findByCurrentSeller(authentication);
-
-        List<OrderDTO> orderDTOS = new ArrayList<>();
-        for(Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO(order);
-            orderDTOS.add(orderDTO);
-        }
-
-        return new ResponseEntity(orderDTOS, HttpStatus.OK);
+        return new ResponseEntity(OrderDTO.fromEntityList(orders), HttpStatus.OK);
     }
 
     @Override

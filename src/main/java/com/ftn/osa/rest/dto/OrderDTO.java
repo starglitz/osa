@@ -1,21 +1,18 @@
-package com.ftn.osa.model.dto;
+package com.ftn.osa.rest.dto;
 
-import com.ftn.osa.model.entity.Customer;
 import com.ftn.osa.model.entity.Order;
 import com.ftn.osa.model.entity.OrderItem;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderDTO {
-
 
     private Long id;
 
@@ -53,5 +50,23 @@ public class OrderDTO {
             itemDTOS.add(itemDTO);
         }
         this.items = itemDTOS;
+    }
+
+    public static OrderDTO fromEntity(Order order) {
+        return new OrderDTO(
+                order.getId(),
+                order.getTime(),
+                order.isDelivered(),
+                order.getRating(),
+                order.getComment(),
+                order.isAnonymous(),
+                order.isArchived(),
+                new CustomerListDTO(order.getCustomer()),
+                OrderItemDTO.fromEntityList(order.getItems())
+        );
+    }
+
+    public static List<OrderDTO> fromEntityList(List<Order> orders) {
+        return orders.stream().map(OrderDTO::fromEntity).collect(Collectors.toList());
     }
 }

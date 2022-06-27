@@ -1,6 +1,6 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.model.dto.OrderItemDTO;
+import com.ftn.osa.rest.dto.OrderItemDTO;
 import com.ftn.osa.model.entity.OrderItem;
 import com.ftn.osa.rest.OrderItemApi;
 import com.ftn.osa.service.OrderItemService;
