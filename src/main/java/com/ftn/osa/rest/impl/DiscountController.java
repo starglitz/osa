@@ -1,24 +1,27 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.rest.dto.ArticleDTO;
 import com.ftn.osa.rest.dto.DiscountDTO;
-import com.ftn.osa.model.entity.Article;
 import com.ftn.osa.model.entity.Discount;
-import com.ftn.osa.rest.DiscountApi;
 import com.ftn.osa.service.ArticleService;
 import com.ftn.osa.service.DiscountService;
 import com.ftn.osa.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
-@Component
-public class DiscountApiImpl implements DiscountApi {
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/discounts")
+public class DiscountController {
 
     @Autowired
     private DiscountService discountService;
@@ -29,30 +32,42 @@ public class DiscountApiImpl implements DiscountApi {
     @Autowired
     private SellerService sellerService;
 
-    @Override
-    public ResponseEntity add(@Valid DiscountDTO discountDTO, Authentication authentication) {
+    @PreAuthorize("hasRole('SELLER')")
+    @PostMapping(
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity add(
+            @Valid @RequestBody DiscountDTO discountDTO,
+            Authentication authentication
+    ) throws URISyntaxException {
 
         if(discountDTO.getArticles().size() == 0) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity(discountService.addDiscount(discountDTO, authentication), HttpStatus.OK);
+        DiscountDTO dto = discountService.addDiscount(discountDTO, authentication);
+        return ResponseEntity
+                .created(new URI("/articles/" + dto.getId()))
+                .body(dto);
     }
 
-    @Override
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping(value = "/seller/me",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity getByCurrentSeller(Authentication authentication) {
         List<Discount> discounts = discountService.getByCurrentSeller(authentication);
         return new ResponseEntity(DiscountDTO.fromEntityList(discounts), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity delete(Long id) {
+    @PreAuthorize("hasRole('SELLER')")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id) {
         discountService.delete(id);
         return new ResponseEntity("Successfully deleted", HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity get(Long id) {
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity get(@PathVariable("id") Long id) {
         DiscountDTO discount = discountService.findById(id);
         if(discount == null) {
             return new ResponseEntity("No such discount", HttpStatus.NOT_FOUND);
@@ -60,8 +75,10 @@ public class DiscountApiImpl implements DiscountApi {
         return new ResponseEntity(discount, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity update(Long id, @Valid DiscountDTO discountDTO) {
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody DiscountDTO discountDTO) {
 
         DiscountDTO update = discountService.update(discountDTO);
         if(update == null) {

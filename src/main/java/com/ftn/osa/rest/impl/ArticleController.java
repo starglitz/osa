@@ -1,20 +1,25 @@
 package com.ftn.osa.rest.impl;
 
 import com.ftn.osa.rest.dto.ArticleDTO;
-import com.ftn.osa.rest.ArticleApi;
 import com.ftn.osa.service.ArticleService;
 import com.ftn.osa.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
-@Component
-public class ArticleApiImpl implements ArticleApi {
+@RestController
+@CrossOrigin
+@RequestMapping("/articles")
+public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
@@ -22,15 +27,18 @@ public class ArticleApiImpl implements ArticleApi {
     @Autowired
     private SellerService sellerService;
 
-
-    @Override
+    @GetMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity getAllArticles() {
         List<ArticleDTO> articles = articleService.findAll();
         return new ResponseEntity(articles, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity getArticle(Long id) {
+
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN', 'CUSTOMER')")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity getArticle(@PathVariable("id") Long id) {
 
         ArticleDTO article = articleService.getArticle(id);
 
@@ -40,20 +48,26 @@ public class ArticleApiImpl implements ArticleApi {
         return new ResponseEntity("Article not found", HttpStatus.NOT_FOUND);
     }
 
-    @Override
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping(value = "/seller/me",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity getArticlesByCurrentSeller(Authentication authentication) {
         List<ArticleDTO> articles = articleService.findAllByCurrentSeller(authentication);
         return new ResponseEntity(articles, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity getArticlesBySeller(Long id) {
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping(value = "/seller/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity getArticlesBySeller(@PathVariable("id") Long id) {
         List<ArticleDTO> articles = articleService.findAllBySellerId(id);
         return new ResponseEntity(articles, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity update(Long id, @Valid ArticleDTO articleDTO) {
+    @PreAuthorize("hasRole('SELLER')")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity update(@PathVariable("id") Long id, @Valid ArticleDTO articleDTO) {
 
         ArticleDTO update = articleService.update(articleDTO);
         if(update == null) {
@@ -62,8 +76,9 @@ public class ArticleApiImpl implements ArticleApi {
         return new ResponseEntity(update, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity delete(Long id) {
+    @PreAuthorize("hasRole('SELLER')")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id) {
         ArticleDTO article = articleService.getArticle(id);
         if(article == null) {
             return new ResponseEntity("No article with chosen id", HttpStatus.NOT_FOUND);
@@ -72,9 +87,13 @@ public class ArticleApiImpl implements ArticleApi {
         return new ResponseEntity("Successfuly deleted", HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity create(@Valid ArticleDTO articleDTO, Authentication authentication) {
+    @PreAuthorize("hasRole('SELLER')")
+    @PostMapping(
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity create(@Valid @RequestBody ArticleDTO articleDTO, Authentication authentication) throws URISyntaxException {
         ArticleDTO created = articleService.create(articleDTO, authentication);
-        return new ResponseEntity(created, HttpStatus.OK);
+        return ResponseEntity
+                .created(new URI("/articles/" + created.getId()))
+                .body(created);
     }
 }

@@ -2,22 +2,25 @@ package com.ftn.osa.rest.impl;
 
 import com.ftn.osa.rest.dto.CustomerDTO;
 import com.ftn.osa.model.entity.*;
-import com.ftn.osa.rest.CustomerApi;
 import com.ftn.osa.service.CustomerService;
 import com.ftn.osa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-@Component
-public class CustomerApiImpl implements CustomerApi {
+@RestController
+@CrossOrigin
+@RequestMapping("/customers")
+public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
@@ -28,14 +31,18 @@ public class CustomerApiImpl implements CustomerApi {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping(value = "/profile",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity getLoggedIn(Authentication authentication) {
         CustomerDTO dto = customerService.getLoggedIn(authentication);
         return new ResponseEntity(dto, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Article> update(Long id, @Valid CustomerDTO customerDTO) {
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PutMapping(value = "/{id}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Article> update(@PathVariable("id") Long id, @Valid @RequestBody CustomerDTO customerDTO) {
 
         if(customerService.update(customerDTO, customerDTO.getPasswordValidate())) {
             return new ResponseEntity("updated", HttpStatus.OK);
@@ -45,14 +52,16 @@ public class CustomerApiImpl implements CustomerApi {
         }
 
     }
-
-    public ResponseEntity<CustomerDTO> create(@RequestBody @Validated CustomerDTO customerDTO){
+    @PostMapping
+    public ResponseEntity<CustomerDTO> create(@RequestBody @Valid CustomerDTO customerDTO) throws URISyntaxException {
 
         CustomerDTO created = customerService.createCustomer(customerDTO);
 
         if(created == null){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        return ResponseEntity
+                .created(new URI("/customers/" + created.getId()))
+                .body(created);
     }
 }
