@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -48,4 +49,10 @@ public class DiscountDTO {
         }
         this.articles = articleDTOS;
     }
+
+    public static List<DiscountDTO> fromEntityList(List<Discount> discounts) {
+        return discounts.stream().map(DiscountDTO::new).collect(Collectors.toList());
+    }
+
+
 }

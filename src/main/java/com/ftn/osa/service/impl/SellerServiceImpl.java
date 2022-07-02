@@ -2,20 +2,26 @@ package com.ftn.osa.service.impl;
 
 import com.ftn.osa.OsaApplication;
 import com.ftn.osa.model.entity.Order;
+import com.ftn.osa.model.entity.Role;
 import com.ftn.osa.model.entity.Seller;
 import com.ftn.osa.model.entity.User;
 import com.ftn.osa.repository.SellerRepository;
 import com.ftn.osa.repository.UserRepository;
+import com.ftn.osa.rest.dto.SellerDTO;
+import com.ftn.osa.rest.dto.SellerListDTO;
 import com.ftn.osa.service.OrderService;
 import com.ftn.osa.service.SellerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +32,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Autowired
     private SellerRepository sellerRepository;
+
+    @Autowired
+    private SellerService sellerService;
 
     @Autowired
     private UserRepository userRepository;
@@ -42,6 +51,21 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    public List<SellerListDTO> getAllDto() {
+        List<Seller> sellers = this.getAll();
+
+        List<SellerListDTO> sellersForShow = new ArrayList<>();
+        for(Seller seller : sellers) {
+            SellerListDTO sellerForShow = new SellerListDTO(seller);
+
+            double rating = sellerService.findAverageSellerRating(seller.getId());
+            sellerForShow.setRating(rating);
+            sellersForShow.add(sellerForShow);
+        }
+        return sellersForShow;
+    }
+
+    @Override
     public Seller getLoggedIn(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
         String username = userPrincipal.getUsername();
@@ -51,7 +75,14 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public boolean update(Seller seller, String validatePassword) {
+    public boolean update(SellerDTO sellerDTO) {
+
+
+        User user = new User(sellerDTO.getId(), sellerDTO.getName(), sellerDTO.getSurname(),
+                sellerDTO.getUsername(), sellerDTO.getPassword(), true, Role.SELLER);
+
+        Seller seller = new Seller(sellerDTO.getSince(), sellerDTO.getEmail(),
+                sellerDTO.getAddress(), sellerDTO.getSellerName(), user, sellerDTO.getId());
 
         boolean ok = true;
         User userJpa = userRepository.findById(seller.getId()).get();
@@ -60,7 +91,7 @@ public class SellerServiceImpl implements SellerService {
         userJpa.setSurname(seller.getUser().getSurname());
         userJpa.setUsername(seller.getUser().getUsername());
 
-        if(passwordEncoder.matches(validatePassword,
+        if(passwordEncoder.matches(sellerDTO.getPasswordValidate(),
                 userJpa.getPassword())) {
             userJpa.setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
         }
@@ -84,30 +115,51 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller createSeller(Seller seller) {
-        Optional<User> user = userRepository.findFirstByUsername(seller.getUser().getUsername());
+    public SellerDTO createSeller(SellerDTO sellerDTO) {
+
+        Optional<User> user = userRepository.findFirstByUsername(sellerDTO.getUsername());
 
         if(user.isPresent()){
             return null;
         }
 
-        Optional<Seller> sellerJpa = sellerRepository.findByEmail(seller.getEmail());
+        Optional<Seller> sellerJpa = sellerRepository.findByEmail(sellerDTO.getEmail());
         if(sellerJpa.isPresent()) {
             return null;
-        }
+        };
 
-        User userJpa = userRepository.save(seller.getUser());
+        User newUser = new User(sellerDTO.getName(), sellerDTO.getSurname(),
+                sellerDTO.getUsername(), passwordEncoder.encode(sellerDTO.getPassword()),
+                true, Role.SELLER);
 
-        seller.setUser(userJpa);
-        seller.setId(userJpa.getId());
-        seller = sellerRepository.save(seller);
-        return seller;
+        Seller newSeller = new Seller(new Date(), sellerDTO.getEmail(), sellerDTO.getAddress(),
+                sellerDTO.getSellerName(), newUser);
+
+        User userJpa = userRepository.save(newSeller.getUser());
+
+        newSeller.setUser(userJpa);
+        newSeller.setId(userJpa.getId());
+        newSeller = sellerRepository.save(newSeller);
+        return new SellerDTO(newSeller);
     }
 
 
     @Override
     public Seller getById(Long id) {
         return sellerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public SellerListDTO getDTOById(Long id) {
+        Seller seller = sellerService.getById(id);
+
+        if(seller != null) {
+            double rating = sellerService.findAverageSellerRating(id);
+            SellerListDTO dto = new SellerListDTO(seller);
+            dto.setRating(rating);
+            return dto;
+        }
+        return null;
     }
 
 

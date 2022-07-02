@@ -1,16 +1,19 @@
 package com.ftn.osa.service.impl;
 
 import com.ftn.osa.OsaApplication;
-import com.ftn.osa.model.entity.Order;
-import com.ftn.osa.model.entity.Seller;
+import com.ftn.osa.model.entity.*;
 import com.ftn.osa.repository.OrderRepository;
 import com.ftn.osa.repository.SellerRepository;
-import com.ftn.osa.service.OrderService;
+import com.ftn.osa.rest.dto.OrderDTO;
+import com.ftn.osa.rest.dto.OrderItemDTO;
+import com.ftn.osa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,34 +25,68 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
+    @Autowired
+    private ArticleService articleService;
+
 
     @Override
-    public Order save(Order order) {
-        return orderRepository.save(order);
+    public OrderDTO save(OrderDTO orderDto, Authentication authentication) {
+
+        UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
+        String username = userPrincipal.getUsername();
+        User user = userService.findByUsername(username);
+        Customer customer = customerService.findCustomerById(user.getId()).get();
+
+        Order order = new Order();
+        order.setDelivered(false);
+        order.setTime(new Date());
+        order.setCustomer(customer);
+
+        Order orderJpa = orderRepository.save(order);
+
+        List<OrderItem> itemsJpa = new ArrayList<>();
+
+        for(OrderItemDTO item : orderDto.getItems()) {
+
+            Article article = articleService.getArticleEntity(item.getArticle().getId());
+            OrderItem itemFull = new OrderItem();
+            itemFull.setArticle(article);
+            itemFull.setAmount(item.getAmount());
+            itemFull.setOrder(orderJpa);
+            OrderItem itemJpa = orderItemService.save(itemFull);
+            itemsJpa.add(itemJpa);
+        }
+
+
+        return new OrderDTO(orderRepository.save(order));
     }
 
     @Override
-    public List<Order> findByUser(Authentication authentication) {
-        System.out.println("before orders");
+    public List<OrderDTO> findByUser(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
-        System.out.println(userPrincipal.getUsername());
         String username = userPrincipal.getUsername();
 
         List<Order> orders = orderRepository.findByUserUsername(username);
 
-//        List<OrderDTO> orderDtos = new ArrayList<>();
-//        for(Order order : orders) {
-//            OrderDTO orderDTO = new OrderDTO(order);
-//            orderDtos.add(orderDTO);
-//        }
-
-        return orders;
+        return OrderDTO.fromEntityList(orders);
     }
 
 
 
     @Override
-    public Order update(Order update) {
+    public OrderDTO update(OrderDTO orderDTO) {
+
+        Order update = new Order(orderDTO.getId(), orderDTO.isDelivered(), orderDTO.getRating(), orderDTO.getComment(),
+                orderDTO.isAnonymous(), orderDTO.isArchived());
 
         Order order = orderRepository.findById(update.getId()).get();
         order.setDelivered(update.isDelivered());
@@ -59,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
         order.setArchived(update.isArchived());
         OsaApplication.log.info("Successfully updated an order with ID " + order.getId());
         orderRepository.save(order);
-        return order;
+        return OrderDTO.fromEntity(order);
     }
 
     @Override

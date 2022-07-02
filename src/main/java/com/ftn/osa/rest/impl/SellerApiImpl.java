@@ -1,6 +1,5 @@
 package com.ftn.osa.rest.impl;
 
-import com.ftn.osa.rest.dto.OrderDTO;
 import com.ftn.osa.rest.dto.SellerDTO;
 import com.ftn.osa.rest.dto.SellerListDTO;
 import com.ftn.osa.model.entity.Article;
@@ -22,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Component
 public class SellerApiImpl implements SellerApi {
@@ -38,34 +34,16 @@ public class SellerApiImpl implements SellerApi {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
     public ResponseEntity getAllSellers() {
-
-        List<Seller> sellers = sellerService.getAll();
-
-        List<SellerListDTO> sellersForShow = new ArrayList<>();
-        for(Seller seller : sellers) {
-            SellerListDTO sellerForShow = new SellerListDTO(seller);
-
-            double rating = sellerService.findAverageSellerRating(seller.getId());
-            sellerForShow.setRating(rating);
-            sellersForShow.add(sellerForShow);
-        }
-
-        return new ResponseEntity(sellersForShow, HttpStatus.OK);
+        return new ResponseEntity(sellerService.getAllDto(), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity getSeller(Long id) {
-        Seller seller = sellerService.getById(id);
-
+        SellerListDTO seller = sellerService.getDTOById(id);
         if(seller != null) {
-
-            double rating = sellerService.findAverageSellerRating(id);
-            SellerListDTO dto = new SellerListDTO(seller);
-            dto.setRating(rating);
-            return new ResponseEntity(dto, HttpStatus.OK);
+            return new ResponseEntity(seller, HttpStatus.OK);
         }
         return new ResponseEntity("Seller not found", HttpStatus.NOT_FOUND);
     }
@@ -79,13 +57,7 @@ public class SellerApiImpl implements SellerApi {
     @Override
     public ResponseEntity<Article> update(Long id, @Valid SellerDTO sellerDTO) {
 
-        User user = new User(sellerDTO.getId(), sellerDTO.getName(), sellerDTO.getSurname(),
-                sellerDTO.getUsername(), sellerDTO.getPassword(), true, Role.SELLER);
-
-        Seller seller = new Seller(sellerDTO.getSince(), sellerDTO.getEmail(),
-                sellerDTO.getAddress(), sellerDTO.getSellerName(), user, sellerDTO.getId());
-
-        if(sellerService.update(seller, sellerDTO.getPasswordValidate())) {
+        if(sellerService.update(sellerDTO)) {
             return new ResponseEntity("updated", HttpStatus.OK);
         }
         else {
@@ -97,21 +69,13 @@ public class SellerApiImpl implements SellerApi {
     @Override
     public ResponseEntity<SellerDTO> create(@RequestBody @Validated SellerDTO sellerDTO) throws URISyntaxException {
 
-        User newUser = new User(sellerDTO.getName(), sellerDTO.getSurname(),
-                sellerDTO.getUsername(), passwordEncoder.encode(sellerDTO.getPassword()),
-                true, Role.SELLER);
-
-        Seller newSeller = new Seller(new Date(), sellerDTO.getEmail(), sellerDTO.getAddress(),
-                sellerDTO.getSellerName(), newUser);
-
-        Seller createdSeller = sellerService.createSeller(newSeller);
+        SellerDTO createdSeller = sellerService.createSeller(sellerDTO);
 
         if(createdSeller == null){
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
-        SellerDTO dto = new SellerDTO(createdSeller);
         return ResponseEntity
-                .created(new URI("/sellers/" + dto.getId()))
-                .body(dto);
+                .created(new URI("/sellers/" + createdSeller.getId()))
+                .body(createdSeller);
     }
 }
